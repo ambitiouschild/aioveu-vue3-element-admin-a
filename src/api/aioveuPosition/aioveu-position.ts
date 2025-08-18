@@ -87,7 +87,6 @@ export interface AioveuPositionPageQuery extends PageQuery {
 /** 公司岗位信息表单对象 */
 export interface AioveuPositionForm {
     /** 岗位名称 */
-    positionId?: undefined, // 明确初始化
     positionName?:  string;
     /** 所属部门ID */
     deptId?:  number;

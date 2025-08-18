@@ -85,7 +85,6 @@ export interface AioveuDepartmentPageQuery extends PageQuery {
 /** 公司部门组织结构表单对象 */
 export interface AioveuDepartmentForm {
 
-    deptId?: number; // 改为可选
     /** 部门名称 */
     deptName?:  string;
     /** 上级部门ID */
