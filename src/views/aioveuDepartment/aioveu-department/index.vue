@@ -243,7 +243,6 @@
 
   // 公司部门组织结构表单数据
   const formData = reactive<AioveuDepartmentForm>({
-    deptId: undefined, // 明确初始化
     deptName: '',
     parentDeptId: undefined,
     managerId: undefined,
@@ -284,10 +283,14 @@
       .filter((deptId): deptId is number => deptId !== undefined && deptId !== null) as number[];
 
   }
+  // 在组件中添加一个变量存储当前编辑的部门ID
+  const editingdeptId = ref<number | undefined>(undefined);
 
   /** 打开公司部门组织结构弹窗 */
   function handleOpenDialog(deptId?: number) {
     dialog.visible = true;
+    editingdeptId.value = deptId; // 保存部门ID
+
     if (deptId) {
       dialog.title = "修改公司部门组织结构";
             AioveuDepartmentAPI.getFormData(deptId).then((data) => {
@@ -300,15 +303,16 @@
 
   /** 提交公司部门组织结构表单 */
   function handleSubmit() {
-    dataFormRef.value.validate((valid: any) => {
+    dataFormRef.value.validate((valid: boolean) => {  //表单验证类型问题 valid参数类型应该为 boolean
       if (valid) {
         loading.value = true;
-        const id = formData.deptId;  // 从 formData 获取 deptId
+        const id = editingdeptId.value; // 获取，使用存储的deptId
+
         if (id) {  // 检查 deptId 是否有值
                 AioveuDepartmentAPI.update(id, formData)
               .then(() => {
                 ElMessage.success("修改成功");
-                handleCloseDialog();
+                handleCloseDialog(); // 成功后再关闭弹窗
                 handleResetQuery();
               })
               .finally(() => (loading.value = false));
@@ -316,7 +320,7 @@
                 AioveuDepartmentAPI.add(formData)
               .then(() => {
                 ElMessage.success("新增成功");
-                handleCloseDialog();
+                handleCloseDialog(); // 成功后再关闭弹窗
                 handleResetQuery();
               })
               .finally(() => (loading.value = false));
@@ -329,18 +333,11 @@
   function handleCloseDialog() {
     dialog.visible = false;
 
-    // 重置表单数据 - 确保包含所有字段
-    Object.assign(formData, {
-      deptId: undefined,
-      deptName: '',
-      parentDeptId: undefined,
-      managerId: undefined,
-      // 其他字段...
-    });
-
+    //在弹窗关闭时调用 handleCloseDialog，重置了 editingdeptId
+    //但提交操作发生在弹窗关闭前，此时 editingdeptId可能已被重置
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
-    formData.deptId = undefined;  // 确保 formData 初始化中包含了 deptId
+    editingdeptId.value = undefined;  // 确保 formData 初始化中包含了 deptId
   }
 
   /** 删除公司部门组织结构 */
@@ -349,7 +346,7 @@
    *
    * */
 
-  function handleDelete(id?: number) {
+  function handleDelete(deptId?: number) {
     // const ids = [id || removeIds.value].join(",");
     // 当使用顶部删除按钮时：
 //   id = undefined → [removeIds.value] → 例如 [[101,102]] → join后变成"101,102"
@@ -362,8 +359,8 @@
 
 
     // 重构 ids 生成逻辑：使用 id 参数 或 已选的多个 ID
-    const ids = id
-      ? String(id)  // 处理单行删除
+    const ids = deptId
+      ? String(deptId)  // 处理单行删除
       : removeIds.value.join(",");  // 处理多行删除 （使用已选 ID 数组）
 
     // 添加更严格的空值检查
