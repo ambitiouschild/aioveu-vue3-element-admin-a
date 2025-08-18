@@ -3,13 +3,12 @@
     <div class="search-container">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
                 <el-form-item label="部门ID" prop="deptId">
-                  <el-input
-                    v-model="queryParams.deptId"
-                    placeholder="部门ID"
-                    clearable
-                    @keyup.enter="handleQuery()"
-                  />
-
+                      <el-input
+                          v-model="queryParams.deptId"
+                          placeholder="部门ID"
+                          clearable
+                          @keyup.enter="handleQuery()"
+                      />
                 </el-form-item>
                 <el-form-item label="部门名称" prop="deptName">
                       <el-input
@@ -35,17 +34,28 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+                <el-form-item label="创建时间" prop="createTime">
+                      <el-date-picker
+                          v-model="queryParams.createTime"
+                          type="datetime"
+                          placeholder="创建时间"
+                          value-format="YYYY-MM-DD HH:mm:ss"
+                      />
+                </el-form-item>
+                <el-form-item label="更新时间" prop="updateTime">
+                      <el-date-picker
+                          v-model="queryParams.updateTime"
+                          type="datetime"
+                          placeholder="更新时间"
+                          value-format="YYYY-MM-DD HH:mm:ss"
+                      />
+                </el-form-item>
         <el-form-item>
-          <el-button
-            type="primary"
-            v-hasPerm="['aioveuDepartment:aioveu-department:query']"
-            @click="handleQuery">
+          <el-button type="primary" @click="handleQuery">
             <template #icon><Search /></template>
             搜索
           </el-button>
-          <el-button
-            v-hasPerm="['aioveuDepartment:aioveu-department:Resetquery']"
-            @click="handleResetQuery">
+          <el-button @click="handleResetQuery">
             <template #icon><Refresh /></template>
             重置
           </el-button>
@@ -111,6 +121,20 @@
                         min-width="150"
                         align="center"
                     />
+                    <el-table-column
+                        key="createTime"
+                        label="创建时间"
+                        prop="createTime"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="updateTime"
+                        label="更新时间"
+                        prop="updateTime"
+                        min-width="150"
+                        align="center"
+                    />
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
             <el-button
@@ -118,7 +142,7 @@
                 type="primary"
                 size="small"
                 link
-                @click="handleOpenDialog(scope.row.id)"
+                @click="handleOpenDialog(scope.row.deptId)"
             >
               <template #icon><Edit /></template>
               编辑
@@ -128,10 +152,10 @@
                 type="danger"
                 size="small"
                 link
-                @click="handleDelete(scope.row.id)"
+                @click="handleDelete(scope.row.deptId)"
             >
               <template #icon><Delete /></template>
-              删除
+              删除此行
             </el-button>
           </template>
         </el-table-column>
@@ -154,7 +178,6 @@
         @close="handleCloseDialog"
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
-                <el-input type="hidden" v-model="formData.deptId" />
                 <el-form-item label="部门名称" prop="deptName">
                       <el-input
                           v-model="formData.deptName"
@@ -162,17 +185,17 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="上级部门ID，用于构建部门树" prop="parentDeptId">
+                <el-form-item label="上级部门ID" prop="parentDeptId">
                       <el-input
                           v-model="formData.parentDeptId"
-                          placeholder="上级部门ID，用于构建部门树"
+                          placeholder="上级部门ID"
                       />
                 </el-form-item>
 
-                <el-form-item label="部门经理，关联employee表" prop="managerId">
+                <el-form-item label="部门经理" prop="managerId">
                       <el-input
                           v-model="formData.managerId"
-                          placeholder="部门经理，关联employee表"
+                          placeholder="部门经理"
                       />
                 </el-form-item>
 
@@ -193,13 +216,15 @@
     inheritAttrs: false,
   });
 
-  import AioveuDepartmentAPI, { AioveuDepartmentPageVO, AioveuDepartmentForm, AioveuDepartmentPageQuery } from '@/api/aioveuDepartment/aioveu-department';
+  import AioveuDepartmentAPI, { AioveuDepartmentPageVO, AioveuDepartmentForm, AioveuDepartmentPageQuery } from "@/api/aioveuDepartment/aioveu-department";
 
   const queryFormRef = ref();
   const dataFormRef = ref();
 
   const loading = ref(false);
-  const removeIds = ref<number[]>([]);
+  //removeIds数组处理有问题  正确声明 removeIds 类型
+  //更安全的声明（如果数据可能不完整）
+  const removeIds = ref<Array<number | undefined>>([]); // 允许包含 undefined
   const total = ref(0);
 
   const queryParams = reactive<AioveuDepartmentPageQuery>({
@@ -217,7 +242,12 @@
   });
 
   // 公司部门组织结构表单数据
-  const formData = reactive<AioveuDepartmentForm>({});
+  const formData = reactive<AioveuDepartmentForm>({
+    deptId: undefined, // 明确初始化
+    deptName: '',
+    parentDeptId: undefined,
+    managerId: undefined,
+  });
 
   // 公司部门组织结构表单校验规则
   const rules = reactive({
@@ -245,16 +275,22 @@
   }
 
   /** 行复选框选中记录选中ID集合 */
-  function handleSelectionChange(selection: any) {
-    removeIds.value = selection.map((item: any) => item.id);
+  //（确保正确提取 ID）
+// 修复后 - 使用正确的属性名称 deptId  添加类型安全过滤
+  function handleSelectionChange(selection: AioveuDepartmentPageVO[]) {
+    // removeIds.value = selection.map(item => item.deptId);  // 如果 deptId 可能是 undefined，这就是问题 // 确保只提取有效的 deptId，过滤掉 undefined 或 null
+    removeIds.value = selection
+      .map(item => item.deptId)
+      .filter((deptId): deptId is number => deptId !== undefined && deptId !== null) as number[];
+
   }
 
   /** 打开公司部门组织结构弹窗 */
-  function handleOpenDialog(id?: number) {
+  function handleOpenDialog(deptId?: number) {
     dialog.visible = true;
-    if (id) {
+    if (deptId) {
       dialog.title = "修改公司部门组织结构";
-            AioveuDepartmentAPI.getFormData(id).then((data) => {
+            AioveuDepartmentAPI.getFormData(deptId).then((data) => {
         Object.assign(formData, data);
       });
     } else {
@@ -267,8 +303,8 @@
     dataFormRef.value.validate((valid: any) => {
       if (valid) {
         loading.value = true;
-        const id = formData.deptId;
-        if (id) {
+        const id = formData.deptId;  // 从 formData 获取 deptId
+        if (id) {  // 检查 deptId 是否有值
                 AioveuDepartmentAPI.update(id, formData)
               .then(() => {
                 ElMessage.success("修改成功");
@@ -292,15 +328,46 @@
   /** 关闭公司部门组织结构弹窗 */
   function handleCloseDialog() {
     dialog.visible = false;
+
+    // 重置表单数据 - 确保包含所有字段
+    Object.assign(formData, {
+      deptId: undefined,
+      deptName: '',
+      parentDeptId: undefined,
+      managerId: undefined,
+      // 其他字段...
+    });
+
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
-    formData.deptId = undefined;
+    formData.deptId = undefined;  // 确保 formData 初始化中包含了 deptId
   }
 
   /** 删除公司部门组织结构 */
+  /** 顶部"删除"按钮
+   *  行内"删除此行"按钮
+   *
+   * */
+
   function handleDelete(id?: number) {
-    const ids = [id || removeIds.value].join(",");
-    if (!ids) {
+    // const ids = [id || removeIds.value].join(",");
+    // 当使用顶部删除按钮时：
+//   id = undefined → [removeIds.value] → 例如 [[101,102]] → join后变成"101,102"
+// 但当单选时：
+//   removeIds.value = [101] → [[101]] → join后变成"101" ✅ 看似正常
+// 实际问题是：当通过行内删除按钮调用时：
+//   handleDelete(101) → [101] → join后变成"101" ✅
+//
+// 真正的问题是：removeIds.value 在单选时未正确赋值（见下条）
+
+
+    // 重构 ids 生成逻辑：使用 id 参数 或 已选的多个 ID
+    const ids = id
+      ? String(id)  // 处理单行删除
+      : removeIds.value.join(",");  // 处理多行删除 （使用已选 ID 数组）
+
+    // 添加更严格的空值检查
+    if (!ids || ids.trim() === "") {
       ElMessage.warning("请勾选删除项");
       return;
     }

@@ -33,7 +33,7 @@ const AioveuDepartmentAPI = {
         return request({
             url: `${AIOVEUDEPARTMENT_BASE_URL}`,
             method: "post",
-            // data: data, 属性简写（变量同名）
+            data,
         });
     },
 
@@ -47,7 +47,7 @@ const AioveuDepartmentAPI = {
         return request({
             url: `${AIOVEUDEPARTMENT_BASE_URL}/${id}`,
             method: "put",
-            // data: data, 属性简写（变量同名）
+            data,
         });
     },
 
@@ -72,32 +72,40 @@ export interface AioveuDepartmentPageQuery extends PageQuery {
     deptId?: number;
     /** 部门名称 */
     deptName?: string;
-    /** 上级部门ID，用于构建部门树 */
+    /** 上级部门ID */
     parentDeptId?: number;
-    /** 部门经理，关联employee表 */
+    /** 部门经理 */
     managerId?: number;
+    /** 创建时间 */
+    createTime?: string;
+    /** 更新时间 */
+    updateTime?: string;
 }
 
 /** 公司部门组织结构表单对象 */
 export interface AioveuDepartmentForm {
-    /** 部门ID */
-    deptId?:  number;
+
+    deptId?: number; // 改为可选
     /** 部门名称 */
     deptName?:  string;
-    /** 上级部门ID，用于构建部门树 */
+    /** 上级部门ID */
     parentDeptId?:  number;
-    /** 部门经理，关联employee表 */
+    /** 部门经理 */
     managerId?:  number;
 }
 
 /** 公司部门组织结构分页对象 */
 export interface AioveuDepartmentPageVO {
     /** 部门ID */
-    deptId?: number;
+    deptId?: number;  // 确保这里定义了 deptId
     /** 部门名称 */
     deptName?: string;
-    /** 上级部门ID，用于构建部门树 */
+    /** 上级部门ID */
     parentDeptId?: number;
-    /** 部门经理，关联employee表 */
+    /** 部门经理 */
     managerId?: number;
+    /** 创建时间 */
+    createTime?: string;
+    /** 更新时间 */
+    updateTime?: string;
 }
