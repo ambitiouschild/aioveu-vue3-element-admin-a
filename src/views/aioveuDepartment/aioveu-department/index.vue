@@ -333,6 +333,9 @@
   function handleCloseDialog() {
     dialog.visible = false;
 
+    // 关键修复：重置加载状态
+    loading.value = false;
+
     //在弹窗关闭时调用 handleCloseDialog，重置了 editingdeptId
     //但提交操作发生在弹窗关闭前，此时 editingdeptId可能已被重置
     dataFormRef.value.resetFields();

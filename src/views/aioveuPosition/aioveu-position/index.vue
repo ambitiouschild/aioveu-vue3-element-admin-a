@@ -335,7 +335,7 @@
                 ElMessage.success("修改成功");
                 handleCloseDialog();
                 handleResetQuery();
-              })
+              }) //在API调用结束时重置加载状态
               .finally(() => (loading.value = false));
         } else {
                 AioveuPositionAPI.add(formData)
@@ -353,6 +353,8 @@
   /** 关闭公司岗位信息弹窗 */
   function handleCloseDialog() {
     dialog.visible = false;
+    // 关键修复：重置加载状态
+    loading.value = false;
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
     editingpositionId.value = undefined; // 清除positionId

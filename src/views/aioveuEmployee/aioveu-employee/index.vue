@@ -579,8 +579,14 @@
   /** 关闭员工信息弹窗 */
   function handleCloseDialog() {
     dialog.visible = false;
+    // 关键修复：重置加载状态
+    loading.value = false;
+
+    // 重置表单
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
+
+    // 清除编辑ID
     editingEmployeeId.value = undefined; // 清除员工ID
   }
 
