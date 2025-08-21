@@ -78,8 +78,7 @@ export interface AioveuCategoryPageQuery extends PageQuery {
 
 /** 物资分类表单对象 */
 export interface AioveuCategoryForm {
-    /** 分类ID */
-    id?:  number;
+
     /** 分类名称 */
     name?:  string;
     /** 父分类ID */

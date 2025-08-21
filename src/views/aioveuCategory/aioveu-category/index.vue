@@ -161,12 +161,6 @@
         @close="handleCloseDialog"
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
-                <el-form-item label="分类ID" prop="id">
-                      <el-input
-                          v-model="formData.id"
-                          placeholder="分类ID"
-                      />
-                </el-form-item>
 
                 <el-form-item label="分类名称" prop="name">
                       <el-input
@@ -270,9 +264,15 @@
     removeIds.value = selection.map((item: any) => item.id);
   }
 
+  // 在组件中添加一个变量存储当前编辑的ID
+  const editingCategoryId = ref<number | undefined>(undefined);
+
   /** 打开物资分类弹窗 */
   function handleOpenDialog(id?: number) {
     dialog.visible = true;
+
+    editingCategoryId.value = id; // 保存ID
+
     if (id) {
       dialog.title = "修改物资分类";
             AioveuCategoryAPI.getFormData(id).then((data) => {
@@ -288,7 +288,7 @@
     dataFormRef.value.validate((valid: any) => {
       if (valid) {
         loading.value = true;
-        const id = formData.id;
+        const id = editingCategoryId.value; // 使用存储的ID
         if (id) {
                 AioveuCategoryAPI.update(id, formData)
               .then(() => {
@@ -313,9 +313,15 @@
   /** 关闭物资分类弹窗 */
   function handleCloseDialog() {
     dialog.visible = false;
+
+    // 关键修复：在关闭弹窗时重置加载状态
+    loading.value = false;
+
+
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
-    formData.id = undefined;
+    // 清除编辑ID
+    editingCategoryId.value = undefined;
   }
 
   /** 删除物资分类 */
