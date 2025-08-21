@@ -1,0 +1,513 @@
+<template>
+  <div class="app-container">
+    <div class="search-container">
+      <el-form ref="queryFormRef" :model="queryParams" :inline="true">
+                <el-form-item label="出库ID" prop="id">
+                      <el-input
+                          v-model="queryParams.id"
+                          placeholder="出库ID"
+                          clearable
+                          @keyup.enter="handleQuery()"
+                      />
+                </el-form-item>
+                <el-form-item label="出库单号" prop="outboundNo">
+                      <el-input
+                          v-model="queryParams.outboundNo"
+                          placeholder="出库单号"
+                          clearable
+                          @keyup.enter="handleQuery()"
+                      />
+                </el-form-item>
+                <el-form-item label="物资ID" prop="materialId">
+                      <el-input
+                          v-model="queryParams.materialId"
+                          placeholder="物资ID"
+                          clearable
+                          @keyup.enter="handleQuery()"
+                      />
+                </el-form-item>
+                <el-form-item label="仓库ID" prop="warehouseId">
+                      <el-input
+                          v-model="queryParams.warehouseId"
+                          placeholder="仓库ID"
+                          clearable
+                          @keyup.enter="handleQuery()"
+                      />
+                </el-form-item>
+                <el-form-item label="出库时间" prop="outTime">
+                      <el-date-picker
+                          v-model="queryParams.outTime"
+                          type="daterange"
+                          range-separator="~"
+                          start-placeholder="开始时间"
+                          end-placeholder="结束时间"
+                          value-format="YYYY-MM-DD HH:mm:ss"
+                      />
+                </el-form-item>
+                <el-form-item label="领用人ID" prop="recipientId">
+                      <el-input
+                          v-model="queryParams.recipientId"
+                          placeholder="领用人ID"
+                          clearable
+                          @keyup.enter="handleQuery()"
+                      />
+                </el-form-item>
+                <el-form-item label="状态" prop="status">
+                      <el-input
+                          v-model="queryParams.status"
+                          placeholder="状态"
+                          clearable
+                          @keyup.enter="handleQuery()"
+                      />
+                </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleQuery">
+            <template #icon><Search /></template>
+            搜索
+          </el-button>
+          <el-button @click="handleResetQuery">
+            <template #icon><Refresh /></template>
+            重置
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+
+    <el-card shadow="never">
+      <div class="mb-10px">
+        <el-button
+            v-hasPerm="['aioveuOutbound:aioveu-outbound:add']"
+            type="success"
+            @click="handleOpenDialog()"
+        >
+          <template #icon><Plus /></template>
+          新增
+        </el-button>
+        <el-button
+            v-hasPerm="['aioveuOutbound:aioveu-outbound:delete']"
+            type="danger"
+            :disabled="removeIds.length === 0"
+            @click="handleDelete()"
+        >
+          <template #icon><Delete /></template>
+          删除
+        </el-button>
+      </div>
+
+      <el-table
+          ref="dataTableRef"
+          v-loading="loading"
+          :data="pageData"
+          highlight-current-row
+          border
+          @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55" align="center" />
+                    <el-table-column
+                        key="id"
+                        label="出库ID"
+                        prop="id"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="outboundNo"
+                        label="出库单号"
+                        prop="outboundNo"
+                        min-width="150"
+                        align="center"
+                        fixed="left"
+                    />
+                    <el-table-column
+                        key="materialId"
+                        label="物资ID"
+                        prop="materialId"
+                        min-width="150"
+                        align="center"
+                        fixed="left"
+                    />
+                    <el-table-column
+                        key="warehouseId"
+                        label="仓库ID"
+                        prop="warehouseId"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="quantity"
+                        label="出库数量"
+                        prop="quantity"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="batchNumber"
+                        label="批次号"
+                        prop="batchNumber"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="outTime"
+                        label="出库时间"
+                        prop="outTime"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="operatorId"
+                        label="操作员ID"
+                        prop="operatorId"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="recipientId"
+                        label="领用人ID"
+                        prop="recipientId"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="departmentId"
+                        label="领用部门ID"
+                        prop="departmentId"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="purpose"
+                        label="用途说明"
+                        prop="purpose"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="projectId"
+                        label="关联项目ID"
+                        prop="projectId"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="status"
+                        label="状态"
+                        prop="status"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="createTime"
+                        label="创建时间"
+                        prop="createTime"
+                        min-width="150"
+                        align="center"
+                    />
+                    <el-table-column
+                        key="updateTime"
+                        label="更新时间"
+                        prop="updateTime"
+                        min-width="150"
+                        align="center"
+                    />
+        <el-table-column fixed="right" label="操作" width="220">
+          <template #default="scope">
+            <el-button
+                v-hasPerm="['aioveuOutbound:aioveu-outbound:edit']"
+                type="primary"
+                size="small"
+                link
+                @click="handleOpenDialog(scope.row.id)"
+            >
+              <template #icon><Edit /></template>
+              编辑
+            </el-button>
+            <el-button
+                v-hasPerm="['aioveuOutbound:aioveu-outbound:delete']"
+                type="danger"
+                size="small"
+                link
+                @click="handleDelete(scope.row.id)"
+            >
+              <template #icon><Delete /></template>
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <pagination
+          v-if="total > 0"
+          v-model:total="total"
+          v-model:page="queryParams.pageNum"
+          v-model:limit="queryParams.pageSize"
+          @pagination="handleQuery()"
+      />
+    </el-card>
+
+    <!-- 出库记录表单弹窗 -->
+    <el-dialog
+        v-model="dialog.visible"
+        :title="dialog.title"
+        width="500px"
+        @close="handleCloseDialog"
+    >
+      <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
+                <el-form-item label="出库单号" prop="outboundNo">
+                      <el-input
+                          v-model="formData.outboundNo"
+                          placeholder="出库单号"
+                      />
+                </el-form-item>
+
+                <el-form-item label="物资ID" prop="materialId">
+                      <el-input
+                          v-model="formData.materialId"
+                          placeholder="物资ID"
+                      />
+                </el-form-item>
+
+                <el-form-item label="仓库ID" prop="warehouseId">
+                      <el-input
+                          v-model="formData.warehouseId"
+                          placeholder="仓库ID"
+                      />
+                </el-form-item>
+
+                <el-form-item label="出库数量" prop="quantity">
+                      <el-input
+                          v-model="formData.quantity"
+                          placeholder="出库数量"
+                      />
+                </el-form-item>
+
+                <el-form-item label="批次号" prop="batchNumber">
+                      <el-input
+                          v-model="formData.batchNumber"
+                          placeholder="批次号"
+                      />
+                </el-form-item>
+
+                <el-form-item label="出库时间" prop="outTime">
+                      <el-date-picker
+                          v-model="formData.outTime"
+                          type="datetime"
+                          placeholder="出库时间"
+                          value-format="YYYY-MM-DD HH:mm:ss"
+                      />
+                </el-form-item>
+
+                <el-form-item label="操作员ID" prop="operatorId">
+                      <el-input
+                          v-model="formData.operatorId"
+                          placeholder="操作员ID"
+                      />
+                </el-form-item>
+
+                <el-form-item label="领用人ID" prop="recipientId">
+                      <el-input
+                          v-model="formData.recipientId"
+                          placeholder="领用人ID"
+                      />
+                </el-form-item>
+
+                <el-form-item label="领用部门ID" prop="departmentId">
+                      <el-input
+                          v-model="formData.departmentId"
+                          placeholder="领用部门ID"
+                      />
+                </el-form-item>
+
+                <el-form-item label="用途说明" prop="purpose">
+                      <el-input
+                          v-model="formData.purpose"
+                          placeholder="用途说明"
+                      />
+                </el-form-item>
+
+                <el-form-item label="关联项目ID" prop="projectId">
+                      <el-input
+                          v-model="formData.projectId"
+                          placeholder="关联项目ID"
+                      />
+                </el-form-item>
+
+                <el-form-item label="状态" prop="status">
+                      <el-input
+                          v-model="formData.status"
+                          placeholder="状态"
+                      />
+                </el-form-item>
+
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="handleSubmit()">确定</el-button>
+          <el-button @click="handleCloseDialog()">取消</el-button>
+        </div>
+      </template>
+    </el-dialog>
+  </div>
+</template>
+
+<script setup lang="ts">
+  defineOptions({
+    name: "AioveuOutbound",
+    inheritAttrs: false,
+  });
+
+  import AioveuOutboundAPI, { AioveuOutboundPageVO, AioveuOutboundForm, AioveuOutboundPageQuery } from "@/api/aioveuOutbound/aioveu-outbound";
+
+  const queryFormRef = ref();
+  const dataFormRef = ref();
+
+  const loading = ref(false);
+  const removeIds = ref<number[]>([]);
+  const total = ref(0);
+
+  const queryParams = reactive<AioveuOutboundPageQuery>({
+    pageNum: 1,
+    pageSize: 10,
+  });
+
+  // 出库记录表格数据
+  const pageData = ref<AioveuOutboundPageVO[]>([]);
+
+  // 弹窗
+  const dialog = reactive({
+    title: "",
+    visible: false,
+  });
+
+  // 出库记录表单数据
+  const formData = reactive<AioveuOutboundForm>({});
+
+  // 出库记录表单校验规则
+  const rules = reactive({
+                      outboundNo: [{ required: true, message: "请输入出库单号", trigger: "blur" }],
+                      materialId: [{ required: true, message: "请输入物资ID", trigger: "blur" }],
+                      warehouseId: [{ required: true, message: "请输入仓库ID", trigger: "blur" }],
+                      quantity: [{ required: true, message: "请输入出库数量", trigger: "blur" }],
+                      outTime: [{ required: true, message: "请输入出库时间", trigger: "blur" }],
+                      operatorId: [{ required: true, message: "请输入操作员ID", trigger: "blur" }],
+                      status: [{ required: true, message: "请输入状态", trigger: "blur" }],
+  });
+
+  /** 查询出库记录 */
+  function handleQuery() {
+    loading.value = true;
+          AioveuOutboundAPI.getPage(queryParams)
+        .then((data) => {
+          pageData.value = data.list;
+          total.value = data.total;
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+  }
+
+  /** 重置出库记录查询 */
+  function handleResetQuery() {
+    queryFormRef.value!.resetFields();
+    queryParams.pageNum = 1;
+    handleQuery();
+  }
+
+  /** 行复选框选中记录选中ID集合 */
+  function handleSelectionChange(selection: any) {
+    removeIds.value = selection.map((item: any) => item.id);
+  }
+
+  // 在组件中添加一个变量存储当前编辑的ID
+  const editingOutboundId = ref<number | undefined>(undefined);
+
+  /** 打开出库记录弹窗 */
+  function handleOpenDialog(id?: number) {
+    dialog.visible = true;
+
+    editingOutboundId.value = id; // 保存ID
+
+    if (id) {
+      dialog.title = "修改出库记录";
+            AioveuOutboundAPI.getFormData(id).then((data) => {
+        Object.assign(formData, data);
+      });
+    } else {
+      dialog.title = "新增出库记录";
+    }
+  }
+
+  /** 提交出库记录表单 */
+  function handleSubmit() {
+    dataFormRef.value.validate((valid: any) => {
+      if (valid) {
+        loading.value = true;
+        const id = editingOutboundId.value; // 使用存储的ID
+        if (id) {
+                AioveuOutboundAPI.update(id, formData)
+              .then(() => {
+                ElMessage.success("修改成功");
+                handleCloseDialog();
+                handleResetQuery();
+              })
+              .finally(() => (loading.value = false));
+        } else {
+                AioveuOutboundAPI.add(formData)
+              .then(() => {
+                ElMessage.success("新增成功");
+                handleCloseDialog();
+                handleResetQuery();
+              })
+              .finally(() => (loading.value = false));
+        }
+      }
+    });
+  }
+
+  /** 关闭出库记录弹窗 */
+  function handleCloseDialog() {
+    dialog.visible = false;
+
+    // 关键修复：在关闭弹窗时重置加载状态
+    loading.value = false;
+
+    dataFormRef.value.resetFields();
+    dataFormRef.value.clearValidate();
+
+    // 清除编辑ID
+    editingOutboundId.value = undefined;
+
+  }
+
+  /** 删除出库记录 */
+  function handleDelete(id?: number) {
+    const ids = [id || removeIds.value].join(",");
+    if (!ids) {
+      ElMessage.warning("请勾选删除项");
+      return;
+    }
+
+    ElMessageBox.confirm("确认删除已选中的数据项?", "警告", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    }).then(
+        () => {
+          loading.value = true;
+                AioveuOutboundAPI.deleteByIds(ids)
+              .then(() => {
+                ElMessage.success("删除成功");
+                handleResetQuery();
+              })
+              .finally(() => (loading.value = false));
+        },
+        () => {
+          ElMessage.info("已取消删除");
+        }
+    );
+  }
+
+  onMounted(() => {
+    handleQuery();
+  });
+</script>
