@@ -11,6 +11,8 @@
       <el-button type="primary" plain round size="small" @click="isA = !isA">切换示例</el-button>
     </div>
 
+
+    <!--Config1   -->
     <!-- 列表 -->
     <template v-if="isA">
       <!-- 搜索 -->
@@ -82,6 +84,8 @@
         </template>
       </page-modal>
     </template>
+
+    <!--Config2   -->
     <template v-else>
       <page-search ref="searchRef" :search-config="searchConfig2" @reset-click="handleResetClick" />
 

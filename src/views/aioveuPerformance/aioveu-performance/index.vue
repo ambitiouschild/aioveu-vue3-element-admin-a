@@ -169,7 +169,7 @@
                         key="review"
                         label="主管评语"
                         prop="review"
-                        min-width="150"
+                        min-width="750"
                         align="center"
                     />
                     <el-table-column
