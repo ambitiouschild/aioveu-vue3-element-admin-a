@@ -18,13 +18,25 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="所属部门ID" prop="deptId">
-                      <el-input
-                          v-model="queryParams.deptId"
-                          placeholder="所属部门ID"
-                          clearable
-                          @keyup.enter="handleQuery()"
+        <!-- 修改：将所属部门ID改为所属部门名称 -->
+                <el-form-item label="所属部门" prop="deptId">
+                    <el-select
+                      v-model="queryParams.deptId"
+                      placeholder="请选择部门"
+                      clearable
+                      filterable
+                    >
+                      <!-- 遍历部门选项列表 -->
+                      <!-- 使用部门ID作为唯一键，确保高效渲染 -->
+                      <!-- 显示部门名称作为选项标签 -->
+                      <!-- 使用部门ID作为选项值 -->
+                      <el-option
+                        v-for="dept in deptOptions"
+                        :key="dept.deptId"
+                        :label="dept.deptName"
+                        :value="dept.deptId"
                       />
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="职级(1-10)" prop="positionLevel">
                       <el-input
@@ -113,12 +125,13 @@
                         min-width="150"
                         align="center"
                     />
+        <!-- 修改：将所属部门ID改为所属部门名称 -->
                     <el-table-column
-                        key="deptId"
-                        label="所属部门ID"
-                        prop="deptId"
-                        min-width="150"
-                        align="center"
+                      key="deptName"
+                      label="所属部门"
+                      prop="deptName"
+                      min-width="150"
+                      align="center"
                     />
                     <el-table-column
                         key="positionLevel"
@@ -197,12 +210,21 @@
                           placeholder="岗位名称"
                       />
                 </el-form-item>
-
-                <el-form-item label="所属部门ID" prop="deptId">
-                      <el-input
-                          v-model="formData.deptId"
-                          placeholder="所属部门ID"
-                      />
+        <!-- 修改：将所属部门ID改为所属部门名称 -->
+                <el-form-item label="所属部门" prop="deptId">
+                      <el-select
+                        v-model="formData.deptId"
+                        placeholder="请选择部门"
+                        clearable
+                        filterable
+                      >
+                        <el-option
+                          v-for="dept in deptOptions"
+                          :key="dept.deptId"
+                          :label="dept.deptName"
+                          :value="dept.deptId"
+                        />
+                      </el-select>
                 </el-form-item>
 
                 <el-form-item label="职级(1-10)" prop="positionLevel">
@@ -237,6 +259,8 @@
   });
 
   import AioveuPositionAPI, { AioveuPositionPageVO, AioveuPositionForm, AioveuPositionPageQuery } from "@/api/aioveuPosition/aioveu-position";
+  // 新增：导入部门API
+  import AioveuDepartmentAPI, { DeptOptionVO } from "@/api/aioveuDepartment/aioveu-department";
 
   const queryFormRef = ref();
   const dataFormRef = ref();
@@ -244,6 +268,9 @@
   const loading = ref(false);
   const removeIds = ref<number[]>([]);
   const total = ref(0);
+
+  // 新增：部门选项
+  const deptOptions = ref<DeptOptionVO[]>([]);
 
   const queryParams = reactive<AioveuPositionPageQuery>({
     pageNum: 1,
@@ -388,7 +415,43 @@
     );
   }
 
+
+// 主要修改点：部门列表加载方法
+// 后端返回数据，它是一个直接的对象数组，没有嵌套在data属性下。但是，在我们的请求封装中（可能是使用了axios或类似的库），
+// 响应数据通常会被包裹在一个包含data属性的对象中。因此，我们需要检查后端的实际响应结构是否与前端期望的一致。
+//如果后端返回的是直接数组，那么在前端请求库的拦截器中可能已经将响应数据放在了response.data中。因此，前端代码中通过response.data获取数据是正确的。
+
+//但是，用户提供的后端返回数据示例是一个数组，而我们在代码中期望response.data也是一个数组。所以，如果后端返回的是直接数组，那么response.data就是这个数组。
+  // 主要修改点：部门列表加载方法
+  function loadDepartments() {
+    loading.value = true;
+    AioveuDepartmentAPI.getAllDepartmentOptions()
+      .then(response => {
+        // 确保响应数据是数组类型
+        if (Array.isArray(response)) {
+          // 转换数据类型：确保deptId是数字
+          deptOptions.value = response.map(dept => ({
+            deptId: Number(dept.deptId),
+            deptName: dept.deptName
+          }));
+        } else {
+          // 处理非数组响应
+          console.error("部门列表响应格式错误:", response);
+          ElMessage.error("部门列表格式错误");
+        }
+      })
+      .catch(error => {
+        console.error("加载部门列表失败:", error);
+        ElMessage.error("加载部门列表失败");
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }
+
   onMounted(() => {
     handleQuery();
+    //在 onMounted钩子中调用了 loadDepartments()函数,确保函数被正确使用
+    loadDepartments();
   });
 </script>
