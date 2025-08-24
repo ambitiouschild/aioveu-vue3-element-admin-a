@@ -64,21 +64,49 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+                <!-- 修改：将所属部门ID改为所属部门名称 -->
                 <el-form-item label="所属部门" prop="deptId">
-                      <el-input
-                          v-model="queryParams.deptId"
-                          placeholder="所属部门"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.deptId"
+                    placeholder="请选择部门"
+                    clearable
+                    filterable
+                  >
+                    <!-- 遍历部门选项列表 -->
+                    <!-- 使用部门ID作为唯一键，确保高效渲染 -->
+                    <!-- 显示部门名称作为选项标签 -->
+                    <!-- 使用部门ID作为选项值 -->
+                    <el-option
+                      v-for="dept in deptOptions"
+                      :key="dept.deptId"
+                      :label="dept.deptName"
+                      :value="dept.deptId"
+                    />
+                  </el-select>
                 </el-form-item>
-                <el-form-item label="岗位ID" prop="positionId">
-                      <el-input
-                          v-model="queryParams.positionId"
-                          placeholder="岗位ID"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                <!-- 前端使用positionName作为查询条件，但后端仍然根据positionId查询，所以需要在前端将positionName转换为positionId-->
+                <!-- 我们需要修改handleQuery方法，在发送请求前，将用户输入的positionName转换为positionId       -->
+                <!-- 用户可能输入的是部分岗位名称，或者可能想模糊匹配，这通常应该由后端处理，但既然后端只支持positionId，那么前端转换可能只能精确匹配       -->
+                <!--        将下拉选择器改为输入框，提升用户体验和输入灵活性-->
+                <!-- 修改：将所属岗位ID改为所属岗位名称 -->
+                <el-form-item label="所属岗位" prop="positionId">
+                  <el-select
+                    v-model="queryParams.positionId"
+                    placeholder="请选择岗位"
+                    clearable
+                    filterable
+                  >
+                    <!-- 遍历岗位选项列表 -->
+                    <!-- 使用岗位ID作为唯一键，确保高效渲染 -->
+                    <!-- 显示岗位名称作为选项标签 -->
+                    <!-- 使用岗位ID作为选项值 -->
+                    <el-option
+                      v-for="position in positionOptions"
+                      :key="position.positionId"
+                      :label="position.positionName"
+                      :value="position.positionId"
+                    />
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="入职日期" prop="hireDate">
                       <el-date-picker
@@ -226,17 +254,19 @@
                         min-width="150"
                         align="center"
                     />
+                    <!-- 修改：将所属部门ID改为所属部门名称 -->
                     <el-table-column
-                        key="deptId"
-                        label="所属部门"
-                        prop="deptId"
-                        min-width="150"
-                        align="center"
+                      key="deptName"
+                      label="所属部门"
+                      prop="deptName"
+                      min-width="150"
+                      align="center"
                     />
+                    <!-- 修改：将所属岗位ID改为所属岗位名称 -->
                     <el-table-column
-                        key="positionId"
-                        label="岗位ID"
-                        prop="positionId"
+                        key="positionName"
+                        label="岗位"
+                        prop="positionName"
                         min-width="150"
                         align="center"
                     />
@@ -255,12 +285,19 @@
                         align="center"
                     />
                     <el-table-column
-                        key="status"
-                        label="状态：0-离职，1-在职,2-休假,3-实习"
-                        prop="status"
+                        label="员工状态"
                         min-width="150"
                         align="center"
-                    />
+                    >
+                    <!--  <template #default="scope">：使用Vue的插槽(slot)来自定义列的内容 -->
+                    <!-- #default：这是Element UI表格列的默认插槽，用于自定义单元格显示内容-->
+                    <!-- scope：是一个对象，包含当前行的数据（scope.row）和其他表格信息-->
+                    <!--  DictLabel： likely是一个自定义组件，用于根据字典代码和值显示对应的标签文本 -->
+                    <!-- v-model="scope.row.status"：双向绑定当前行数据中的status字段值（可能是数字或代码值）-->
+                        <template #default="scope">
+                          <DictLabel v-model="scope.row.status" code="EmployeeStatus" />
+                        </template>
+                    </el-table-column>
                     <el-table-column
                         key="createTime"
                         label="创建时间"
@@ -366,19 +403,37 @@
                           placeholder="邮箱"
                       />
                 </el-form-item>
-
+                <!-- 修改：将所属部门ID改为所属部门名称 -->
                 <el-form-item label="所属部门" prop="deptId">
-                      <el-input
-                          v-model="formData.deptId"
-                          placeholder="所属部门"
+                    <el-select
+                      v-model="formData.deptId"
+                      placeholder="请选择部门"
+                      clearable
+                      filterable
+                    >
+                      <el-option
+                        v-for="dept in deptOptions"
+                        :key="dept.deptId"
+                        :label="dept.deptName"
+                        :value="dept.deptId"
                       />
+                    </el-select>
                 </el-form-item>
 
-                <el-form-item label="岗位ID" prop="positionId">
-                      <el-input
-                          v-model="formData.positionId"
-                          placeholder="岗位ID"
-                      />
+                <el-form-item label="岗位" prop="positionId">
+                  <el-select
+                    v-model="formData.positionId"
+                    placeholder="请选择岗位"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="position in positionOptions"
+                      :key="position.positionId"
+                      :label="position.positionName"
+                      :value="position.positionId"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="入职日期" prop="hireDate">
@@ -399,10 +454,7 @@
                 </el-form-item>
 
                 <el-form-item label="状态：0-离职，1-在职,2-休假,3-实习" prop="status">
-                      <el-input
-                          v-model="formData.status"
-                          placeholder="状态：0-离职，1-在职,2-休假,3-实习"
-                      />
+                  <dict v-model="formData.status" code="EmployeeStatus" />
                 </el-form-item>
 
       </el-form>
@@ -417,12 +469,17 @@
 </template>
 
 <script setup lang="ts">
+
   defineOptions({
     name: "AioveuEmployee",
     inheritAttrs: false,
   });
 
   import AioveuEmployeeAPI, { AioveuEmployeePageVO, AioveuEmployeeForm, AioveuEmployeePageQuery } from "@/api/aioveuEmployee/aioveu-employee";
+
+  import AioveuDepartmentAPI , { DeptOptionVO } from "@/api/aioveuDepartment/aioveu-department";
+
+  import AioveuPositionAPI , { PositionOptionVO } from "@/api/aioveuPosition/aioveu-position";
 
   const queryFormRef = ref();
   const dataFormRef = ref();
@@ -444,6 +501,13 @@
     title: "",
     visible: false,
   });
+
+
+  // 新增：部门选项
+  const deptOptions = ref<DeptOptionVO[]>([]);
+
+  // 新增：岗位选项
+  const positionOptions = ref<PositionOptionVO[]>([]);
 
   // 员工信息表单数据
   const formData = reactive<AioveuEmployeeForm>({
@@ -487,9 +551,12 @@
                       status: [{ required: true, message: "请输入状态：0-离职，1-在职,2-休假,3-实习", trigger: "blur" }],
   });
 
+
   /** 查询员工信息 */
   function handleQuery() {
-    loading.value = true;
+
+     loading.value = true;
+
           AioveuEmployeeAPI.getPage(queryParams)
         .then((data) => {
           pageData.value = data.list;
@@ -618,7 +685,66 @@
     );
   }
 
+  // 主要修改点：部门列表加载方法
+  function loadDepartments() {
+    loading.value = true;
+    AioveuDepartmentAPI.getAllDepartmentOptions()
+      .then(response => {
+        // 确保响应数据是数组类型
+        if (Array.isArray(response)) {
+          // 转换数据类型：确保deptId是数字
+          deptOptions.value = response.map(dept => ({
+            deptId: Number(dept.deptId),
+            deptName: dept.deptName
+          }));
+        } else {
+          // 处理非数组响应
+          console.error("部门列表响应格式错误:", response);
+          ElMessage.error("部门列表格式错误");
+        }
+      })
+      .catch(error => {
+        console.error("加载部门列表失败:", error);
+        ElMessage.error("加载部门列表失败");
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }
+
+  // 主要修改点：岗位列表加载方法
+  function loadPositions() {
+    loading.value = true;
+    AioveuPositionAPI.getAllPositionOptions()
+      .then(response => {
+        // 确保响应数据是数组类型
+        if (Array.isArray(response)) {
+          // 转换数据类型：确保positionId是数字
+          positionOptions.value = response.map( position => ({
+            positionId: Number(position.positionId),
+            positionName: position.positionName
+          }));
+        } else {
+          // 处理非数组响应
+          console.error("岗位列表响应格式错误:", response);
+          ElMessage.error("岗位列表格式错误");
+        }
+      })
+      .catch(error => {
+        console.error("加载岗位列表失败:", error);
+        ElMessage.error("加载岗位列表失败");
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }
+
   onMounted(() => {
     handleQuery();
+    //在 onMounted钩子中调用了 loadDepartments()函数,确保函数被正确使用
+    loadDepartments();
+    //在 onMounted钩子中调用了 loadPositions()函数,确保函数被正确使用
+    loadPositions();
+
   });
 </script>

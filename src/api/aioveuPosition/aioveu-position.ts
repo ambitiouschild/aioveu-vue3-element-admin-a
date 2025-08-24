@@ -1,4 +1,5 @@
 import request from "@/utils/request";
+import { DeptOptionVO } from "@/api/aioveuDepartment/aioveu-department";
 
 const AIOVEUPOSITION_BASE_URL = "/api/v1/aioveu-position";
 
@@ -61,7 +62,20 @@ const AioveuPositionAPI = {
             url: `${AIOVEUPOSITION_BASE_URL}/${ids}`,
             method: "delete",
         });
-    }
+    },
+
+    /**
+     * 获取所有部门列表（用于下拉选择框）
+     * @returns 部门选项列表
+     * 因为request函数的类型定义允许第一个类型参数为any，从而绕过了类型检查
+     */
+    getAllPositionOptions() {
+      return request<any,PositionOptionVO[]>({
+        url: `${AIOVEUPOSITION_BASE_URL}/options`,
+        method: "get",
+      });
+    },
+
 }
 
 export default AioveuPositionAPI;
@@ -112,4 +126,12 @@ export interface AioveuPositionPageVO {
     createTime?: string;
     /** 更新时间 */
     updateTime?: string;
+}
+
+/** 岗位选项VO（用于下拉选择框） */
+export interface PositionOptionVO {
+  /** 部门ID */
+  positionId: number;
+  /** 部门名称 */
+  positionName: string;
 }
