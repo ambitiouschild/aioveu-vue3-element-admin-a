@@ -61,6 +61,18 @@ const AioveuEmployeeAPI = {
             url: `${AIOVEUEMPLOYEE_BASE_URL}/${ids}`,
             method: "delete",
         });
+    },
+
+    /**
+     * 获取所有员工列表（用于下拉选择框）
+     * @returns 员工选项列表
+     * 因为request函数的类型定义允许第一个类型参数为any，从而绕过了类型检查
+     */
+    getAllEmployeeOptions() {
+      return request<any,EmployeeOptionVO[]>({
+        url: `${AIOVEUEMPLOYEE_BASE_URL}/options`,
+        method: "get",
+      });
     }
 }
 
@@ -161,4 +173,13 @@ export interface AioveuEmployeePageVO {
     createTime?: string;
     /** 更新时间 */
     updateTime?: string;
+}
+
+/** 员工选项VO（用于下拉选择框） */
+export interface EmployeeOptionVO {
+
+  /** 员工ID */
+  employeeId: number;
+  /** 员工名称 */
+  employeeName: string;
 }

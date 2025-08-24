@@ -10,13 +10,25 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="员工ID" prop="employeeId">
-                      <el-input
-                          v-model="queryParams.employeeId"
-                          placeholder="员工ID"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                <!-- 修改：将所属部门ID改为所属部门名称 -->
+                <el-form-item label="员工姓名" prop="employeeId">
+                      <el-select
+                        v-model="queryParams.employeeId"
+                        placeholder="请选择员工姓名"
+                        clearable
+                        filterable
+                      >
+                        <!-- 遍历部门选项列表 -->
+                        <!-- 使用部门ID作为唯一键，确保高效渲染 -->
+                        <!-- 显示部门名称作为选项标签 -->
+                        <!-- 使用部门ID作为选项值 -->
+                        <el-option
+                          v-for="employee in employeeOptions"
+                          :key="employee.employeeId"
+                          :label="employee.employeeName"
+                          :value="employee.employeeId"
+                        />
+                      </el-select>
                 </el-form-item>
                 <el-form-item label="日期" prop="date">
                       <el-date-picker
@@ -59,14 +71,24 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="考勤状态：0-正常，1-迟到，2-早退，3-缺勤，4-休假" prop="status">
-                      <el-input
-                          v-model="queryParams.status"
-                          placeholder="考勤状态：0-正常，1-迟到，2-早退，3-缺勤，4-休假"
-                          clearable
-                          @keyup.enter="handleQuery()"
+                <el-form-item label="考勤状态" prop="status">
+                    <el-select
+                      v-model="queryParams.status"
+                      placeholder="请选择考勤状态"
+                      clearable
+                      filterable
+                    >
+                      <!--  Element UI的选择框默认宽度会根据内容自动调整 -->
+                      <!-- 当有filterable属性时，选择框会扩展以容纳输入框-->
+                      <el-option
+                        v-for="attendanceStatus in attendanceStatusOptions"
+                        :key="attendanceStatus.value"
+                        :label="attendanceStatus.label"
+                        :value="attendanceStatus.value"
                       />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="创建时间" prop="createTime">
                       <el-date-picker
                           class="!w-[240px]"
@@ -139,12 +161,13 @@
                         min-width="150"
                         align="center"
                     />
+                    <!-- 修改：将员工ID改为员工姓名 -->
                     <el-table-column
-                        key="employeeId"
-                        label="员工ID"
-                        prop="employeeId"
-                        min-width="150"
-                        align="center"
+                      key="employeeName"
+                      label="员工姓名"
+                      prop="employeeName"
+                      min-width="150"
+                      align="center"
                     />
                     <el-table-column
                         key="date"
@@ -175,12 +198,19 @@
                         align="center"
                     />
                     <el-table-column
-                        key="status"
-                        label="考勤状态"
-                        prop="status"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="考勤状态"
+                      min-width="150"
+                      align="center"
+                    >
+                      <!--  <template #default="scope">：使用Vue的插槽(slot)来自定义列的内容 -->
+                      <!-- #default：这是Element UI表格列的默认插槽，用于自定义单元格显示内容-->
+                      <!-- scope：是一个对象，包含当前行的数据（scope.row）和其他表格信息-->
+                      <!--  DictLabel： likely是一个自定义组件，用于根据字典代码和值显示对应的标签文本 -->
+                      <!-- v-model="scope.row.status"：双向绑定当前行数据中的status字段值（可能是数字或代码值）-->
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.status" code="AttendanceStatus" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="createTime"
                         label="创建时间"
@@ -238,11 +268,22 @@
         @close="handleCloseDialog"
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
-                <el-form-item label="员工ID" prop="employeeId">
-                      <el-input
-                          v-model="formData.employeeId"
-                          placeholder="员工ID"
-                      />
+
+                <!-- 修改：将所属部门ID改为所属部门名称 -->
+                <el-form-item label="员工姓名" prop="employeeName">
+                  <el-select
+                    v-model="formData.employeeId"
+                    placeholder="员工姓名"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeId"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="日期" prop="date">
@@ -259,9 +300,9 @@
                       <el-date-picker
                           class="!w-[240px]"
                           v-model="formData.checkinTime"
-                          type="date"
+                          type="datetime"
                           placeholder="上班打卡时间"
-                          value-format="YYYY-MM-DD"
+                          value-format="YYYY-MM-DD HH:mm:ss"
                       />
                 </el-form-item>
 
@@ -269,9 +310,9 @@
                       <el-date-picker
                           class="!w-[240px]"
                           v-model="formData.checkoutTime"
-                          type="date"
+                          type="datetime"
                           placeholder="下班打卡时间"
-                          value-format="YYYY-MM-DD"
+                          value-format="YYYY-MM-DD HH:mm:ss"
                       />
                 </el-form-item>
 
@@ -283,10 +324,7 @@
                 </el-form-item>
 
                 <el-form-item label="考勤状态" prop="status">
-                      <el-input
-                          v-model="formData.status"
-                          placeholder="考勤状态"
-                      />
+                  <dict v-model="formData.status" code="AttendanceStatus" />
                 </el-form-item>
 
       </el-form>
@@ -301,12 +339,19 @@
 </template>
 
 <script setup lang="ts">
+
   defineOptions({
     name: "AioveuAttendance",
     inheritAttrs: false,
   });
 
   import AioveuAttendanceAPI, { AioveuAttendancePageVO, AioveuAttendanceForm, AioveuAttendancePageQuery } from "@/api/aioveuAttendance/aioveu-attendance";
+
+  // 新增：导入部门API
+  import AioveuEmployeeAPI, { EmployeeOptionVO } from "@/api/aioveuEmployee/aioveu-employee";
+
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
 
   const queryFormRef = ref();
   const dataFormRef = ref();
@@ -319,6 +364,19 @@
     pageNum: 1,
     pageSize: 10,
   });
+
+  // 考勤状态选项
+  const attendanceStatusOptions = ref<DictItemOption[]>([])
+
+  // 加载考勤状态字典
+  function loadAttendanceStatus() {
+    DictAPI.getDictItems('AttendanceStatus').then(response => {
+      attendanceStatusOptions.value = response
+    })
+  }
+
+  // 新增：员工选项
+  const employeeOptions = ref<EmployeeOptionVO[]>([]);
 
   // 考勤信息表格数据
   const pageData = ref<AioveuAttendancePageVO[]>([]);
@@ -452,7 +510,38 @@
     );
   }
 
+  // 主要修改点：部门列表加载方法
+  function loadEmployees() {
+    loading.value = true;
+    AioveuEmployeeAPI.getAllEmployeeOptions()
+      .then(response => {
+        // 确保响应数据是数组类型
+        if (Array.isArray(response)) {
+          // 转换数据类型：确保employeeId是数字
+          employeeOptions.value = response.map(employee => ({
+            employeeId: Number(employee.employeeId),
+            employeeName: employee.employeeName
+          }));
+        } else {
+          // 处理非数组响应
+          console.error("员工列表响应格式错误:", response);
+          ElMessage.error("员工列表格式错误");
+        }
+      })
+      .catch(error => {
+        console.error("加载员工列表失败:", error);
+        ElMessage.error("加载员工列表失败");
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }
+
   onMounted(() => {
     handleQuery();
+    //在 onMounted钩子中调用了 loadEmployees()函数,确保函数被正确使用
+    loadEmployees();
+
+    loadAttendanceStatus();
   });
 </script>
