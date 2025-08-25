@@ -205,16 +205,16 @@
                         align="center"
                     />
                     <el-table-column
-                        key="applicantId"
-                        label="申请人ID"
-                        prop="applicantId"
+                        key="applicantName"
+                        label="申请人"
+                        prop="applicantName"
                         min-width="150"
                         align="center"
                     />
                     <el-table-column
-                        key="reviewerId"
-                        label="审核人ID"
-                        prop="reviewerId"
+                        key="reviewerName"
+                        label="审核人"
+                        prop="reviewerName"
                         min-width="150"
                         align="center"
                     />
