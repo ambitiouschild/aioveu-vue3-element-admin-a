@@ -161,9 +161,9 @@
                         align="center"
                     />
                     <el-table-column
-                        key="responsiblePerson"
+                        key="responsiblePersonName"
                         label="责任人"
-                        prop="responsiblePerson"
+                        prop="responsiblePersonName"
                         min-width="150"
                         align="center"
                     />
