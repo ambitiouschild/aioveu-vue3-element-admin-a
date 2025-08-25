@@ -203,13 +203,6 @@
                         align="center"
                     />
                     <el-table-column
-                        key="paymentTerms"
-                        label="付款条件：1-预付全款，2-货到付款，3-月结30天，4-月结60天，5-其他"
-                        prop="paymentTerms"
-                        min-width="150"
-                        align="center"
-                    />
-                    <el-table-column
                       label="付款条件"
                       min-width="150"
                       align="center"
@@ -219,13 +212,6 @@
                       </template>
                     </el-table-column>
                     <el-table-column
-                        key="paymentStatus"
-                        label="支付状态"
-                        prop="paymentStatus"
-                        min-width="150"
-                        align="center"
-                    />
-                    <el-table-column
                       label="支付状态"
                       min-width="150"
                       align="center"
@@ -234,13 +220,6 @@
                         <DictLabel v-model="scope.row.paymentStatus" code="salesOrder_payment_status" />
                       </template>
                     </el-table-column>
-                    <el-table-column
-                        key="orderStatus"
-                        label="订单状态"
-                        prop="orderStatus"
-                        min-width="150"
-                        align="center"
-                    />
                     <el-table-column
                       label="订单状态"
                       min-width="150"
@@ -254,13 +233,6 @@
                         key="shippingAddress"
                         label="收货地址"
                         prop="shippingAddress"
-                        min-width="150"
-                        align="center"
-                    />
-                    <el-table-column
-                        key="shippingMethod"
-                        label="运输方式"
-                        prop="shippingMethod"
                         min-width="150"
                         align="center"
                     />
