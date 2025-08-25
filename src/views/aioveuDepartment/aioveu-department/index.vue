@@ -26,14 +26,14 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="部门经理" prop="managerId">
-                      <el-input
-                          v-model="queryParams.managerId"
-                          placeholder="部门经理"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="部门经理" prop="managerId">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.managerId"-->
+<!--                          placeholder="部门经理"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
                 <el-form-item label="创建时间" prop="createTime">
                       <el-date-picker
                           v-model="queryParams.createTime"
@@ -107,20 +107,21 @@
                         min-width="150"
                         align="center"
                     />
+                    <!-- 修改：将所属部门ID改为所属部门名称 -->
                     <el-table-column
-                        key="parentDeptId"
-                        label="上级部门ID"
-                        prop="parentDeptId"
-                        min-width="150"
-                        align="center"
+                      key="parentDeptName"
+                      label="上级部门"
+                      prop="parentDeptName"
+                      min-width="150"
+                      align="center"
                     />
-                    <el-table-column
-                        key="managerId"
-                        label="部门经理"
-                        prop="managerId"
-                        min-width="150"
-                        align="center"
-                    />
+<!--                    <el-table-column-->
+<!--                        key="managerId"-->
+<!--                        label="部门经理"-->
+<!--                        prop="managerId"-->
+<!--                        min-width="150"-->
+<!--                        align="center"-->
+<!--                    />-->
                     <el-table-column
                         key="createTime"
                         label="创建时间"
@@ -184,20 +185,29 @@
                           placeholder="部门名称"
                       />
                 </el-form-item>
-
-                <el-form-item label="上级部门ID" prop="parentDeptId">
-                      <el-input
-                          v-model="formData.parentDeptId"
-                          placeholder="上级部门ID"
-                      />
+                <!-- 修改：将所属部门ID改为所属部门名称 -->
+                <el-form-item label="所属部门" prop="parentDeptId">
+                  <el-select
+                    v-model="formData.parentDeptId"
+                    placeholder="请选择部门"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="dept in deptOptions"
+                      :key="dept.deptId"
+                      :label="dept.deptName"
+                      :value="dept.deptId"
+                    />
+                  </el-select>
                 </el-form-item>
 
-                <el-form-item label="部门经理" prop="managerId">
-                      <el-input
-                          v-model="formData.managerId"
-                          placeholder="部门经理"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="部门经理" prop="managerId">-->
+<!--                      <el-input-->
+<!--                          v-model="formData.managerId"-->
+<!--                          placeholder="部门经理"-->
+<!--                      />-->
+<!--                </el-form-item>-->
 
       </el-form>
       <template #footer>
@@ -211,12 +221,13 @@
 </template>
 
 <script setup lang="ts">
+
   defineOptions({
     name: "AioveuDepartment",
     inheritAttrs: false,
   });
 
-  import AioveuDepartmentAPI, { AioveuDepartmentPageVO, AioveuDepartmentForm, AioveuDepartmentPageQuery } from "@/api/aioveuDepartment/aioveu-department";
+  import AioveuDepartmentAPI, { AioveuDepartmentPageVO, AioveuDepartmentForm, AioveuDepartmentPageQuery , DeptOptionVO } from "@/api/aioveuDepartment/aioveu-department";
 
   const queryFormRef = ref();
   const dataFormRef = ref();
@@ -235,18 +246,17 @@
   // 公司部门组织结构表格数据
   const pageData = ref<AioveuDepartmentPageVO[]>([]);
 
+  // 新增：上级部门选项
+  const deptOptions = ref<DeptOptionVO[]>([]);
+
   // 弹窗
   const dialog = reactive({
     title: "",
     visible: false,
   });
 
-  // 公司部门组织结构表单数据
-  const formData = reactive<AioveuDepartmentForm>({
-    deptName: '',
-    parentDeptId: undefined,
-    managerId: undefined,
-  });
+  // 公司部门组织结构表单数据  表单数据初始化
+  const formData = reactive<AioveuDepartmentForm>({});
 
   // 公司部门组织结构表单校验规则
   const rules = reactive({
@@ -295,6 +305,7 @@
       dialog.title = "修改公司部门组织结构";
             AioveuDepartmentAPI.getFormData(deptId).then((data) => {
         Object.assign(formData, data);
+
       });
     } else {
       dialog.title = "新增公司部门组织结构";
@@ -314,6 +325,7 @@
                 ElMessage.success("修改成功");
                 handleCloseDialog(); // 成功后再关闭弹窗
                 handleResetQuery();
+                loadDepartments();
               })
               .finally(() => (loading.value = false));
         } else {
@@ -334,7 +346,7 @@
     dialog.visible = false;
 
     // 关键修复：重置加载状态
-    loading.value = false;
+    // loading.value = false;
 
     //在弹窗关闭时调用 handleCloseDialog，重置了 editingdeptId
     //但提交操作发生在弹窗关闭前，此时 editingdeptId可能已被重置
@@ -392,7 +404,39 @@
     );
   }
 
+  // 主要修改点：部门列表加载方法
+  function loadDepartments() {
+    loading.value = true;
+    AioveuDepartmentAPI.getAllDepartmentOptions()
+      .then(response => {
+        // 确保响应数据是数组类型
+        if (Array.isArray(response)) {
+          // 转换数据类型：确保deptId是数字
+          deptOptions.value = response.map(dept => ({
+            deptId: Number(dept.deptId),
+            deptName: dept.deptName
+          }));
+        } else {
+          // 处理非数组响应
+          console.error("部门列表响应格式错误:", response);
+          ElMessage.error("部门列表格式错误");
+        }
+      })
+      .catch(error => {
+        console.error("加载部门列表失败:", error);
+        ElMessage.error("加载部门列表失败");
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }
+
   onMounted(() => {
+
     handleQuery();
+    //在 onMounted钩子中调用了 loadDepartments()函数,确保函数被正确使用
+    loadDepartments();
+
+
   });
 </script>

@@ -587,13 +587,10 @@
   /** 打开员工信息弹窗 */
   function handleOpenDialog(employeeId?: number) {
     dialog.visible = true;
-
+    editingEmployeeId.value = employeeId; // 保存员工ID
 
     if (employeeId) {
       dialog.title = "修改员工信息";
-      editingEmployeeId.value = employeeId; // 保存员工ID
-      loading.value = true;
-
             AioveuEmployeeAPI.getFormData(employeeId).then((data) => {
               // 将获取的数据赋值给 formData
         Object.assign(formData, data);
