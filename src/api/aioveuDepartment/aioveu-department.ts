@@ -96,7 +96,7 @@ const AioveuDepartmentAPI = {
           url: `${AIOVEUDEPARTMENT_BASE_URL}/options`,
           method: "get",
         });
-      }
+      },
 }
 
 export default AioveuDepartmentAPI;
@@ -151,3 +151,4 @@ export interface DeptOptionVO {
   /** 部门名称 */
   deptName: string;
 }
+

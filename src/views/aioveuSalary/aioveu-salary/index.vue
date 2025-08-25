@@ -200,9 +200,9 @@
                         fixed="left"
                     />
                     <el-table-column
-                        key="employeeId"
+                        key="employeeName"
                         label="员工ID"
-                        prop="employeeId"
+                        prop="employeeName"
                         min-width="150"
                         align="center"
                         fixed="left"
