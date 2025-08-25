@@ -245,16 +245,16 @@
                         align="center"
                     />
                     <el-table-column
-                        key="salesRepId"
-                        label="销售负责人ID"
-                        prop="salesRepId"
+                        key="salesRepName"
+                        label="销售负责人"
+                        prop="salesRepName"
                         min-width="150"
                         align="center"
                     />
                     <el-table-column
-                        key="operatorId"
-                        label="操作员ID"
-                        prop="operatorId"
+                        key="operatorName"
+                        label="操作员"
+                        prop="operatorName"
                         min-width="150"
                         align="center"
                     />
