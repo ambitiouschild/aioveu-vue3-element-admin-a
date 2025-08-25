@@ -144,9 +144,9 @@
                         align="center"
                     />
                     <el-table-column
-                        key="managerId"
-                        label="负责人ID"
-                        prop="managerId"
+                        key="managerName"
+                        label="负责人"
+                        prop="managerName"
                         min-width="150"
                         align="center"
                     />
