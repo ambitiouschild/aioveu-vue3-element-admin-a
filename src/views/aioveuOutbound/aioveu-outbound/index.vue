@@ -155,16 +155,16 @@
                         align="center"
                     />
                     <el-table-column
-                        key="operatorId"
-                        label="操作员ID"
-                        prop="operatorId"
+                        key="operatorName"
+                        label="操作员"
+                        prop="operatorName"
                         min-width="150"
                         align="center"
                     />
                     <el-table-column
-                        key="recipientId"
-                        label="领用人ID"
-                        prop="recipientId"
+                        key="recipientName"
+                        label="领用人"
+                        prop="recipientName"
                         min-width="150"
                         align="center"
                     />
