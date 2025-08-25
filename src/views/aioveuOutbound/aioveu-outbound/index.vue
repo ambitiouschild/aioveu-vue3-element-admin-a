@@ -197,6 +197,15 @@
                         align="center"
                     />
                     <el-table-column
+                      label="出库状态"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.status" code="outbound_status" />
+                      </template>
+                    </el-table-column>
+                    <el-table-column
                         key="createTime"
                         label="创建时间"
                         prop="createTime"

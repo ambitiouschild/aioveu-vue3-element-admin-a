@@ -145,12 +145,14 @@
                         align="center"
                     />
                     <el-table-column
-                        key="periodQuarter"
-                        label="考核季度(1-4)"
-                        prop="periodQuarter"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="考核季度(1-4)"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.periodQuarter" code="performance_period_quarter" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="kpiScore"
                         label="KPI评分(1-100分)"
@@ -187,12 +189,14 @@
                         align="center"
                     />
                     <el-table-column
-                        key="performanceGrade"
-                        label="绩效等级"
-                        prop="performanceGrade"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="绩效等级"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.performanceGrade" code="performance_grade" />
+                      </template>
+                    </el-table-column>
         <el-table-column fixed="right" label="操作" width="220">
           <template #default="scope">
             <el-button

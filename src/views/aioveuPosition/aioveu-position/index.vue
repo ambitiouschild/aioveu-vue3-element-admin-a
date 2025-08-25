@@ -134,12 +134,14 @@
                       align="center"
                     />
                     <el-table-column
-                        key="positionLevel"
-                        label="职级(1-10)"
-                        prop="positionLevel"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="职级(1-10)"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.positionLevel" code="position_level" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="description"
                         label="岗位描述"

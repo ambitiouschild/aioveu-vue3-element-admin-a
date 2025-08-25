@@ -152,19 +152,23 @@
                         align="center"
                     />
                     <el-table-column
-                        key="isPrimary"
-                        label="是否是主要联系人：0-否，1-是"
-                        prop="isPrimary"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="是否是主要联系人"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.isPrimary" code="contact_is_primary" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
-                        key="gender"
-                        label="性别"
-                        prop="gender"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="性别"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.gender" code="gender" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="birthday"
                         label="生日"

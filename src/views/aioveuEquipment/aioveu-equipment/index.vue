@@ -210,12 +210,15 @@
                         align="center"
                     />
                     <el-table-column
-                        key="status"
-                        label="状态"
-                        prop="status"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="设备状态"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.status" code="equipment_status" />
+                      </template>
+                    </el-table-column>
+
                     <el-table-column
                         key="remark"
                         label="备注"

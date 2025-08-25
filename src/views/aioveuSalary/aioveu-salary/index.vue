@@ -291,12 +291,14 @@
                     />
         <!-- 状态列 -->
                     <el-table-column
-                        key="paymentStatus"
-                        label="发放状态"
-                        prop="paymentStatus"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="发放状态"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.paymentStatus" code="salary_payment_status" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="createTime"
                         label="创建时间"

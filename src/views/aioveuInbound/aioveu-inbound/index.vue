@@ -184,12 +184,14 @@
                         align="center"
                     />
                     <el-table-column
-                        key="inboundType"
-                        label="入库类型"
-                        prop="inboundType"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="入库类型"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.inboundType" code="inbound_type" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="inTime"
                         label="入库时间"

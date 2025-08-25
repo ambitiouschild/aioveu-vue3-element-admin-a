@@ -169,26 +169,32 @@
                         align="center"
                     />
                     <el-table-column
-                        key="paymentMethod"
-                        label="支付方式"
-                        prop="paymentMethod"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="支付方式"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.paymentMethod" code="transaction_payment_method" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
-                        key="paymentStatus"
-                        label="支付状态"
-                        prop="paymentStatus"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="支付状态"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.paymentStatus" code="transaction_payment_status" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
-                        key="transactionType"
-                        label="交易类型"
-                        prop="transactionType"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="交易类型"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.transactionType" code="transaction_type" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="invoiceNo"
                         label="发票号码"
@@ -253,12 +259,14 @@
                         align="center"
                     />
                     <el-table-column
-                        key="transactionStatus"
-                        label="交易状态"
-                        prop="transactionStatus"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="交易状态"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.transactionStatus" code="transaction_status" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="notes"
                         label="备注"

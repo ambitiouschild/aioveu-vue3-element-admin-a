@@ -165,12 +165,14 @@
                         align="center"
                     />
                     <el-table-column
-                        key="isActive"
-                        label="启用状态"
-                        prop="isActive"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="启用状态"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.isActive" code="warehouse_is_active" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="createTime"
                         label="创建时间"

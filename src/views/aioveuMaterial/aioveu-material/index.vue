@@ -150,7 +150,7 @@
                     />
                     <el-table-column label="启用状态" width="150" align="center">
                       <template #default="scope">
-                        <DictLabel v-model="scope.row.isActive" code="gender" />
+                        <DictLabel v-model="scope.row.isActive" code="material_is_active" />
                       </template>
                     </el-table-column>
                     <el-table-column

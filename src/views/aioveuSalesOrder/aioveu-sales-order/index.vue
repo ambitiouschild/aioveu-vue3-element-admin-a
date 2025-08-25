@@ -210,6 +210,15 @@
                         align="center"
                     />
                     <el-table-column
+                      label="付款条件"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.paymentTerms" code="salesOrder_payment_terms" />
+                      </template>
+                    </el-table-column>
+                    <el-table-column
                         key="paymentStatus"
                         label="支付状态"
                         prop="paymentStatus"
@@ -217,12 +226,30 @@
                         align="center"
                     />
                     <el-table-column
+                      label="支付状态"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.paymentStatus" code="salesOrder_payment_status" />
+                      </template>
+                    </el-table-column>
+                    <el-table-column
                         key="orderStatus"
                         label="订单状态"
                         prop="orderStatus"
                         min-width="150"
                         align="center"
                     />
+                    <el-table-column
+                      label="订单状态"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.orderStatus" code="salesOrder_order_status" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="shippingAddress"
                         label="收货地址"
@@ -237,6 +264,15 @@
                         min-width="150"
                         align="center"
                     />
+                    <el-table-column
+                      label="运输方式"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.shippingMethod" code="salesOrder_shipping_method" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="trackingNo"
                         label="物流单号"

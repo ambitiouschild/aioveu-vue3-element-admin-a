@@ -158,12 +158,14 @@
                         fixed="left"
                     />
                     <el-table-column
-                        key="type"
-                        label="客户类型"
-                        prop="type"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="客户类型"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.type" code="customer_customer_type" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="industryId"
                         label="行业分类ID"
@@ -172,19 +174,23 @@
                         align="center"
                     />
                     <el-table-column
-                        key="creditRating"
-                        label="信用等级"
-                        prop="creditRating"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="信用等级"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.creditRating" code="customer_credit_rating" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
-                        key="customerStatus"
-                        label="客户状态"
-                        prop="customerStatus"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="客户状态"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.customerStatus" code="customer_status" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="address"
                         label="客户地址"
@@ -284,12 +290,14 @@
                         align="center"
                     />
                     <el-table-column
-                        key="source"
-                        label="客户来源"
-                        prop="source"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="客户来源"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.source" code="customer_source" />
+                      </template>
+                    </el-table-column>
                     <el-table-column
                         key="salesRepName"
                         label="销售负责人"

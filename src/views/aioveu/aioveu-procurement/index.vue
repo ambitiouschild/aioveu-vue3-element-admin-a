@@ -205,6 +205,16 @@
                         align="center"
                     />
                     <el-table-column
+                      label="采购状态"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.status" code="procurement_status" />
+                      </template>
+                    </el-table-column>
+
+                    <el-table-column
                         key="applicantName"
                         label="申请人"
                         prop="applicantName"
