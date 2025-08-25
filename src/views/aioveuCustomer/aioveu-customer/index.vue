@@ -291,9 +291,9 @@
                         align="center"
                     />
                     <el-table-column
-                        key="salesRepId"
-                        label="销售负责人ID"
-                        prop="salesRepId"
+                        key="salesRepName"
+                        label="销售负责人"
+                        prop="salesRepName"
                         min-width="150"
                         align="center"
                     />
