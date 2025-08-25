@@ -198,9 +198,9 @@
                         align="center"
                     />
                     <el-table-column
-                        key="operatorId"
+                        key="operatorName"
                         label="操作员ID"
-                        prop="operatorId"
+                        prop="operatorName"
                         min-width="150"
                         align="center"
                     />
