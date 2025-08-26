@@ -119,12 +119,12 @@
                         fixed="left"
                     />
                     <el-table-column
-                        key="materialId"
-                        label="物资ID"
-                        prop="materialId"
-                        min-width="150"
-                        align="center"
-                        fixed="left"
+                      key="materialName"
+                      label="物资"
+                      prop="materialName"
+                      min-width="150"
+                      align="center"
+                      fixed="left"
                     />
                     <el-table-column
                       key="warehouseName"
