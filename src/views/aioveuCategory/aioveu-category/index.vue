@@ -84,11 +84,11 @@
                         align="center"
                     />
                     <el-table-column
-                        key="parentId"
-                        label="父分类ID"
-                        prop="parentId"
-                        min-width="150"
-                        align="center"
+                      key="parentCategoryName"
+                      label="父分类"
+                      prop="parentCategoryName"
+                      min-width="150"
+                      align="center"
                     />
                     <el-table-column
                         key="level"
