@@ -94,12 +94,12 @@
                         fixed="left"
                     />
                     <el-table-column
-                        key="customerId"
-                        label="客户ID"
-                        prop="customerId"
-                        min-width="150"
-                        align="center"
-                        fixed="left"
+                      key="customerName"
+                      label="客户"
+                      prop="customerName"
+                      min-width="150"
+                      align="center"
+                      fixed="left"
                     />
                     <el-table-column
                         key="name"
