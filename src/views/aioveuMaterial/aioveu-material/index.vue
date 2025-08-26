@@ -100,11 +100,11 @@
                         align="center"
                     />
                     <el-table-column
-                        key="categoryId"
-                        label="分类ID"
-                        prop="categoryId"
-                        min-width="150"
-                        align="center"
+                      key="categoryName"
+                      label="库存分类"
+                      prop="categoryName"
+                      min-width="150"
+                      align="center"
                     />
                     <el-table-column
                         key="unit"
