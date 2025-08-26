@@ -93,11 +93,11 @@
                         align="center"
                     />
                     <el-table-column
-                        key="orderId"
-                        label="订单ID"
-                        prop="orderId"
-                        min-width="150"
-                        align="center"
+                      key="salesOrderNo"
+                      label="订单"
+                      prop="salesOrderNo"
+                      min-width="150"
+                      align="center"
                     />
                     <el-table-column
                       key="materialName"
