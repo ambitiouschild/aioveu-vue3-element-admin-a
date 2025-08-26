@@ -127,11 +127,11 @@
                         fixed="left"
                     />
                     <el-table-column
-                        key="warehouseId"
-                        label="仓库ID"
-                        prop="warehouseId"
-                        min-width="150"
-                        align="center"
+                      key="warehouseName"
+                      label="仓库"
+                      prop="warehouseName"
+                      min-width="150"
+                      align="center"
                     />
                     <el-table-column
                         key="quantity"
