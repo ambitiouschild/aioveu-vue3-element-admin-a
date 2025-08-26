@@ -133,11 +133,11 @@
                       align="center"
                     />
                     <el-table-column
-                        key="contactId"
-                        label="联系人ID"
-                        prop="contactId"
-                        min-width="150"
-                        align="center"
+                      key="contactName"
+                      label="联系人"
+                      prop="contactName"
+                      min-width="150"
+                      align="center"
                     />
                     <el-table-column
                         key="orderDate"
