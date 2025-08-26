@@ -126,11 +126,11 @@
                         fixed="left"
                     />
                     <el-table-column
-                        key="categoryId"
-                        label="设备分类ID"
-                        prop="categoryId"
-                        min-width="150"
-                        align="center"
+                      key="categoryName"
+                      label="设备分类"
+                      prop="categoryName"
+                      min-width="150"
+                      align="center"
                     />
                     <el-table-column
                         key="model"
