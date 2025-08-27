@@ -6,6 +6,7 @@ import en from "element-plus/es/locale/lang/en";
 import { store } from "@/store";
 import { DeviceEnum } from "@/enums/settings/device.enum";
 import { SidebarStatus } from "@/enums/settings/layout.enum";
+import japanLocal from "@/lang/package/japan";
 
 export const useAppStore = defineStore("app", () => {
   // 设备类型
@@ -30,7 +31,10 @@ export const useAppStore = defineStore("app", () => {
   const locale = computed(() => {
     if (language?.value == "en") {
       return en;
-    } else {
+    }else if (language?.value == "japan") {
+      return japanLocal;
+    }
+    else {
       return zhCn;
     }
   });

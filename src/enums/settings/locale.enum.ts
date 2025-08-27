@@ -11,4 +11,10 @@ export const enum LanguageEnum {
    * 英文
    */
   EN = "en",
+
+  /**
+   * 英文
+   */
+  JP = "japan",
+
 }
