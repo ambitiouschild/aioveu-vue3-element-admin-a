@@ -124,8 +124,9 @@ export interface AioveuDepartmentForm {
     deptName?:  string;
     /** 上级部门ID */
     parentDeptId?:  number;
-    /** 部门经理 */
-    managerId?:  number;
+
+    parentDeptName?: string;
+
 }
 
 /** 公司部门组织结构分页对象 */

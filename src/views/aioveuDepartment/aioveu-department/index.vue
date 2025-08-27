@@ -185,22 +185,13 @@
                           placeholder="部门名称"
                       />
                 </el-form-item>
-                <!-- 修改：将所属部门ID改为所属部门名称 -->
-                <el-form-item label="所属部门" prop="parentDeptId">
-                  <el-select
-                    v-model="formData.parentDeptId"
-                    placeholder="请选择部门"
-                    clearable
-                    filterable
-                  >
-                    <el-option
-                      v-for="dept in deptOptions"
-                      :key="dept.deptId"
-                      :label="dept.deptName"
-                      :value="dept.deptId"
-                    />
-                  </el-select>
+                <el-form-item label="上级部门" prop="parentDeptName">
+                  <el-input
+                    v-model="formData.parentDeptName"
+                    placeholder="部门名称"
+                  />
                 </el-form-item>
+
 
 <!--                <el-form-item label="部门经理" prop="managerId">-->
 <!--                      <el-input-->
