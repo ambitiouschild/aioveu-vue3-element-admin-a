@@ -454,13 +454,6 @@
                 </el-form-item>
 
                 <el-form-item label="发放状态" prop="paymentStatus">
-                      <el-input
-                          v-model="formData.paymentStatus"
-                          placeholder="发放状态"
-                      />
-                </el-form-item>
-
-                <el-form-item label="发放状态" prop="paymentStatus">
                   <el-select
                     v-model="formData.paymentStatus"
                     placeholder="发放状态"
