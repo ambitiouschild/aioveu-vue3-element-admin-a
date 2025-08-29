@@ -363,19 +363,19 @@
         @close="handleCloseDialog"
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
-                <el-form-item label="员工ID" prop="employeeId">
+                <el-form-item label="员工ID" prop="employeeName">
                       <el-input
-                          v-model="formData.employeeId"
+                          v-model="formData.employeeName"
                           placeholder="员工ID"
                       />
                 </el-form-item>
 
-                <el-form-item label="工资周期（月份）" prop="salaryPeriod">
+                <el-form-item label="工资周期" prop="salaryPeriod">
                       <el-date-picker
                           class="!w-[240px]"
                           v-model="formData.salaryPeriod"
                           type="date"
-                          placeholder="工资周期（月份）"
+                          placeholder="工资周期"
                           value-format="YYYY-MM-DD"
                       />
                 </el-form-item>
@@ -460,6 +460,21 @@
                       />
                 </el-form-item>
 
+                <el-form-item label="发放状态" prop="paymentStatus">
+                  <el-select
+                    v-model="formData.paymentStatus"
+                    placeholder="发放状态"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in paymentStatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
+                </el-form-item>
+
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -478,7 +493,8 @@
   });
 
   import AioveuSalaryAPI, { AioveuSalaryPageVO, AioveuSalaryForm, AioveuSalaryPageQuery } from "@/api/aioveuSalary/aioveu-salary";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
 
   const queryFormRef = ref();
   const dataFormRef = ref();
@@ -494,6 +510,10 @@
 
   // 员工工资明细表格数据
   const pageData = ref<AioveuSalaryPageVO[]>([]);
+
+  // 状态选项
+  const paymentStatusOptions = ref<DictItemOption[]>([])
+
 
   // 弹窗
   const dialog = reactive({
@@ -544,13 +564,14 @@
 
   /** 打开员工工资明细弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
     editingSalaryId.value = id; // 保存ID
 
     if (id) {
       dialog.title = "修改员工工资明细";
             AioveuSalaryAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增员工工资明细";
@@ -590,9 +611,13 @@
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
 
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
     editingSalaryId.value = undefined;
+    }, 300);
+
   }
 
   /** 删除员工工资明细 */
@@ -623,7 +648,15 @@
     );
   }
 
+  // 加载字典
+  function loadPaymentStatusOptions() {
+    DictAPI.getDictItems('salary_payment_status').then(response => {
+      paymentStatusOptions.value = response
+    })
+  }
+
   onMounted(() => {
     handleQuery();
+    loadPaymentStatusOptions();
   });
 </script>

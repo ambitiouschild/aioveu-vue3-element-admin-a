@@ -106,6 +106,8 @@ export interface AioveuSalaryPageQuery extends PageQuery {
 export interface AioveuSalaryForm {
     /** 员工ID */
     employeeId?:  number;
+    /** 员工姓名 */
+    employeeName?: string;
     /** 工资周期（月份） */
     salaryPeriod?:  Date;
     /** 基本工资 */
