@@ -254,21 +254,29 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="考核季度(1-4)" prop="periodQuarter">
-                      <el-input
-                          v-model="formData.periodQuarter"
-                          placeholder="考核季度(1-4)"
-                      />
+                <el-form-item label="考核季度" prop="periodQuarter">
+                  <el-select
+                    v-model="formData.periodQuarter"
+                    placeholder="考核季度"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in periodQuarterOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
-                <el-form-item label="KPI评分(1-100分)" prop="kpiScore">
+                <el-form-item label="KPI评分" prop="kpiScore">
                       <el-input
                           v-model="formData.kpiScore"
                           placeholder="KPI评分(1-100分)"
                       />
                 </el-form-item>
 
-                <el-form-item label="生产率百分比(%)" prop="productivity">
+                <el-form-item label="生产率" prop="productivity">
                       <el-input
                           v-model="formData.productivity"
                           placeholder="生产率百分比(%)"
@@ -308,6 +316,9 @@
 
   import AioveuPerformanceAPI, { AioveuPerformancePageVO, AioveuPerformanceForm, AioveuPerformancePageQuery } from "@/api/aioveuPerformance/aioveu-performance";
 
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
+
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -319,6 +330,9 @@
     pageNum: 1,
     pageSize: 10,
   });
+
+  // 选项
+  const periodQuarterOptions = ref<DictItemOption[]>([])
 
   // 员工绩效考评表格数据
   const pageData = ref<AioveuPerformancePageVO[]>([]);
@@ -373,7 +387,7 @@
 
   /** 打开员工绩效考评弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingPerformanceId.value = id; // 保存ID
 
@@ -381,6 +395,7 @@
       dialog.title = "修改员工绩效考评";
             AioveuPerformanceAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增员工绩效考评";
@@ -453,7 +468,16 @@
     );
   }
 
+  // 加载字典
+  function loadPeriodQuarterOptions() {
+    DictAPI.getDictItems('performance_period_quarter').then(response => {
+      periodQuarterOptions.value = response
+    })
+  }
+
+
   onMounted(() => {
     handleQuery();
+    loadPeriodQuarterOptions();
   });
 </script>

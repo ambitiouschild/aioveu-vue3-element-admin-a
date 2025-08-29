@@ -92,10 +92,12 @@ export interface AioveuPerformancePageQuery extends PageQuery {
 export interface AioveuPerformanceForm {
     /** 员工ID */
     employeeId?:  number;
+    /** 员工姓名 */
+    employeeName?: string;
     /** 考核年份 */
     periodYear?:  number;
     /** 考核季度(1-4) */
-    periodQuarter?:  number;
+    periodQuarter?: number;
     /** KPI评分(1-100分) */
     kpiScore?:  number;
     /** 生产率百分比(%) */
