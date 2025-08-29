@@ -247,11 +247,12 @@
         @close="handleCloseDialog"
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
-                <el-form-item label="客户ID" prop="customerId">
-                      <el-input
-                          v-model="formData.customerId"
-                          placeholder="客户ID"
-                      />
+
+                <el-form-item label="客户" prop="customerName">
+                  <el-input
+                    v-model="formData.customerName"
+                    placeholder="客户"
+                  />
                 </el-form-item>
 
                 <el-form-item label="联系人姓名" prop="name">
@@ -303,18 +304,34 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="是否是主要联系人：0-否，1-是" prop="isPrimary">
-                      <el-input
-                          v-model="formData.isPrimary"
-                          placeholder="是否是主要联系人：0-否，1-是"
-                      />
+                <el-form-item label="主联系人" prop="isPrimary">
+                  <el-select
+                    v-model="formData.isPrimary"
+                    placeholder="主联系人"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in isPrimaryOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="性别" prop="gender">
-                      <el-input
-                          v-model="formData.gender"
-                          placeholder="性别"
-                      />
+                  <el-select
+                    v-model="formData.gender"
+                    placeholder="性别"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in genderOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="生日" prop="birthday">
@@ -359,7 +376,8 @@
   });
 
   import AioveuContactAPI, { AioveuContactPageVO, AioveuContactForm, AioveuContactPageQuery } from "@/api/aioveuContact/aioveu-contact";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -380,6 +398,13 @@
     title: "",
     visible: false,
   });
+
+
+  // 选项
+  const isPrimaryOptions = ref<DictItemOption[]>([])
+
+  // 选项
+  const genderOptions = ref<DictItemOption[]>([])
 
   // 客户联系人表单数据
   const formData = reactive<AioveuContactForm>({});
@@ -421,7 +446,7 @@
 
   /** 打开客户联系人弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingContactId.value = id; // 保存ID
 
@@ -429,6 +454,7 @@
       dialog.title = "修改客户联系人";
             AioveuContactAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增客户联系人";
@@ -468,12 +494,14 @@
 
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
 
     // 清除编辑ID
     editingContactId.value = undefined;
+    }, 300);
   }
 
   /** 删除客户联系人 */
@@ -504,7 +532,20 @@
     );
   }
 
+
+  // 加载字典
+  function loadOptions() {
+    DictAPI.getDictItems('contact_is_primary').then(response => {
+      isPrimaryOptions.value = response
+    })
+
+    DictAPI.getDictItems('gender').then(response => {
+      genderOptions.value = response
+    })
+  }
+
   onMounted(() => {
     handleQuery();
+    loadOptions()
   });
 </script>

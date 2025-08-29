@@ -84,6 +84,8 @@ export interface AioveuContactPageQuery extends PageQuery {
 export interface AioveuContactForm {
     /** 客户ID */
     customerId?:  number;
+    /** 客户 */
+    customerName?:  string;
     /** 联系人姓名 */
     name?:  string;
     /** 职位 */
