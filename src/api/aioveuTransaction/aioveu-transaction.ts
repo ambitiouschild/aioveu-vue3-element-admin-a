@@ -94,8 +94,12 @@ export interface AioveuTransactionForm {
     transactionNo?:  string;
     /** 客户ID */
     customerId?:  number;
+    /** 客户 */
+    customerName?:  string;
     /** 联系人ID */
     contactId?:  number;
+    /** 联系人 */
+    contactName?:  string;
     /** 交易日期 */
     transactionDate?:  Date;
     /** 交易金额 */
@@ -126,6 +130,9 @@ export interface AioveuTransactionForm {
     totalAmount?:  number;
     /** 销售负责人ID */
     salesRepId?:  number;
+    /** 销售负责人 */
+    salesRepName?:  string;
+
     /** 交易状态 */
     transactionStatus?:  number;
     /** 备注 */

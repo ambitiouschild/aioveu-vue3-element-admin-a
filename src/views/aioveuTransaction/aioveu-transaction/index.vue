@@ -338,18 +338,18 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="客户ID" prop="customerId">
-                      <el-input
-                          v-model="formData.customerId"
-                          placeholder="客户ID"
-                      />
+                <el-form-item label="客户" prop="customerName">
+                  <el-input
+                    v-model="formData.customerName"
+                    placeholder="客户"
+                  />
                 </el-form-item>
 
-                <el-form-item label="联系人ID" prop="contactId">
-                      <el-input
-                          v-model="formData.contactId"
-                          placeholder="联系人ID"
-                      />
+                <el-form-item label="联系人" prop="contactName">
+                  <el-input
+                    v-model="formData.contactName"
+                    placeholder="联系人"
+                  />
                 </el-form-item>
 
                 <el-form-item label="交易日期" prop="transactionDate">
@@ -376,24 +376,48 @@
                 </el-form-item>
 
                 <el-form-item label="支付方式" prop="paymentMethod">
-                      <el-input
-                          v-model="formData.paymentMethod"
-                          placeholder="支付方式"
-                      />
+                  <el-select
+                    v-model="formData.paymentMethod"
+                    placeholder="支付方式"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in paymentMethodOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="支付状态" prop="paymentStatus">
-                      <el-input
-                          v-model="formData.paymentStatus"
-                          placeholder="支付状态"
-                      />
+                  <el-select
+                    v-model="formData.paymentStatus"
+                    placeholder="支付状态"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in paymentStatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="交易类型" prop="transactionType">
-                      <el-input
-                          v-model="formData.transactionType"
-                          placeholder="交易类型"
-                      />
+                  <el-select
+                    v-model="formData.transactionType"
+                    placeholder="交易类型"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in transactionTypeOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="发票号码" prop="invoiceNo">
@@ -452,18 +476,26 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="销售负责人ID" prop="salesRepId">
-                      <el-input
-                          v-model="formData.salesRepId"
-                          placeholder="销售负责人ID"
-                      />
+                <el-form-item label="销售负责人" prop="salesRepName">
+                  <el-input
+                    v-model="formData.salesRepName"
+                    placeholder="销售负责人"
+                  />
                 </el-form-item>
 
                 <el-form-item label="交易状态" prop="transactionStatus">
-                      <el-input
-                          v-model="formData.transactionStatus"
-                          placeholder="交易状态"
-                      />
+                  <el-select
+                    v-model="formData.transactionStatus"
+                    placeholder="交易状态"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in transactionStatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="备注" prop="notes">
@@ -491,7 +523,8 @@
   });
 
   import AioveuTransactionAPI, { AioveuTransactionPageVO, AioveuTransactionForm, AioveuTransactionPageQuery } from "@/api/aioveuTransaction/aioveu-transaction";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -512,6 +545,15 @@
     title: "",
     visible: false,
   });
+
+  // 选项
+  const paymentMethodOptions = ref<DictItemOption[]>([])
+  // 选项
+  const paymentStatusOptions = ref<DictItemOption[]>([])
+  // 选项
+  const transactionTypeOptions = ref<DictItemOption[]>([])
+  // 选项
+  const transactionStatusOptions = ref<DictItemOption[]>([])
 
   // 客户交易记录表单数据
   const formData = reactive<AioveuTransactionForm>({});
@@ -558,7 +600,7 @@
 
   /** 打开客户交易记录弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingTransactionId.value = id; // 保存ID
 
@@ -566,6 +608,7 @@
       dialog.title = "修改客户交易记录";
             AioveuTransactionAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增客户交易记录";
@@ -605,12 +648,14 @@
 
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
 
     // 清除编辑ID
     editingTransactionId.value = undefined;
+    }, 300);
 
   }
 
@@ -642,7 +687,27 @@
     );
   }
 
+  // 加载字典
+  function loadOptions() {
+    DictAPI.getDictItems('transaction_payment_method').then(response => {
+      paymentMethodOptions.value = response
+    })
+
+    DictAPI.getDictItems('transaction_payment_status').then(response => {
+      paymentStatusOptions.value = response
+    })
+
+    DictAPI.getDictItems('transaction_type').then(response => {
+      transactionTypeOptions.value = response
+    })
+
+    DictAPI.getDictItems('transaction_status').then(response => {
+      transactionStatusOptions.value = response
+    })
+  }
+
   onMounted(() => {
     handleQuery();
+    loadOptions()
   });
 </script>
