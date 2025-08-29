@@ -169,11 +169,11 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="父分类ID" prop="parentId">
-                      <el-input
-                          v-model="formData.parentId"
-                          placeholder="父分类ID"
-                      />
+                <el-form-item label="父分类" prop="parentCategoryName">
+                  <el-input
+                    v-model="formData.parentCategoryName"
+                    placeholder="父分类"
+                  />
                 </el-form-item>
 
                 <el-form-item label="分类层级" prop="level">
@@ -269,7 +269,7 @@
 
   /** 打开物资分类弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingCategoryId.value = id; // 保存ID
 
@@ -277,6 +277,7 @@
       dialog.title = "修改物资分类";
             AioveuCategoryAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增物资分类";
@@ -317,11 +318,13 @@
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
 
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
     // 清除编辑ID
     editingCategoryId.value = undefined;
+    }, 300);
   }
 
   /** 删除物资分类 */

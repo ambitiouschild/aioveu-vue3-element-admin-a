@@ -83,6 +83,8 @@ export interface AioveuCategoryForm {
     name?:  string;
     /** 父分类ID */
     parentId?:  number;
+    /** 父分类名 */
+    parentCategoryName?: string;
     /** 分类层级 */
     level?:  number;
     /** 分类描述 */
