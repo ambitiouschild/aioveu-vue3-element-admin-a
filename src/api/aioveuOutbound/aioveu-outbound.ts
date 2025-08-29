@@ -90,8 +90,12 @@ export interface AioveuOutboundForm {
     outboundNo?:  string;
     /** 物资ID */
     materialId?:  number;
+    /** 物资 */
+    materialName?:  string;
     /** 仓库ID */
     warehouseId?:  number;
+    /** 仓库 */
+    warehouseName?:  string;
     /** 出库数量 */
     quantity?:  number;
     /** 批次号 */
@@ -100,10 +104,16 @@ export interface AioveuOutboundForm {
     outTime?:  Date;
     /** 操作员ID */
     operatorId?:  number;
+    /** 操作员 */
+    operatorName?:  string;
     /** 领用人ID */
     recipientId?:  number;
+    /** 领用人 */
+    recipientName?:  string;
     /** 领用部门ID */
     departmentId?:  number;
+    /** 领用部门 */
+    departmentName?:  string;
     /** 用途说明 */
     purpose?:  string;
     /** 关联项目ID */

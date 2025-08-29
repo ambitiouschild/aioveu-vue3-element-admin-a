@@ -169,12 +169,13 @@
                         align="center"
                     />
                     <el-table-column
-                        key="departmentId"
-                        label="领用部门ID"
-                        prop="departmentId"
-                        min-width="150"
-                        align="center"
+                      key="departmentName"
+                      label="领用部门"
+                      prop="departmentName"
+                      min-width="150"
+                      align="center"
                     />
+
                     <el-table-column
                         key="purpose"
                         label="用途说明"
@@ -269,18 +270,18 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="物资ID" prop="materialId">
-                      <el-input
-                          v-model="formData.materialId"
-                          placeholder="物资ID"
-                      />
+                <el-form-item label="物资" prop="materialName">
+                  <el-input
+                    v-model="formData.materialName"
+                    placeholder="物资"
+                  />
                 </el-form-item>
 
-                <el-form-item label="仓库ID" prop="warehouseId">
-                      <el-input
-                          v-model="formData.warehouseId"
-                          placeholder="仓库ID"
-                      />
+                <el-form-item label="仓库" prop="warehouseName">
+                  <el-input
+                    v-model="formData.warehouseName"
+                    placeholder="仓库"
+                  />
                 </el-form-item>
 
                 <el-form-item label="出库数量" prop="quantity">
@@ -306,25 +307,25 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="操作员ID" prop="operatorId">
-                      <el-input
-                          v-model="formData.operatorId"
-                          placeholder="操作员ID"
-                      />
+                <el-form-item label="操作员" prop="operatorName">
+                  <el-input
+                    v-model="formData.operatorName"
+                    placeholder="操作员"
+                  />
                 </el-form-item>
 
-                <el-form-item label="领用人ID" prop="recipientId">
-                      <el-input
-                          v-model="formData.recipientId"
-                          placeholder="领用人ID"
-                      />
+                <el-form-item label="领用人" prop="recipientName">
+                  <el-input
+                    v-model="formData.recipientName"
+                    placeholder="领用人"
+                  />
                 </el-form-item>
 
-                <el-form-item label="领用部门ID" prop="departmentId">
-                      <el-input
-                          v-model="formData.departmentId"
-                          placeholder="领用部门ID"
-                      />
+                <el-form-item label="领用部门" prop="departmentName">
+                  <el-input
+                    v-model="formData.departmentName"
+                    placeholder="领用部门"
+                  />
                 </el-form-item>
 
                 <el-form-item label="用途说明" prop="purpose">
@@ -347,6 +348,20 @@
                           placeholder="状态"
                       />
                 </el-form-item>
+                <el-form-item label="状态" prop="status">
+                  <el-select
+                    v-model="formData.status"
+                    placeholder="状态"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in statusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
+                </el-form-item>
 
       </el-form>
       <template #footer>
@@ -366,7 +381,8 @@
   });
 
   import AioveuOutboundAPI, { AioveuOutboundPageVO, AioveuOutboundForm, AioveuOutboundPageQuery } from "@/api/aioveuOutbound/aioveu-outbound";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -378,6 +394,8 @@
     pageNum: 1,
     pageSize: 10,
   });
+  // 选项
+  const statusOptions = ref<DictItemOption[]>([])
 
   // 出库记录表格数据
   const pageData = ref<AioveuOutboundPageVO[]>([]);
@@ -432,7 +450,7 @@
 
   /** 打开出库记录弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingOutboundId.value = id; // 保存ID
 
@@ -440,6 +458,7 @@
       dialog.title = "修改出库记录";
             AioveuOutboundAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增出库记录";
@@ -479,13 +498,14 @@
 
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
 
     // 清除编辑ID
     editingOutboundId.value = undefined;
-
+    }, 300);
   }
 
   /** 删除出库记录 */
@@ -515,8 +535,15 @@
         }
     );
   }
+  // 加载字典
+  function loadStatusOptions() {
+    DictAPI.getDictItems('outbound_status').then(response => {
+      statusOptions.value = response
+    })
+  }
 
   onMounted(() => {
     handleQuery();
+    loadStatusOptions()
   });
 </script>
