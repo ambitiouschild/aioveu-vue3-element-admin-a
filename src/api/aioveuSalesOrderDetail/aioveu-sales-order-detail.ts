@@ -84,8 +84,12 @@ export interface AioveuSalesOrderDetailPageQuery extends PageQuery {
 export interface AioveuSalesOrderDetailForm {
     /** 订单ID */
     orderId?:  number;
+    /** 订单 */
+    orderName?:  string;
     /** 物资ID */
     materialId?:  number;
+    /** 物资 */
+    materialName?:  string;
     /** 数量 */
     quantity?:  number;
     /** 单价 */
@@ -106,6 +110,8 @@ export interface AioveuSalesOrderDetailForm {
     deliveryDate?:  Date;
     /** 发货仓库ID */
     warehouseId?:  number;
+    /** 发货仓库 */
+    warehouseName?:  string;
     /** 明细状态 */
     status?:  number;
     /** 备注 */

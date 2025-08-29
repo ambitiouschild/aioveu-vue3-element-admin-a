@@ -61,6 +61,18 @@ const AioveuWarehouseAPI = {
             url: `${AIOVEUWAREHOUSE_BASE_URL}/${ids}`,
             method: "delete",
         });
+    },
+
+    /**
+     * 获取所有部门列表（用于下拉选择框）
+     * @returns 部门选项列表
+     * 因为request函数的类型定义允许第一个类型参数为any，从而绕过了类型检查
+     */
+    getAllWarehouseOptions() {
+      return request<any,WarehouseOptionVO[]>({
+        url: `${AIOVEUWAREHOUSE_BASE_URL}/options`,
+        method: "get",
+      });
     }
 }
 
@@ -135,4 +147,11 @@ export interface AioveuWarehousePageVO {
     createTime?: string;
     /** 更新时间 */
     updateTime?: string;
+}
+/** 仓库信息分页对象 */
+export interface WarehouseOptionVO {
+  /** 仓库ID */
+  warehouseId?: number;
+  /** 仓库名称 */
+  warehouseName?: string;
 }

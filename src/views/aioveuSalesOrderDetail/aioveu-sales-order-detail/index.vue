@@ -176,13 +176,17 @@
                       min-width="150"
                       align="center"
                     />
+
                     <el-table-column
-                        key="status"
-                        label="明细状态"
-                        prop="status"
-                        min-width="150"
-                        align="center"
-                    />
+                      label="明细状态"
+                      min-width="150"
+                      align="center"
+                    >
+                      <template #default="scope">
+                        <DictLabel v-model="scope.row.status" code="salesOrderDetail_status" />
+                      </template>
+                    </el-table-column>
+
                     <el-table-column
                         key="notes"
                         label="备注"
@@ -247,18 +251,19 @@
         @close="handleCloseDialog"
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
-                <el-form-item label="订单ID" prop="orderId">
-                      <el-input
-                          v-model="formData.orderId"
-                          placeholder="订单ID"
-                      />
+
+                <el-form-item label="订单" prop="orderName">
+                  <el-input
+                    v-model="formData.orderName"
+                    placeholder="订单"
+                  />
                 </el-form-item>
 
-                <el-form-item label="物资ID" prop="materialId">
-                      <el-input
-                          v-model="formData.materialId"
-                          placeholder="物资ID"
-                      />
+                <el-form-item label="物资" prop="materialName">
+                  <el-input
+                    v-model="formData.materialName"
+                    placeholder="物资"
+                  />
                 </el-form-item>
 
                 <el-form-item label="数量" prop="quantity">
@@ -327,11 +332,26 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="发货仓库ID" prop="warehouseId">
-                      <el-input
-                          v-model="formData.warehouseId"
-                          placeholder="发货仓库ID"
-                      />
+                <el-form-item label="发货仓库" prop="warehouseName">
+                  <el-input
+                    v-model="formData.warehouseName"
+                    placeholder="发货仓库"
+                  />
+                </el-form-item>
+
+                <el-form-item label="发货仓库" prop="warehouseName">
+                  <el-select
+                    v-model="formData.warehouseName"
+                    placeholder="发货仓库"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in WarehouseOptions"
+                      :key="Number(item.warehouseId)"
+                      :label="item.warehouseName"
+                      :value="Number(item.warehouseId)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="明细状态" prop="status">
@@ -339,6 +359,21 @@
                           v-model="formData.status"
                           placeholder="明细状态"
                       />
+                </el-form-item>
+
+                <el-form-item label="明细状态" prop="status">
+                  <el-select
+                    v-model="formData.status"
+                    placeholder="明细状态"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in statusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="备注" prop="notes">
@@ -360,12 +395,17 @@
 </template>
 
 <script setup lang="ts">
+
   defineOptions({
     name: "AioveuSalesOrderDetail",
     inheritAttrs: false,
   });
 
   import AioveuSalesOrderDetailAPI, { AioveuSalesOrderDetailPageVO, AioveuSalesOrderDetailForm, AioveuSalesOrderDetailPageQuery } from "@/api/aioveuSalesOrderDetail/aioveu-sales-order-detail";
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
+  // 新增：导入部门API
+  import AioveuWarehouseAPI, {  WarehouseOptionVO } from "@/api/aioveuWarehouse/aioveu-warehouse";
 
   const queryFormRef = ref();
   const dataFormRef = ref();
@@ -387,6 +427,11 @@
     title: "",
     visible: false,
   });
+
+  // 选项
+  const WarehouseOptions = ref<WarehouseOptionVO[]>([])
+  // 选项
+  const statusOptions = ref<DictItemOption[]>([])
 
   // 订单明细表单数据
   const formData = reactive<AioveuSalesOrderDetailForm>({});
@@ -429,7 +474,7 @@
 
   /** 打开订单明细弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingSalesOrderDetailId.value = id; // 保存ID
 
@@ -437,6 +482,7 @@
       dialog.title = "修改订单明细";
             AioveuSalesOrderDetailAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增订单明细";
@@ -476,13 +522,14 @@
 
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
 
     // 清除编辑ID
     editingSalesOrderDetailId.value = undefined;
-
+    }, 300);
   }
 
   /** 删除订单明细 */
@@ -513,7 +560,42 @@
     );
   }
 
+  // 主要修改点：部门列表加载方法
+  function loadWarehouses() {
+    loading.value = true;
+    AioveuWarehouseAPI.getAllWarehouseOptions()
+      .then(response => {
+        // 确保响应数据是数组类型
+        if (Array.isArray(response)) {
+          // 转换数据类型：确保deptId是数字
+          WarehouseOptions.value = response;
+        } else {
+          // 处理非数组响应
+          console.error("仓库列表响应格式错误:", response);
+          ElMessage.error("仓库列表格式错误");
+        }
+      })
+      .catch(error => {
+        console.error("加载仓库列表失败:", error);
+        ElMessage.error("加载仓库列表失败");
+      })
+      .finally(() => {
+        loading.value = false;
+      });
+  }
+
+  // 加载字典
+  function loadOptions() {
+    DictAPI.getDictItems('salesOrderDetail_status').then(response => {
+      statusOptions.value = response
+    })
+
+  }
+
+
   onMounted(() => {
     handleQuery();
+    loadWarehouses();
+    loadOptions()
   });
 </script>
