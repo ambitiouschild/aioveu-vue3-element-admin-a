@@ -233,24 +233,24 @@
         @close="handleCloseDialog"
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
-                <el-form-item label="仓库ID" prop="warehouseId">
-                      <el-input
-                          v-model="formData.warehouseId"
-                          placeholder="仓库ID"
-                      />
+
+                <el-form-item label="仓库" prop="warehouseName">
+                  <el-input
+                    v-model="formData.warehouseName"
+                    placeholder="仓库"
+                  />
+                </el-form-item>
+                <el-form-item label="物资" prop="materialName">
+                  <el-input
+                    v-model="formData.materialName"
+                    placeholder="物资"
+                  />
                 </el-form-item>
 
-                <el-form-item label="物资ID" prop="materialId">
-                      <el-input
-                          v-model="formData.materialId"
-                          placeholder="物资ID"
-                      />
-                </el-form-item>
-
-                <el-form-item label="当前库存数量" prop="quantity">
+                <el-form-item label="当前库存量" prop="quantity">
                       <el-input
                           v-model="formData.quantity"
-                          placeholder="当前库存数量"
+                          placeholder="当前库存量"
                       />
                 </el-form-item>
 
@@ -381,7 +381,7 @@
 
   /** 打开库存信息弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingInventoryId.value = id; // 保存ID
 
@@ -389,6 +389,7 @@
       dialog.title = "修改库存信息";
             AioveuInventoryAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增库存信息";
@@ -428,12 +429,14 @@
 
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
 
     // 清除编辑ID
     editingInventoryId.value = undefined;
+    }, 300);
 
   }
 

@@ -88,8 +88,12 @@ export interface AioveuInventoryPageQuery extends PageQuery {
 export interface AioveuInventoryForm {
     /** 仓库ID */
     warehouseId?:  number;
+    /** 仓库 */
+    warehouseName?:  string;
     /** 物资ID */
     materialId?:  number;
+    /** 物资 */
+    materialName?:  string;
     /** 当前库存数量 */
     quantity?:  number;
     /** 批次号 */
