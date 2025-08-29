@@ -508,6 +508,8 @@
       });
     } else {
       dialog.title = "新增设备管理";
+      // 新增操作直接打开弹窗
+      dialog.visible = true;
     }
   }
 

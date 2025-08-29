@@ -458,6 +458,8 @@
       });
     } else {
       dialog.title = "新增客户联系人";
+      // 新增操作直接打开弹窗
+      dialog.visible = true;
     }
   }
 

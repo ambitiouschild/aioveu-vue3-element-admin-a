@@ -538,7 +538,7 @@
 
   /** 打开采购流程弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingProcurementId.value = id; // 保存ID
 
@@ -546,9 +546,12 @@
       dialog.title = "修改采购流程";
             AioveuProcurementAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增采购流程";
+      // 新增操作直接打开弹窗
+      dialog.visible = true;
     }
   }
 
@@ -586,11 +589,14 @@
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
 
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
 
     // 清除编辑ID
     editingProcurementId.value = undefined;
+    }, 300);
   }
 
   /** 删除采购流程 */

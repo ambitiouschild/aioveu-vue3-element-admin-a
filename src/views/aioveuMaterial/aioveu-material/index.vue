@@ -378,6 +378,8 @@
       });
     } else {
       dialog.title = "新增物资";
+      // 新增操作直接打开弹窗
+      dialog.visible = true;
     }
   }
 

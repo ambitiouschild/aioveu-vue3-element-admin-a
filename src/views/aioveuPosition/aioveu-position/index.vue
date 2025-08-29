@@ -342,6 +342,8 @@
       });
     } else {
       dialog.title = "新增公司岗位信息";
+      // 新增操作直接打开弹窗
+      dialog.visible = true;
     }
   }
 
@@ -377,9 +379,13 @@
     dialog.visible = false;
     // 关键修复：重置加载状态
     loading.value = false;
+
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
     editingpositionId.value = undefined; // 清除positionId
+    }, 300);
   }
 
   /** 删除公司岗位信息 */

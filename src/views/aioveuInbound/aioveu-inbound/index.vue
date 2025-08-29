@@ -487,6 +487,8 @@
       });
     } else {
       dialog.title = "新增入库信息";
+      // 新增操作直接打开弹窗
+      dialog.visible = true;
     }
   }
 

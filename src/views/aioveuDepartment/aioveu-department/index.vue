@@ -302,6 +302,8 @@
       });
     } else {
       dialog.title = "新增公司部门组织结构";
+      // 新增操作直接打开弹窗
+      dialog.visible = true;
     }
   }
 
@@ -343,9 +345,12 @@
 
     //在弹窗关闭时调用 handleCloseDialog，重置了 editingdeptId
     //但提交操作发生在弹窗关闭前，此时 editingdeptId可能已被重置
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
     editingdeptId.value = undefined;  // 确保 formData 初始化中包含了 deptId
+    }, 300);
   }
 
   /** 删除公司部门组织结构 */

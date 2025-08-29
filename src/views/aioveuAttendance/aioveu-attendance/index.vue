@@ -431,6 +431,8 @@
       });
     } else {
       dialog.title = "新增考勤信息";
+      // 新增操作直接打开弹窗
+      dialog.visible = true;
     }
   }
 
@@ -466,11 +468,13 @@
     dialog.visible = false;
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
     // 清除编辑ID
     editingAttendanceId.value = undefined;
+    }, 300);
   }
 
   /** 删除考勤信息 */

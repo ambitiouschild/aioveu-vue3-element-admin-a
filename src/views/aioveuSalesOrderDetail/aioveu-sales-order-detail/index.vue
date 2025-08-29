@@ -472,6 +472,8 @@
       });
     } else {
       dialog.title = "新增订单明细";
+      // 新增操作直接打开弹窗
+      dialog.visible = true;
     }
   }
 
