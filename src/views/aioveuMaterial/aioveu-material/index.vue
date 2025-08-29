@@ -101,7 +101,7 @@
                     />
                     <el-table-column
                       key="categoryName"
-                      label="库存分类"
+                      label="物资分类"
                       prop="categoryName"
                       min-width="150"
                       align="center"
