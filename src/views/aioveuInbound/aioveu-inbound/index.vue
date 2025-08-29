@@ -279,18 +279,18 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="物资ID" prop="materialId">
-                      <el-input
-                          v-model="formData.materialId"
-                          placeholder="物资ID"
-                      />
+                <el-form-item label="物资" prop="materialName">
+                  <el-input
+                    v-model="formData.materialName"
+                    placeholder="物资"
+                  />
                 </el-form-item>
 
-                <el-form-item label="仓库ID" prop="warehouseId">
-                      <el-input
-                          v-model="formData.warehouseId"
-                          placeholder="仓库ID"
-                      />
+                <el-form-item label="仓库" prop="warehouseName">
+                  <el-input
+                    v-model="formData.warehouseName"
+                    placeholder="仓库"
+                  />
                 </el-form-item>
 
                 <el-form-item label="入库数量（支持小数计量）" prop="quantity">
@@ -349,10 +349,18 @@
                 </el-form-item>
 
                 <el-form-item label="入库类型" prop="inboundType">
-                      <el-input
-                          v-model="formData.inboundType"
-                          placeholder="入库类型"
-                      />
+                  <el-select
+                    v-model="formData.inboundType"
+                    placeholder="入库类型"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in inboundTypeOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="入库时间" prop="inTime">
@@ -364,11 +372,11 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="操作员ID" prop="operatorId">
-                      <el-input
-                          v-model="formData.operatorId"
-                          placeholder="操作员ID"
-                      />
+                <el-form-item label="操作员" prop="operatorName">
+                  <el-input
+                    v-model="formData.operatorName"
+                    placeholder="操作员"
+                  />
                 </el-form-item>
 
                 <el-form-item label="备注" prop="remark">
@@ -396,7 +404,8 @@
   });
 
   import AioveuInboundAPI, { AioveuInboundPageVO, AioveuInboundForm, AioveuInboundPageQuery } from "@/api/aioveuInbound/aioveu-inbound";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -411,6 +420,9 @@
 
   // 入库信息表格数据
   const pageData = ref<AioveuInboundPageVO[]>([]);
+  // 选项
+  const inboundTypeOptions = ref<DictItemOption[]>([])
+
 
   // 弹窗
   const dialog = reactive({
@@ -463,7 +475,7 @@
 
   /** 打开入库信息弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingInboundId.value = id; // 保存ID
 
@@ -471,6 +483,7 @@
       dialog.title = "修改入库信息";
             AioveuInboundAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增入库信息";
@@ -510,12 +523,14 @@
 
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
 
     // 清除编辑ID
     editingInboundId.value = undefined;
+    }, 300);
   }
 
   /** 删除入库信息 */
@@ -546,7 +561,15 @@
     );
   }
 
+  // 加载字典
+  function loadInboundTypeOptions() {
+    DictAPI.getDictItems('inbound_type').then(response => {
+      inboundTypeOptions.value = response
+    })
+  }
+
   onMounted(() => {
     handleQuery();
+    loadInboundTypeOptions()
   });
 </script>
