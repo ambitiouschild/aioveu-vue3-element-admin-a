@@ -92,6 +92,8 @@ export interface AioveuProcurementForm {
     supplierId?:  number;
     /** 物资ID */
     materialId?:  number;
+    /** 物资 */
+    materialName?:  string;
     /** 采购数量 */
     quantity?:  number;
     /** 采购单价 */
@@ -108,14 +110,20 @@ export interface AioveuProcurementForm {
     receiptDate?:  Date;
     /** 入库仓库ID */
     warehouseId?:  number;
+    /** 入库仓库 */
+    warehouseName?:  string;
     /** 入库时间 */
     inboundDate?:  Date;
     /** 状态 */
     status?:  number;
     /** 申请人ID */
     applicantId?:  number;
+    /** 申请人 */
+    applicantName?:  string;
     /** 审核人ID */
     reviewerId?:  number;
+    /** 审核人 */
+    reviewerName?:  string;
     /** 审核时间 */
     reviewTime?:  Date;
     /** 备注 */

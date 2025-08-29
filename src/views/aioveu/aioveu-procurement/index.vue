@@ -184,11 +184,11 @@
                         align="center"
                     />
                     <el-table-column
-                        key="warehouseId"
-                        label="入库仓库ID"
-                        prop="warehouseId"
-                        min-width="150"
-                        align="center"
+                      key="warehouseName"
+                      label="入库仓库"
+                      prop="warehouseName"
+                      min-width="150"
+                      align="center"
                     />
                     <el-table-column
                         key="inboundDate"
@@ -313,11 +313,11 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="物资ID" prop="materialId">
-                      <el-input
-                          v-model="formData.materialId"
-                          placeholder="物资ID"
-                      />
+                <el-form-item label="物资" prop="materialName">
+                  <el-input
+                    v-model="formData.materialName"
+                    placeholder="物资"
+                  />
                 </el-form-item>
 
                 <el-form-item label="采购数量" prop="quantity">
@@ -379,11 +379,11 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="入库仓库ID" prop="warehouseId">
-                      <el-input
-                          v-model="formData.warehouseId"
-                          placeholder="入库仓库ID"
-                      />
+                <el-form-item label="入库仓库" prop="warehouseName">
+                  <el-input
+                    v-model="formData.warehouseName"
+                    placeholder="入库仓库"
+                  />
                 </el-form-item>
 
                 <el-form-item label="入库时间" prop="inboundDate">
@@ -402,18 +402,33 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="申请人ID" prop="applicantId">
-                      <el-input
-                          v-model="formData.applicantId"
-                          placeholder="申请人ID"
-                      />
+                <el-form-item label="状态" prop="status">
+                  <el-select
+                    v-model="formData.status"
+                    placeholder="状态"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in statusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
-                <el-form-item label="审核人ID" prop="reviewerId">
-                      <el-input
-                          v-model="formData.reviewerId"
-                          placeholder="审核人ID"
-                      />
+                <el-form-item label="申请人" prop="applicantName">
+                  <el-input
+                    v-model="formData.applicantName"
+                    placeholder="申请人"
+                  />
+                </el-form-item>
+
+                <el-form-item label="审核人" prop="reviewerName">
+                  <el-input
+                    v-model="formData.reviewerName"
+                    placeholder="审核人"
+                  />
                 </el-form-item>
 
                 <el-form-item label="审核时间" prop="reviewTime">
@@ -450,7 +465,8 @@
   });
 
   import AioveuProcurementAPI, { AioveuProcurementPageVO, AioveuProcurementForm, AioveuProcurementPageQuery } from "@/api/aioveu/aioveu-procurement";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -462,6 +478,8 @@
     pageNum: 1,
     pageSize: 10,
   });
+  // 选项
+  const statusOptions = ref<DictItemOption[]>([])
 
   // 采购流程表格数据
   const pageData = ref<AioveuProcurementPageVO[]>([]);
@@ -602,8 +620,15 @@
         }
     );
   }
+  // 加载字典
+  function loadStatusOptions() {
+    DictAPI.getDictItems('procurement_status').then(response => {
+      statusOptions.value = response
+    })
+  }
 
   onMounted(() => {
     handleQuery();
+    loadStatusOptions()
   });
 </script>
