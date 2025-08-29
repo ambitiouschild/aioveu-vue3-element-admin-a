@@ -297,13 +297,12 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="设备分类ID" prop="categoryId">
-                      <el-input
-                          v-model="formData.categoryId"
-                          placeholder="设备分类ID"
-                      />
+                <el-form-item label="设备分类" prop="categoryName">
+                  <el-input
+                    v-model="formData.categoryName"
+                    placeholder="设备分类"
+                  />
                 </el-form-item>
-
                 <el-form-item label="设备型号" prop="model">
                       <el-input
                           v-model="formData.model"
@@ -318,25 +317,25 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="位置ID" prop="locationId">
-                      <el-input
-                          v-model="formData.locationId"
-                          placeholder="位置ID"
-                      />
+<!--                <el-form-item label="位置ID" prop="locationId">-->
+<!--                      <el-input-->
+<!--                          v-model="formData.locationId"-->
+<!--                          placeholder="位置ID"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
+                <el-form-item label="所属部门" prop="departmentName">
+                  <el-input
+                    v-model="formData.departmentName"
+                    placeholder="所属部门"
+                  />
                 </el-form-item>
 
-                <el-form-item label="所属部门ID" prop="departmentId">
-                      <el-input
-                          v-model="formData.departmentId"
-                          placeholder="所属部门ID"
-                      />
-                </el-form-item>
-
-                <el-form-item label="责任人" prop="responsiblePerson">
-                      <el-input
-                          v-model="formData.responsiblePerson"
-                          placeholder="责任人"
-                      />
+                <el-form-item label="责任人" prop="responsiblePersonName">
+                  <el-input
+                    v-model="formData.responsiblePersonName"
+                    placeholder="责任人"
+                  />
                 </el-form-item>
 
                 <el-form-item label="采购日期" prop="purchaseDate">
@@ -391,10 +390,18 @@
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
-                      <el-input
-                          v-model="formData.status"
-                          placeholder="状态"
-                      />
+                  <el-select
+                    v-model="formData.status"
+                    placeholder="状态"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in statusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="备注" prop="remark">
@@ -422,7 +429,8 @@
   });
 
   import AioveuEquipmentAPI, { AioveuEquipmentPageVO, AioveuEquipmentForm, AioveuEquipmentPageQuery } from "@/api/aioveuEquipment/aioveu-equipment";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -437,6 +445,9 @@
 
   // 设备管理表格数据
   const pageData = ref<AioveuEquipmentPageVO[]>([]);
+
+  // 选项
+  const statusOptions = ref<DictItemOption[]>([])
 
   // 弹窗
   const dialog = reactive({
@@ -485,7 +496,7 @@
 
   /** 打开设备管理弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingEquipmentId.value = id; // 保存ID
 
@@ -493,6 +504,7 @@
       dialog.title = "修改设备管理";
             AioveuEquipmentAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+          dialog.visible = true;
       });
     } else {
       dialog.title = "新增设备管理";
@@ -532,12 +544,14 @@
 
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
 
     // 清除编辑ID
     editingEquipmentId.value = undefined;
+    }, 300);
   }
 
   /** 删除设备管理 */
@@ -567,8 +581,15 @@
         }
     );
   }
+  // 加载字典
+  function loadStatusOptions() {
+    DictAPI.getDictItems('equipment_status').then(response => {
+      statusOptions.value = response
+    })
+  }
 
   onMounted(() => {
     handleQuery();
+    loadStatusOptions();
   });
 </script>

@@ -92,16 +92,22 @@ export interface AioveuEquipmentForm {
     name?:  string;
     /** 设备分类ID */
     categoryId?:  number;
+    /** 设备分类 */
+    categoryName?:  string;
     /** 设备型号 */
     model?:  string;
     /** 序列号 */
     serialNo?:  string;
-    /** 位置ID */
-    locationId?:  number;
+    // /** 位置ID */
+    // locationId?:  number;
     /** 所属部门ID */
     departmentId?:  number;
+    /** 所属部门 */
+    departmentName?:  string;
     /** 责任人 */
     responsiblePerson?:  number;
+    /** 责任人 */
+    responsiblePersonName?:  string;
     /** 采购日期 */
     purchaseDate?:  Date;
     /** 采购价格 */
