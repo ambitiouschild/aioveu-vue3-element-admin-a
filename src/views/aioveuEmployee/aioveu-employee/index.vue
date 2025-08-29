@@ -433,7 +433,7 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="状态：0-离职，1-在职,2-休假,3-实习" prop="status">
+                <el-form-item label="状态" prop="status">
                   <dict v-model="formData.status" code="EmployeeStatus" />
                 </el-form-item>
 
