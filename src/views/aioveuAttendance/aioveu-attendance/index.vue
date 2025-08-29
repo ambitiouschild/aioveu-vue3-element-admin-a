@@ -269,21 +269,11 @@
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
 
-                <!-- 修改：将所属部门ID改为所属部门名称 -->
                 <el-form-item label="员工姓名" prop="employeeName">
-                  <el-select
-                    v-model="formData.employeeId"
+                  <el-input
+                    v-model="formData.employeeName"
                     placeholder="员工姓名"
-                    clearable
-                    filterable
-                  >
-                    <el-option
-                      v-for="employee in employeeOptions"
-                      :key="employee.employeeId"
-                      :label="employee.employeeName"
-                      :value="employee.employeeId"
-                    />
-                  </el-select>
+                  />
                 </el-form-item>
 
                 <el-form-item label="日期" prop="date">
@@ -430,13 +420,14 @@
 
   /** 打开考勤信息弹窗 */
   function handleOpenDialog(attendanceId?: number) {
-    dialog.visible = true;
+
     editingAttendanceId.value = attendanceId; // 保存ID
 
     if (attendanceId) {
       dialog.title = "修改考勤信息";
             AioveuAttendanceAPI.getFormData(attendanceId).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增考勤信息";

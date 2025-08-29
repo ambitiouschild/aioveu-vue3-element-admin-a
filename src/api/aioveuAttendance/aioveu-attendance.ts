@@ -92,6 +92,8 @@ export interface AioveuAttendancePageQuery extends PageQuery {
 export interface AioveuAttendanceForm {
     /** 员工ID */
     employeeId?:  number;
+    /** 员工姓名 */
+    employeeName?: string;
     /** 日期 */
     date?:  Date;
     /** 上班打卡时间 */
