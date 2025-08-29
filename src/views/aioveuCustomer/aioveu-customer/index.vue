@@ -167,13 +167,6 @@
                       </template>
                     </el-table-column>
                     <el-table-column
-                        key="industryId"
-                        label="行业分类ID"
-                        prop="industryId"
-                        min-width="150"
-                        align="center"
-                    />
-                    <el-table-column
                       label="信用等级"
                       min-width="150"
                       align="center"
@@ -377,31 +370,48 @@
                 </el-form-item>
 
                 <el-form-item label="客户类型" prop="type">
-                      <el-input
-                          v-model="formData.type"
-                          placeholder="客户类型"
-                      />
-                </el-form-item>
-
-                <el-form-item label="行业分类ID" prop="industryId">
-                      <el-input
-                          v-model="formData.industryId"
-                          placeholder="行业分类ID"
-                      />
+                  <el-select
+                    v-model="formData.type"
+                    placeholder="客户类型"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in typeOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="信用等级" prop="creditRating">
-                      <el-input
-                          v-model="formData.creditRating"
-                          placeholder="信用等级"
-                      />
+                  <el-select
+                    v-model="formData.creditRating"
+                    placeholder="信用等级"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in creditRatingOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="客户状态" prop="customerStatus">
-                      <el-input
-                          v-model="formData.customerStatus"
-                          placeholder="客户状态"
-                      />
+                  <el-select
+                    v-model="formData.customerStatus"
+                    placeholder="客户状态"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in customerStatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="客户地址" prop="address">
@@ -506,17 +516,25 @@
                 </el-form-item>
 
                 <el-form-item label="客户来源" prop="source">
-                      <el-input
-                          v-model="formData.source"
-                          placeholder="客户来源"
-                      />
+                  <el-select
+                    v-model="formData.source"
+                    placeholder="客户来源"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in sourceOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
-                <el-form-item label="销售负责人ID" prop="salesRepId">
-                      <el-input
-                          v-model="formData.salesRepId"
-                          placeholder="销售负责人ID"
-                      />
+                <el-form-item label="销售负责人" prop="salesRepName">
+                  <el-input
+                    v-model="formData.salesRepName"
+                    placeholder="销售负责人"
+                  />
                 </el-form-item>
 
       </el-form>
@@ -537,7 +555,8 @@
   });
 
   import AioveuCustomerAPI, { AioveuCustomerPageVO, AioveuCustomerForm, AioveuCustomerPageQuery } from "@/api/aioveuCustomer/aioveu-customer";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -558,6 +577,19 @@
     title: "",
     visible: false,
   });
+
+  // 选项
+  const typeOptions = ref<DictItemOption[]>([])
+  // 选项
+  const creditRatingOptions = ref<DictItemOption[]>([])
+  // 选项
+  const customerStatusOptions = ref<DictItemOption[]>([])
+  // 选项
+  const sourceOptions = ref<DictItemOption[]>([])
+
+
+
+
 
   // 客户信息表单数据
   const formData = reactive<AioveuCustomerForm>({});
@@ -601,7 +633,7 @@
 
   /** 打开客户信息弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingCustomerId.value = id; // 保存ID
 
@@ -609,6 +641,7 @@
       dialog.title = "修改客户信息";
             AioveuCustomerAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增客户信息";
@@ -648,12 +681,14 @@
 
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
 
     // 清除编辑ID
     editingCustomerId.value = undefined;
+    }, 300);
   }
 
   /** 删除客户信息 */
@@ -684,7 +719,26 @@
     );
   }
 
+  // 加载字典
+  function loadOptions() {
+    DictAPI.getDictItems('customer_customer_type').then(response => {
+      typeOptions.value = response
+    })
+
+    DictAPI.getDictItems('customer_credit_rating').then(response => {
+      creditRatingOptions.value = response
+    })
+
+    DictAPI.getDictItems('customer_status').then(response => {
+      customerStatusOptions.value = response
+    })
+
+    DictAPI.getDictItems('customer_source').then(response => {
+      sourceOptions.value = response
+    })
+  }
   onMounted(() => {
     handleQuery();
+    loadOptions()
   });
 </script>

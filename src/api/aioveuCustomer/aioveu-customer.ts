@@ -138,6 +138,8 @@ export interface AioveuCustomerForm {
     source?:  number;
     /** 销售负责人ID */
     salesRepId?:  number;
+    /** 销售负责人 */
+    salesRepName?:  string;
 }
 
 /** 客户信息分页对象 */
