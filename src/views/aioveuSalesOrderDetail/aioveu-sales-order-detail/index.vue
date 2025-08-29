@@ -333,15 +333,8 @@
                 </el-form-item>
 
                 <el-form-item label="发货仓库" prop="warehouseName">
-                  <el-input
-                    v-model="formData.warehouseName"
-                    placeholder="发货仓库"
-                  />
-                </el-form-item>
-
-                <el-form-item label="发货仓库" prop="warehouseName">
                   <el-select
-                    v-model="formData.warehouseName"
+                    v-model="formData.warehouseId"
                     placeholder="发货仓库"
                     clearable
                   >
@@ -352,13 +345,6 @@
                       :value="Number(item.warehouseId)"
                     />
                   </el-select>
-                </el-form-item>
-
-                <el-form-item label="明细状态" prop="status">
-                      <el-input
-                          v-model="formData.status"
-                          placeholder="明细状态"
-                      />
                 </el-form-item>
 
                 <el-form-item label="明细状态" prop="status">
