@@ -289,13 +289,15 @@
 
   /** 打开公司部门组织结构弹窗 */
   function handleOpenDialog(deptId?: number) {
-    dialog.visible = true;
+
     editingdeptId.value = deptId; // 保存部门ID
 
     if (deptId) {
       dialog.title = "修改公司部门组织结构";
             AioveuDepartmentAPI.getFormData(deptId).then((data) => {
         Object.assign(formData, data);
+              //先准备数据，再显示弹窗
+              dialog.visible = true;
 
       });
     } else {
