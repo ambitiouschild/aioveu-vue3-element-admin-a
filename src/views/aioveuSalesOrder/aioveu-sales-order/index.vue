@@ -337,18 +337,18 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="客户ID" prop="customerId">
-                      <el-input
-                          v-model="formData.customerId"
-                          placeholder="客户ID"
-                      />
+                <el-form-item label="客户" prop="customerName">
+                  <el-input
+                    v-model="formData.customerName"
+                    placeholder="客户"
+                  />
                 </el-form-item>
 
-                <el-form-item label="联系人ID" prop="contactId">
-                      <el-input
-                          v-model="formData.contactId"
-                          placeholder="联系人ID"
-                      />
+                <el-form-item label="联系人" prop="contactName">
+                  <el-input
+                    v-model="formData.contactName"
+                    placeholder="联系人"
+                  />
                 </el-form-item>
 
                 <el-form-item label="下单时间" prop="orderDate">
@@ -423,24 +423,48 @@
                 </el-form-item>
 
                 <el-form-item label="付款条件" prop="paymentTerms">
-                      <el-input
-                          v-model="formData.paymentTerms"
-                          placeholder="付款条件：1-预付全款，2-货到付款，3-月结30天，4-月结60天，5-其他"
-                      />
+                  <el-select
+                    v-model="formData.paymentTerms"
+                    placeholder="付款条件"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in paymentTermsOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="支付状态" prop="paymentStatus">
-                      <el-input
-                          v-model="formData.paymentStatus"
-                          placeholder="支付状态"
-                      />
+                  <el-select
+                    v-model="formData.paymentStatus"
+                    placeholder="支付状态"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in paymentStatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="订单状态" prop="orderStatus">
-                      <el-input
-                          v-model="formData.orderStatus"
-                          placeholder="订单状态"
-                      />
+                  <el-select
+                    v-model="formData.orderStatus"
+                    placeholder="订单状态"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in orderStatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="收货地址" prop="shippingAddress">
@@ -451,10 +475,18 @@
                 </el-form-item>
 
                 <el-form-item label="运输方式" prop="shippingMethod">
-                      <el-input
-                          v-model="formData.shippingMethod"
-                          placeholder="运输方式"
-                      />
+                  <el-select
+                    v-model="formData.shippingMethod"
+                    placeholder="运输方式"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in shippingMethodOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="物流单号" prop="trackingNo">
@@ -464,18 +496,18 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="销售负责人ID" prop="salesRepId">
-                      <el-input
-                          v-model="formData.salesRepId"
-                          placeholder="销售负责人ID"
-                      />
+                <el-form-item label="销售负责人" prop="salesRepName">
+                  <el-input
+                    v-model="formData.salesRepName"
+                    placeholder="销售负责人"
+                  />
                 </el-form-item>
 
-                <el-form-item label="操作员ID" prop="operatorId">
-                      <el-input
-                          v-model="formData.operatorId"
-                          placeholder="操作员ID"
-                      />
+                <el-form-item label="操作员ID" prop="operatorName">
+                  <el-input
+                    v-model="formData.operatorName"
+                    placeholder="操作员ID"
+                  />
                 </el-form-item>
 
                 <el-form-item label="备注" prop="notes">
@@ -503,7 +535,8 @@
   });
 
   import AioveuSalesOrderAPI, { AioveuSalesOrderPageVO, AioveuSalesOrderForm, AioveuSalesOrderPageQuery } from "@/api/aioveuSalesOrder/aioveu-sales-order";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -524,6 +557,16 @@
     title: "",
     visible: false,
   });
+
+  // 选项
+  const paymentTermsOptions = ref<DictItemOption[]>([])
+  // 选项
+  const paymentStatusOptions = ref<DictItemOption[]>([])
+  // 选项
+  const orderStatusOptions = ref<DictItemOption[]>([])
+  // 选项
+  const shippingMethodOptions = ref<DictItemOption[]>([])
+
 
   // 销售订单表单数据
   const formData = reactive<AioveuSalesOrderForm>({});
@@ -569,7 +612,7 @@
 
   /** 打开销售订单弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingSalesOrderId.value = id; // 保存ID
 
@@ -577,6 +620,7 @@
       dialog.title = "修改销售订单";
             AioveuSalesOrderAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增销售订单";
@@ -616,13 +660,16 @@
 
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
 
 
     // 清除编辑ID
     editingSalesOrderId.value = undefined;
+    }, 300);
+
   }
 
   /** 删除销售订单 */
@@ -653,7 +700,28 @@
     );
   }
 
+  // 加载字典
+  function loadOptions() {
+    DictAPI.getDictItems('salesOrder_payment_terms').then(response => {
+      paymentTermsOptions.value = response
+    })
+
+    DictAPI.getDictItems('salesOrder_payment_status').then(response => {
+      paymentStatusOptions.value = response
+    })
+
+    DictAPI.getDictItems('salesOrder_order_status').then(response => {
+      orderStatusOptions.value = response
+    })
+
+    DictAPI.getDictItems('salesOrder_shipping_method').then(response => {
+      shippingMethodOptions.value = response
+    })
+
+  }
+
   onMounted(() => {
     handleQuery();
+    loadOptions()
   });
 </script>

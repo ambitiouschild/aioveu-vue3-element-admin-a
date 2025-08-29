@@ -92,8 +92,12 @@ export interface AioveuSalesOrderForm {
     orderNo?:  string;
     /** 客户ID */
     customerId?:  number;
+    /** 客户 */
+    customerName?:  string;
     /** 联系人ID */
     contactId?:  number;
+    /** 联系人 */
+    contactName?:  string;
     /** 下单时间 */
     orderDate?:  Date;
     /** 预计交货日期 */
@@ -126,8 +130,12 @@ export interface AioveuSalesOrderForm {
     trackingNo?:  string;
     /** 销售负责人ID */
     salesRepId?:  number;
+    /** 销售负责人 */
+    salesRepName?:  string;
     /** 操作员ID */
     operatorId?:  number;
+    /** 操作员 */
+    operatorName?:  string;
     /** 备注 */
     notes?:  string;
 }
