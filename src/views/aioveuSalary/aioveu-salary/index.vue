@@ -201,7 +201,7 @@
                     />
                     <el-table-column
                         key="employeeName"
-                        label="员工ID"
+                        label="员工"
                         prop="employeeName"
                         min-width="150"
                         align="center"
@@ -363,10 +363,10 @@
         @close="handleCloseDialog"
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
-                <el-form-item label="员工ID" prop="employeeName">
+                <el-form-item label="员工" prop="employeeName">
                       <el-input
                           v-model="formData.employeeName"
-                          placeholder="员工ID"
+                          placeholder="员工"
                       />
                 </el-form-item>
 
