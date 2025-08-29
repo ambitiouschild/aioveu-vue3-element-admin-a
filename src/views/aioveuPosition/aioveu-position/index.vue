@@ -212,21 +212,11 @@
                           placeholder="岗位名称"
                       />
                 </el-form-item>
-        <!-- 修改：将所属部门ID改为所属部门名称 -->
-                <el-form-item label="所属部门" prop="deptId">
-                      <el-select
-                        v-model="formData.deptId"
-                        placeholder="请选择部门"
-                        clearable
-                        filterable
-                      >
-                        <el-option
-                          v-for="dept in deptOptions"
-                          :key="dept.deptId"
-                          :label="dept.deptName"
-                          :value="dept.deptId"
-                        />
-                      </el-select>
+                <el-form-item label="岗位名称" prop="deptName">
+                  <el-input
+                    v-model="formData.deptName"
+                    placeholder="岗位名称"
+                  />
                 </el-form-item>
 
                 <el-form-item label="职级(1-10)" prop="positionLevel">
@@ -294,6 +284,7 @@
     positionName:  '',
     /** 所属部门ID */
     deptId:  undefined,
+    deptName:'',
     /** 职级(1-10) */
     positionLevel:  undefined,
     /** 岗位描述 */
@@ -339,13 +330,15 @@
 
   /** 打开公司岗位信息弹窗 */
   function handleOpenDialog(positionId?: number) {
-    dialog.visible = true;
+
     editingpositionId.value = positionId; // 保存员工ID
 
     if (positionId) {
       dialog.title = "修改公司岗位信息";
             AioveuPositionAPI.getFormData(positionId).then((data) => {
         Object.assign(formData, data);
+              //先准备数据，再显示弹窗
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增公司岗位信息";
