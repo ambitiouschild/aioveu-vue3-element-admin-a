@@ -87,6 +87,9 @@ export interface AioveuMaterialForm {
     name?:  string;
     /** 分类ID */
     categoryId?:  number;
+    /** 分类名称 */
+    categoryName?:  string;
+
     /** 采购单价 */
     purchasePrice?:  number;
     /** 供应商ID */

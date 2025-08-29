@@ -223,12 +223,11 @@
                           placeholder="物资名称"
                       />
                 </el-form-item>
-
-                <el-form-item label="分类ID" prop="categoryId">
-                      <el-input
-                          v-model="formData.categoryId"
-                          placeholder="分类ID"
-                      />
+                <el-form-item label="物资分类" prop="categoryName">
+                  <el-input
+                    v-model="formData.categoryName"
+                    placeholder="物资分类"
+                  />
                 </el-form-item>
 
                 <el-form-item label="采购单价" prop="purchasePrice">
@@ -260,10 +259,18 @@
                 </el-form-item>
 
                 <el-form-item label="启用状态" prop="isActive">
-                      <el-input
-                          v-model="formData.isActive"
-                          placeholder="启用状态"
-                      />
+                  <el-select
+                    v-model="formData.isActive"
+                    placeholder="启用状态"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in isActiveOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="商品条码" prop="barcode">
@@ -291,7 +298,8 @@
   });
 
   import AioveuMaterialAPI, { AioveuMaterialPageVO, AioveuMaterialForm, AioveuMaterialPageQuery } from "@/api/aioveuMaterial/aioveu-material";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -312,6 +320,9 @@
     title: "",
     visible: false,
   });
+
+  // 选项
+  const isActiveOptions = ref<DictItemOption[]>([])
 
   // 物资表单数据
   const formData = reactive<AioveuMaterialForm>({});
@@ -355,7 +366,7 @@
 
   /** 打开物资弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingMaterialId.value = id; // 保存ID
 
@@ -363,6 +374,7 @@
       dialog.title = "修改物资";
             AioveuMaterialAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增物资";
@@ -402,11 +414,13 @@
 
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
     // 清除编辑ID
     editingMaterialId.value = undefined;
+    }, 300);
   }
 
   /** 删除物资 */
@@ -437,7 +451,15 @@
     );
   }
 
+
+  // 加载字典
+  function loadIsActiveOptionsOptions() {
+    DictAPI.getDictItems('material_is_active').then(response => {
+      isActiveOptions.value = response
+    })
+  }
   onMounted(() => {
     handleQuery();
+    loadIsActiveOptionsOptions()
   });
 </script>
