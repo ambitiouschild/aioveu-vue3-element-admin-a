@@ -92,6 +92,21 @@ export interface AioveuWarehouseForm {
     code?:  string;
     /** 仓库位置 */
     location?:  string;
+
+    /** 仓库面积 */
+    area?:  number;
+    /** 存储容量 */
+    capacity?:  number;
+    /** 负责人 */
+    managerId?:  number;
+    /** 负责人 */
+    managerName?:  string;
+    /** 联系电话 */
+    contactPhone?:  string;
+    /** 仓库描述 */
+    description?:  string;
+    /** 启用状态 */
+    isActive?:  number;
 }
 
 /** 仓库信息分页对象 */

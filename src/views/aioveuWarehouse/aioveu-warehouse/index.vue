@@ -251,6 +251,56 @@
                       />
                 </el-form-item>
 
+                <el-form-item label="仓库面积" prop="area">
+                  <el-input
+                    v-model="formData.area"
+                    placeholder="仓库面积"
+                  />
+                </el-form-item>
+
+                <el-form-item label="存储容量" prop="capacity">
+                  <el-input
+                    v-model="formData.capacity"
+                    placeholder="存储容量"
+                  />
+                </el-form-item>
+
+                <el-form-item label="负责人" prop="managerName">
+                  <el-input
+                    v-model="formData.managerName"
+                    placeholder="负责人"
+                  />
+                </el-form-item>
+
+                <el-form-item label="联系电话" prop="contactPhone">
+                  <el-input
+                    v-model="formData.contactPhone"
+                    placeholder="联系电话"
+                  />
+                </el-form-item>
+
+                <el-form-item label="仓库描述" prop="description">
+                  <el-input
+                    v-model="formData.description"
+                    placeholder="仓库描述"
+                  />
+                </el-form-item>
+
+                <el-form-item label="启用状态" prop="isActive">
+                  <el-select
+                    v-model="formData.isActive"
+                    placeholder="启用状态"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in isActiveOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
+                </el-form-item>
+
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -269,7 +319,8 @@
   });
 
   import AioveuWarehouseAPI, { AioveuWarehousePageVO, AioveuWarehouseForm, AioveuWarehousePageQuery } from "@/api/aioveuWarehouse/aioveu-warehouse";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -290,6 +341,9 @@
     title: "",
     visible: false,
   });
+
+  // 选项
+  const isActiveOptions = ref<DictItemOption[]>([])
 
   // 仓库信息表单数据
   const formData = reactive<AioveuWarehouseForm>({});
@@ -331,7 +385,7 @@
 
   /** 打开仓库信息弹窗 */
   function handleOpenDialog(id?: number) {
-    dialog.visible = true;
+
 
     editingWarehouseId.value = id; // 保存ID
 
@@ -339,6 +393,7 @@
       dialog.title = "修改仓库信息";
             AioveuWarehouseAPI.getFormData(id).then((data) => {
         Object.assign(formData, data);
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增仓库信息";
@@ -378,12 +433,14 @@
 
     // 关键修复：在关闭弹窗时重置加载状态
     loading.value = false;
-
+    // 延迟重置表单（等待动画完成）
+    setTimeout(() => {
     dataFormRef.value.resetFields();
     dataFormRef.value.clearValidate();
 
     // 清除编辑ID
     editingWarehouseId.value = undefined;
+    }, 300);
 
   }
 
@@ -415,7 +472,15 @@
     );
   }
 
+  // 加载字典
+  function loadIsActiveOptions() {
+    DictAPI.getDictItems('warehouse_is_active').then(response => {
+      isActiveOptions.value = response
+    })
+  }
+
   onMounted(() => {
     handleQuery();
+    loadIsActiveOptions();
   });
 </script>
