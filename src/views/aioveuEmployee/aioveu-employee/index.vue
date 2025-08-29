@@ -403,37 +403,17 @@
                           placeholder="邮箱"
                       />
                 </el-form-item>
-                <!-- 修改：将所属部门ID改为所属部门名称 -->
-                <el-form-item label="所属部门" prop="deptId">
-                    <el-select
-                      v-model="formData.deptId"
-                      placeholder="请选择部门"
-                      clearable
-                      filterable
-                    >
-                      <el-option
-                        v-for="dept in deptOptions"
-                        :key="dept.deptId"
-                        :label="dept.deptName"
-                        :value="dept.deptId"
-                      />
-                    </el-select>
+                <el-form-item label="所属部门" prop="deptName">
+                  <el-input
+                    v-model="formData.deptName"
+                    placeholder="所属部门"
+                  />
                 </el-form-item>
-
-                <el-form-item label="岗位" prop="positionId">
-                  <el-select
-                    v-model="formData.positionId"
+                <el-form-item label="岗位" prop="positionName">
+                  <el-input
+                    v-model="formData.positionName"
                     placeholder="请选择岗位"
-                    clearable
-                    filterable
-                  >
-                    <el-option
-                      v-for="position in positionOptions"
-                      :key="position.positionId"
-                      :label="position.positionName"
-                      :value="position.positionId"
-                    />
-                  </el-select>
+                  />
                 </el-form-item>
 
                 <el-form-item label="入职日期" prop="hireDate">
@@ -512,30 +492,30 @@
   // 员工信息表单数据
   const formData = reactive<AioveuEmployeeForm>({
 
-    /** 员工编号 */
-    empCode:  '100',
-    /** 姓名 */
-    name:  '雒世松',
-    /** 性别 */
-    gender:  1,
-    /** 出生日期 */
-    birthDate:  new Date('1999-01-01'), // 转换为 Date 对象,
-    /** 身份证号 */
-    idCard:  '410',
-    /** 手机号码 */
-    phone:  '13061656199',
-    /** 邮箱 */
-    email:  'ambitiouschild@qq.com',
-    /** 所属部门 */
-    deptId:  1,
-    /** 岗位ID */
-    positionId:  2,
-    /** 入职日期 - 设置为当前日期 */
-    hireDate:  new Date(), // 当前日期对象,
-    /** 基本薪资 */
-    salary:  50000,
-    /** 状态：0-离职，1-在职,2-休假,3-实习 */
-    status:  1,
+    // /** 员工编号 */
+    // empCode:  '100',
+    // /** 姓名 */
+    // name:  '雒世松',
+    // /** 性别 */
+    // gender:  1,
+    // /** 出生日期 */
+    // birthDate:  new Date('1999-01-01'), // 转换为 Date 对象,
+    // /** 身份证号 */
+    // idCard:  '410',
+    // /** 手机号码 */
+    // phone:  '13061656199',
+    // /** 邮箱 */
+    // email:  'ambitiouschild@qq.com',
+    // /** 所属部门 */
+    // deptId:  1,
+    // /** 岗位ID */
+    // positionId:  2,
+    // /** 入职日期 - 设置为当前日期 */
+    // hireDate:  new Date(), // 当前日期对象,
+    // /** 基本薪资 */
+    // salary:  50000,
+    // /** 状态：0-离职，1-在职,2-休假,3-实习 */
+    // status:  1,
   });
 
   // 员工信息表单校验规则
@@ -586,7 +566,7 @@
 
   /** 打开员工信息弹窗 */
   function handleOpenDialog(employeeId?: number) {
-    dialog.visible = true;
+
     editingEmployeeId.value = employeeId; // 保存员工ID
 
     if (employeeId) {
@@ -594,6 +574,8 @@
             AioveuEmployeeAPI.getFormData(employeeId).then((data) => {
               // 将获取的数据赋值给 formData
         Object.assign(formData, data);
+              //先准备数据，再显示弹窗
+              dialog.visible = true;
       });
     } else {
       dialog.title = "新增员工信息";

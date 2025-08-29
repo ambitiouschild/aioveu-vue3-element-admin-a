@@ -131,8 +131,12 @@ export interface AioveuEmployeeForm {
     email?:  string;
     /** 所属部门 */
     deptId?:  number;
+  /** 所属部门名称 */
+  deptName?:  string;
     /** 岗位ID */
     positionId?:  number;
+  /** 岗位名称 */
+  positionName?:  string;
     /** 入职日期 */
     hireDate?:  Date;
     /** 基本薪资 */

@@ -104,6 +104,7 @@ export interface AioveuPositionForm {
     positionName?:  string;
     /** 所属部门ID */
     deptId?:  number;
+    deptName?: string;
     /** 职级(1-10) */
     positionLevel?:  number;
     /** 岗位描述 */
