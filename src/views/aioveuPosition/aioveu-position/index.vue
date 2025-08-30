@@ -25,6 +25,7 @@
                       placeholder="请选择部门"
                       clearable
                       filterable
+                      @keyup.enter="handleQuery()"
                     >
                       <!-- 遍历部门选项列表 -->
                       <!-- 使用部门ID作为唯一键，确保高效渲染 -->
@@ -38,13 +39,22 @@
                       />
                     </el-select>
                 </el-form-item>
+
                 <el-form-item label="职级(1-10)" prop="positionLevel">
-                      <el-input
-                          v-model="queryParams.positionLevel"
-                          placeholder="职级(1-10)"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.positionLevel"
+                    placeholder="职级(1-10)"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in positionLevelOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="岗位描述" prop="description">
                       <el-input type="textarea"
@@ -52,22 +62,22 @@
                                 placeholder="岗位描述"
                       />
                 </el-form-item>
-                <el-form-item label="创建时间" prop="createTime">
-                      <el-date-picker
-                          v-model="queryParams.createTime"
-                          type="datetime"
-                          placeholder="创建时间"
-                          value-format="YYYY-MM-DD HH:mm:ss"
-                      />
-                </el-form-item>
-                <el-form-item label="更新时间" prop="updateTime">
-                      <el-date-picker
-                          v-model="queryParams.updateTime"
-                          type="datetime"
-                          placeholder="更新时间"
-                          value-format="YYYY-MM-DD HH:mm:ss"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="创建时间" prop="createTime">-->
+<!--                      <el-date-picker-->
+<!--                          v-model="queryParams.createTime"-->
+<!--                          type="datetime"-->
+<!--                          placeholder="创建时间"-->
+<!--                          value-format="YYYY-MM-DD HH:mm:ss"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="更新时间" prop="updateTime">-->
+<!--                      <el-date-picker-->
+<!--                          v-model="queryParams.updateTime"-->
+<!--                          type="datetime"-->
+<!--                          placeholder="更新时间"-->
+<!--                          value-format="YYYY-MM-DD HH:mm:ss"-->
+<!--                      />-->
+<!--                </el-form-item>-->
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
             <template #icon><Search /></template>
@@ -290,7 +300,6 @@
   // 选项
   const positionLevelOptions = ref<DictItemOption[]>([])
 
-
   // 公司岗位信息表单数据
   const formData = reactive<AioveuPositionForm>({
     /** 岗位名称 */
@@ -469,7 +478,6 @@
       positionLevelOptions.value = response
     })
   }
-
 
   onMounted(() => {
     handleQuery();
