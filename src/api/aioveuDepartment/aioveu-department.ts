@@ -109,6 +109,8 @@ export interface AioveuDepartmentPageQuery extends PageQuery {
     deptName?: string;
     /** 上级部门ID */
     parentDeptId?: number;
+    /** 上级部门 */
+    parentDeptName?: string;
     /** 部门经理 */
     managerId?: number;
     /** 创建时间 */

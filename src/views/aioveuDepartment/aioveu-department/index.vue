@@ -18,10 +18,10 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="上级部门ID" prop="parentDeptId">
+                <el-form-item label="上级部门" prop="parentDeptName">
                       <el-input
-                          v-model="queryParams.parentDeptId"
-                          placeholder="上级部门ID"
+                          v-model="queryParams.parentDeptName"
+                          placeholder="上级部门"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
@@ -34,22 +34,22 @@
 <!--                          @keyup.enter="handleQuery()"-->
 <!--                      />-->
 <!--                </el-form-item>-->
-                <el-form-item label="创建时间" prop="createTime">
-                      <el-date-picker
-                          v-model="queryParams.createTime"
-                          type="datetime"
-                          placeholder="创建时间"
-                          value-format="YYYY-MM-DD HH:mm:ss"
-                      />
-                </el-form-item>
-                <el-form-item label="更新时间" prop="updateTime">
-                      <el-date-picker
-                          v-model="queryParams.updateTime"
-                          type="datetime"
-                          placeholder="更新时间"
-                          value-format="YYYY-MM-DD HH:mm:ss"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="创建时间" prop="createTime">-->
+<!--                      <el-date-picker-->
+<!--                          v-model="queryParams.createTime"-->
+<!--                          type="datetime"-->
+<!--                          placeholder="创建时间"-->
+<!--                          value-format="YYYY-MM-DD HH:mm:ss"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="更新时间" prop="updateTime">-->
+<!--                      <el-date-picker-->
+<!--                          v-model="queryParams.updateTime"-->
+<!--                          type="datetime"-->
+<!--                          placeholder="更新时间"-->
+<!--                          value-format="YYYY-MM-DD HH:mm:ss"-->
+<!--                      />-->
+<!--                </el-form-item>-->
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
             <template #icon><Search /></template>

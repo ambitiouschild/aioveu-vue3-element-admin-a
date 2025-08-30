@@ -108,17 +108,17 @@
                     />
                   </el-select>
                 </el-form-item>
-                <el-form-item label="入职日期" prop="hireDate">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.hireDate"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="入职日期" prop="hireDate">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.hireDate"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
                 <el-form-item label="基本薪资" prop="salary">
                       <el-input
                           v-model="queryParams.salary"
@@ -127,36 +127,43 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="状态：0-离职，1-在职,2-休假,3-实习" prop="status">
-                      <el-input
-                          v-model="queryParams.status"
-                          placeholder="状态：0-离职，1-在职,2-休假,3-实习"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                <el-form-item label="状态" prop="status">
+                  <el-select
+                    v-model="queryParams.status"
+                    placeholder="状态"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="item in pstatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
-                <el-form-item label="创建时间" prop="createTime">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.createTime"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
-                <el-form-item label="更新时间" prop="updateTime">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.updateTime"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="创建时间" prop="createTime">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.createTime"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="更新时间" prop="updateTime">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.updateTime"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
             <template #icon><Search /></template>
@@ -460,7 +467,8 @@
   import AioveuDepartmentAPI , { DeptOptionVO } from "@/api/aioveuDepartment/aioveu-department";
 
   import AioveuPositionAPI , { PositionOptionVO } from "@/api/aioveuPosition/aioveu-position";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -488,6 +496,9 @@
 
   // 新增：岗位选项
   const positionOptions = ref<PositionOptionVO[]>([]);
+  // 选项
+  const pstatusOptions = ref<DictItemOption[]>([])
+
 
   // 员工信息表单数据
   const formData = reactive<AioveuEmployeeForm>({
@@ -722,12 +733,21 @@
       });
   }
 
+
+  // 加载字典
+  function loadStatusOptions() {
+    DictAPI.getDictItems('EmployeeStatus').then(response => {
+      pstatusOptions.value = response
+    })
+  }
+
   onMounted(() => {
     handleQuery();
     //在 onMounted钩子中调用了 loadDepartments()函数,确保函数被正确使用
     loadDepartments();
     //在 onMounted钩子中调用了 loadPositions()函数,确保函数被正确使用
     loadPositions();
+    loadStatusOptions()
 
   });
 </script>
