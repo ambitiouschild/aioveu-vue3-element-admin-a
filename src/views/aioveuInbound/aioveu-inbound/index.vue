@@ -18,44 +18,54 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="物资ID" prop="materialId">
+                <el-form-item label="物资" prop="materialName">
                       <el-input
-                          v-model="queryParams.materialId"
-                          placeholder="物资ID"
+                          v-model="queryParams.materialName"
+                          placeholder="物资"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="仓库ID" prop="warehouseId">
+                <el-form-item label="仓库" prop="warehouseName">
                       <el-input
-                          v-model="queryParams.warehouseId"
-                          placeholder="仓库ID"
+                          v-model="queryParams.warehouseName"
+                          placeholder="仓库"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+
                 <el-form-item label="入库类型" prop="inboundType">
-                      <el-input
-                          v-model="queryParams.inboundType"
-                          placeholder="入库类型"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.inboundType"
+                    placeholder="入库类型"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in inboundTypeOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
-                <el-form-item label="入库时间" prop="inTime">
-                      <el-date-picker
-                          v-model="queryParams.inTime"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD HH:mm:ss"
-                      />
-                </el-form-item>
-                <el-form-item label="操作员ID" prop="operatorId">
+
+<!--                <el-form-item label="入库时间" prop="inTime">-->
+<!--                      <el-date-picker-->
+<!--                          v-model="queryParams.inTime"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD HH:mm:ss"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+                <el-form-item label="操作员" prop="operatorName">
                       <el-input
-                          v-model="queryParams.operatorId"
-                          placeholder="操作员ID"
+                          v-model="queryParams.operatorName"
+                          placeholder="操作员"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
