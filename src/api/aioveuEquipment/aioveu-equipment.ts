@@ -76,10 +76,14 @@ export interface AioveuEquipmentPageQuery extends PageQuery {
     name?: string;
     /** 设备分类ID */
     categoryId?: number;
+    /** 设备分类 */
+    categoryName?: string;
     /** 序列号 */
     serialNo?: string;
     /** 责任人 */
     responsiblePerson?: number;
+    /** 责任人 */
+    responsiblePersonName?: string;
     /** 状态 */
     status?: number;
 }

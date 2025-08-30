@@ -26,10 +26,10 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="设备分类ID" prop="categoryId">
+                <el-form-item label="设备分类" prop="categoryName">
                       <el-input
-                          v-model="queryParams.categoryId"
-                          placeholder="设备分类ID"
+                          v-model="queryParams.categoryName"
+                          placeholder="设备分类"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
@@ -42,21 +42,30 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="责任人" prop="responsiblePerson">
+                <el-form-item label="责任人" prop="responsiblePersonName">
                       <el-input
-                          v-model="queryParams.responsiblePerson"
+                          v-model="queryParams.responsiblePersonName"
                           placeholder="责任人"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+
                 <el-form-item label="状态" prop="status">
-                      <el-input
-                          v-model="queryParams.status"
-                          placeholder="状态"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.status"
+                    placeholder="状态"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in statusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
