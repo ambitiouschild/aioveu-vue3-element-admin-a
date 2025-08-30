@@ -10,23 +10,12 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="员工ID" prop="employeeId">
+                <el-form-item label="员工" prop="employeeName">
                       <el-input
-                          v-model="queryParams.employeeId"
-                          placeholder="员工ID"
+                          v-model="queryParams.employeeName"
+                          placeholder="员工"
                           clearable
                           @keyup.enter="handleQuery()"
-                      />
-                </el-form-item>
-                <el-form-item label="工资周期（月份）" prop="salaryPeriod">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.salaryPeriod"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
                       />
                 </el-form-item>
                 <el-form-item label="基本工资" prop="baseSalary">
@@ -37,62 +26,62 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="绩效奖金" prop="performanceBonus">
-                      <el-input
-                          v-model="queryParams.performanceBonus"
-                          placeholder="绩效奖金"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
-                </el-form-item>
-                <el-form-item label="加班补贴" prop="overtimePay">
-                      <el-input
-                          v-model="queryParams.overtimePay"
-                          placeholder="加班补贴"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
-                </el-form-item>
-                <el-form-item label="各类津贴" prop="allowances">
-                      <el-input
-                          v-model="queryParams.allowances"
-                          placeholder="各类津贴"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
-                </el-form-item>
-                <el-form-item label="社保扣除" prop="socialSecurity">
-                      <el-input
-                          v-model="queryParams.socialSecurity"
-                          placeholder="社保扣除"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
-                </el-form-item>
-                <el-form-item label="住房公积金" prop="housingFund">
-                      <el-input
-                          v-model="queryParams.housingFund"
-                          placeholder="住房公积金"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
-                </el-form-item>
-                <el-form-item label="个人所得税" prop="tax">
-                      <el-input
-                          v-model="queryParams.tax"
-                          placeholder="个人所得税"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
-                </el-form-item>
-                <el-form-item label="其他扣款" prop="otherDeductions">
-                      <el-input
-                          v-model="queryParams.otherDeductions"
-                          placeholder="其他扣款"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="绩效奖金" prop="performanceBonus">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.performanceBonus"-->
+<!--                          placeholder="绩效奖金"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="加班补贴" prop="overtimePay">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.overtimePay"-->
+<!--                          placeholder="加班补贴"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="各类津贴" prop="allowances">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.allowances"-->
+<!--                          placeholder="各类津贴"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="社保扣除" prop="socialSecurity">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.socialSecurity"-->
+<!--                          placeholder="社保扣除"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="住房公积金" prop="housingFund">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.housingFund"-->
+<!--                          placeholder="住房公积金"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="个人所得税" prop="tax">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.tax"-->
+<!--                          placeholder="个人所得税"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="其他扣款" prop="otherDeductions">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.otherDeductions"-->
+<!--                          placeholder="其他扣款"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
                 <el-form-item label="实发工资" prop="netSalary">
                       <el-input
                           v-model="queryParams.netSalary"
@@ -101,47 +90,55 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="实际发放日期" prop="paymentDate">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.paymentDate"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="实际发放日期" prop="paymentDate">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.paymentDate"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
                 <el-form-item label="发放状态" prop="paymentStatus">
-                      <el-input
-                          v-model="queryParams.paymentStatus"
-                          placeholder="发放状态"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.paymentStatus"
+                    placeholder="发放状态"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in paymentStatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
-                <el-form-item label="创建时间" prop="createTime">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.createTime"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
-                <el-form-item label="更新时间" prop="updateTime">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.updateTime"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="创建时间" prop="createTime">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.createTime"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="更新时间" prop="updateTime">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.updateTime"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
             <template #icon><Search /></template>
