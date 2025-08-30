@@ -74,6 +74,8 @@ export interface AioveuMaterialPageQuery extends PageQuery {
     name?: string;
     /** 分类ID */
     categoryId?: number;
+    /** 分类 */
+    categoryName?: string;
     /** 启用状态 */
     isActive?: number;
     /** 商品条码 */

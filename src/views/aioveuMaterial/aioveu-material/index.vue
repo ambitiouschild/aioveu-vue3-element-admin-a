@@ -18,21 +18,29 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="分类ID" prop="categoryId">
+                <el-form-item label="物资分类" prop="categoryName">
                       <el-input
-                          v-model="queryParams.categoryId"
-                          placeholder="分类ID"
+                          v-model="queryParams.categoryName"
+                          placeholder="物资分类"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
                 <el-form-item label="启用状态" prop="isActive">
-                      <el-input
-                          v-model="queryParams.isActive"
-                          placeholder="启用状态"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.isActive"
+                    placeholder="启用状态"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in isActiveOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="商品条码" prop="barcode">
                       <el-input
