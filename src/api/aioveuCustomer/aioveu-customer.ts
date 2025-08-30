@@ -90,6 +90,8 @@ export interface AioveuCustomerPageQuery extends PageQuery {
     source?: number;
     /** 销售负责人ID */
     salesRepId?: number;
+
+  salesRepName?: string;
 }
 
 /** 客户信息表单对象 */

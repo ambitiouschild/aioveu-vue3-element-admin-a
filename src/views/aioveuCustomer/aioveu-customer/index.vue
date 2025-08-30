@@ -26,30 +26,58 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+
                 <el-form-item label="客户类型" prop="type">
-                      <el-input
-                          v-model="queryParams.type"
-                          placeholder="客户类型"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.type"
+                    placeholder="客户类型"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in typeOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="信用等级" prop="creditRating">
-                      <el-input
-                          v-model="queryParams.creditRating"
-                          placeholder="信用等级"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.creditRating"
+                    placeholder="信用等级"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in creditRatingOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="客户状态" prop="customerStatus">
-                      <el-input
-                          v-model="queryParams.customerStatus"
-                          placeholder="客户状态"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.customerStatus"
+                    placeholder="客户状态"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in customerStatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="所在城市" prop="city">
                       <el-input
                           v-model="queryParams.city"
@@ -74,18 +102,28 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+
                 <el-form-item label="客户来源" prop="source">
-                      <el-input
-                          v-model="queryParams.source"
-                          placeholder="客户来源"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.source"
+                    placeholder="客户来源"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in sourceOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
-                <el-form-item label="销售负责人ID" prop="salesRepId">
+
+                <el-form-item label="销售负责人" prop="salesRepName">
                       <el-input
-                          v-model="queryParams.salesRepId"
-                          placeholder="销售负责人ID"
+                          v-model="queryParams.salesRepName"
+                          placeholder="销售负责人"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
