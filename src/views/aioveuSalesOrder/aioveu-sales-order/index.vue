@@ -2,68 +2,96 @@
   <div class="app-container">
     <div class="search-container">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-                <el-form-item label="订单ID（主键）" prop="id">
+                <el-form-item label="订单ID" prop="id">
                       <el-input
                           v-model="queryParams.id"
-                          placeholder="订单ID（主键）"
+                          placeholder="订单ID"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="订单编号（唯一）" prop="orderNo">
+                <el-form-item label="订单编号" prop="orderNo">
                       <el-input
                           v-model="queryParams.orderNo"
-                          placeholder="订单编号（唯一）"
+                          placeholder="订单编号"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="客户ID" prop="customerId">
+                <el-form-item label="客户" prop="customerName">
                       <el-input
-                          v-model="queryParams.customerId"
-                          placeholder="客户ID"
+                          v-model="queryParams.customerName"
+                          placeholder="客户"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="下单时间" prop="orderDate">
-                      <el-date-picker
-                          v-model="queryParams.orderDate"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD HH:mm:ss"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="下单时间" prop="orderDate">-->
+<!--                      <el-date-picker-->
+<!--                          v-model="queryParams.orderDate"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD HH:mm:ss"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="支付状态" prop="paymentStatus">
-                      <el-input
-                          v-model="queryParams.paymentStatus"
-                          placeholder="支付状态"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.paymentStatus"
+                    placeholder="支付状态"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in paymentStatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="订单状态" prop="orderStatus">
-                      <el-input
-                          v-model="queryParams.orderStatus"
-                          placeholder="订单状态"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.orderStatus"
+                    placeholder="订单状态"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in orderStatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="运输方式" prop="shippingMethod">
-                      <el-input
-                          v-model="queryParams.shippingMethod"
-                          placeholder="运输方式"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.shippingMethod"
+                    placeholder="运输方式"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in shippingMethodOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
-                <el-form-item label="销售负责人ID" prop="salesRepId">
+
+                <el-form-item label="销售负责人" prop="salesRepName">
                       <el-input
-                          v-model="queryParams.salesRepId"
-                          placeholder="销售负责人ID"
+                          v-model="queryParams.salesRepName"
+                          placeholder="销售负责人"
                           clearable
                           @keyup.enter="handleQuery()"
                       />

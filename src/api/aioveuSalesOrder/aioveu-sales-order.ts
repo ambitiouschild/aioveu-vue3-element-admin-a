@@ -74,6 +74,9 @@ export interface AioveuSalesOrderPageQuery extends PageQuery {
     orderNo?: string;
     /** 客户ID */
     customerId?: number;
+
+  customerName?: string;
+
     /** 下单时间 */
     orderDate?: [string, string];
     /** 支付状态 */
@@ -84,6 +87,9 @@ export interface AioveuSalesOrderPageQuery extends PageQuery {
     shippingMethod?: number;
     /** 销售负责人ID */
     salesRepId?: number;
+
+  salesRepName?: string;
+
 }
 
 /** 销售订单表单对象 */
