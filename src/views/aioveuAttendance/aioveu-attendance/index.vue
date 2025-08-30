@@ -11,24 +11,13 @@
                       />
                 </el-form-item>
                 <!-- 修改：将所属部门ID改为所属部门名称 -->
-                <el-form-item label="员工姓名" prop="employeeId">
-                      <el-select
-                        v-model="queryParams.employeeId"
-                        placeholder="请选择员工姓名"
-                        clearable
-                        filterable
-                      >
-                        <!-- 遍历部门选项列表 -->
-                        <!-- 使用部门ID作为唯一键，确保高效渲染 -->
-                        <!-- 显示部门名称作为选项标签 -->
-                        <!-- 使用部门ID作为选项值 -->
-                        <el-option
-                          v-for="employee in employeeOptions"
-                          :key="employee.employeeId"
-                          :label="employee.employeeName"
-                          :value="employee.employeeId"
-                        />
-                      </el-select>
+                <el-form-item label="员工姓名" prop="employeeName">
+                    <el-input
+                      v-model="queryParams.employeeName"
+                      placeholder="员工姓名"
+                      clearable
+                      @keyup.enter="handleQuery()"
+                    />
                 </el-form-item>
                 <el-form-item label="日期" prop="date">
                       <el-date-picker
@@ -41,28 +30,28 @@
                           value-format="YYYY-MM-DD"
                       />
                 </el-form-item>
-                <el-form-item label="上班打卡时间" prop="checkinTime">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.checkinTime"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
-                <el-form-item label="下班打卡时间" prop="checkoutTime">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.checkoutTime"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="上班打卡时间" prop="checkinTime">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.checkinTime"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="下班打卡时间" prop="checkoutTime">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.checkoutTime"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
                 <el-form-item label="工作时长(小时)" prop="workHours">
                       <el-input
                           v-model="queryParams.workHours"
@@ -77,6 +66,7 @@
                       placeholder="请选择考勤状态"
                       clearable
                       filterable
+                      @keyup.enter="handleQuery()"
                     >
                       <!--  Element UI的选择框默认宽度会根据内容自动调整 -->
                       <!-- 当有filterable属性时，选择框会扩展以容纳输入框-->
@@ -89,28 +79,28 @@
                   </el-select>
                 </el-form-item>
 
-                <el-form-item label="创建时间" prop="createTime">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.createTime"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
-                <el-form-item label="更新时间" prop="updateTime">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.updateTime"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="创建时间" prop="createTime">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.createTime"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="更新时间" prop="updateTime">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.updateTime"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
             <template #icon><Search /></template>

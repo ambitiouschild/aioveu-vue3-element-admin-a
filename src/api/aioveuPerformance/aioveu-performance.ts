@@ -72,6 +72,8 @@ export interface AioveuPerformancePageQuery extends PageQuery {
     id?: number;
     /** 员工ID */
     employeeId?: number;
+    /** 员工 */
+    employeeName?: string;
     /** 考核年份 */
     periodYear?: number;
     /** 考核季度(1-4) */

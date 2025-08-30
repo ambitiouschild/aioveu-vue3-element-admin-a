@@ -10,10 +10,10 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="员工ID" prop="employeeId">
+                <el-form-item label="员工" prop="employeeName">
                       <el-input
-                          v-model="queryParams.employeeId"
-                          placeholder="员工ID"
+                          v-model="queryParams.employeeName"
+                          placeholder="员工"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
@@ -27,12 +27,20 @@
                       />
                 </el-form-item>
                 <el-form-item label="考核季度(1-4)" prop="periodQuarter">
-                      <el-input
-                          v-model="queryParams.periodQuarter"
-                          placeholder="考核季度(1-4)"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.periodQuarter"
+                    placeholder="考核季度(1-4)"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in periodQuarterOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="KPI评分(1-100分)" prop="kpiScore">
                       <el-input
@@ -50,35 +58,43 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="创建时间" prop="createTime">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.createTime"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
-                <el-form-item label="更新时间" prop="updateTime">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.updateTime"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="创建时间" prop="createTime">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.createTime"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="更新时间" prop="updateTime">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.updateTime"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
                 <el-form-item label="绩效等级" prop="performanceGrade">
-                      <el-input
-                          v-model="queryParams.performanceGrade"
-                          placeholder="绩效等级"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.performanceGrade"
+                    placeholder="绩效等级"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in performanceGradeOptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value"
+                    />
+                  </el-select>
                 </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
@@ -334,6 +350,9 @@
   // 选项
   const periodQuarterOptions = ref<DictItemOption[]>([])
 
+  // 选项
+  const performanceGradeOptions = ref<DictItemOption[]>([])
+
   // 员工绩效考评表格数据
   const pageData = ref<AioveuPerformancePageVO[]>([]);
 
@@ -481,10 +500,18 @@
       periodQuarterOptions.value = response
     })
   }
+  // 加载字典
+  function loadPerformanceGrade() {
+    DictAPI.getDictItems('performance_grade').then(response => {
+      performanceGradeOptions.value = response
+    })
+  }
+
 
 
   onMounted(() => {
     handleQuery();
     loadPeriodQuarterOptions();
+    loadPerformanceGrade()
   });
 </script>
