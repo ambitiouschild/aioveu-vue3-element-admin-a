@@ -26,36 +26,46 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="物资ID" prop="materialId">
+                <el-form-item label="物资" prop="materialName">
                       <el-input
-                          v-model="queryParams.materialId"
-                          placeholder="物资ID"
+                          v-model="queryParams.materialName"
+                          placeholder="物资"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="下单时间" prop="orderDate">
-                      <el-date-picker
-                          v-model="queryParams.orderDate"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD HH:mm:ss"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="下单时间" prop="orderDate">-->
+<!--                      <el-date-picker-->
+<!--                          v-model="queryParams.orderDate"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD HH:mm:ss"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="状态" prop="status">
-                      <el-input
-                          v-model="queryParams.status"
-                          placeholder="状态"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.status"
+                    placeholder="状态"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in statusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
-                <el-form-item label="申请人ID" prop="applicantId">
+
+                <el-form-item label="申请人" prop="applicantName">
                       <el-input
-                          v-model="queryParams.applicantId"
-                          placeholder="申请人ID"
+                          v-model="queryParams.applicantName"
+                          placeholder="申请人"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
