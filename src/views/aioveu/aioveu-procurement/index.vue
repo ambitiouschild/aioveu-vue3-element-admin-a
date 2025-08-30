@@ -119,14 +119,14 @@
                         align="center"
                         fixed="left"
                     />
-                    <el-table-column
-                        key="supplierId"
-                        label="供应商ID"
-                        prop="supplierId"
-                        min-width="150"
-                        align="center"
-                        fixed="left"
-                    />
+<!--                    <el-table-column-->
+<!--                        key="supplierId"-->
+<!--                        label="供应商ID"-->
+<!--                        prop="supplierId"-->
+<!--                        min-width="150"-->
+<!--                        align="center"-->
+<!--                        fixed="left"-->
+<!--                    />-->
                     <el-table-column
                       key="materialName"
                       label="物资"
@@ -306,12 +306,12 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="供应商ID" prop="supplierId">
-                      <el-input
-                          v-model="formData.supplierId"
-                          placeholder="供应商ID"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="供应商ID" prop="supplierId">-->
+<!--                      <el-input-->
+<!--                          v-model="formData.supplierId"-->
+<!--                          placeholder="供应商ID"-->
+<!--                      />-->
+<!--                </el-form-item>-->
 
                 <el-form-item label="物资" prop="materialName">
                   <el-input
