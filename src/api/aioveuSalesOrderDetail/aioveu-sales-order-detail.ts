@@ -72,10 +72,18 @@ export interface AioveuSalesOrderDetailPageQuery extends PageQuery {
     id?: number;
     /** 订单ID */
     orderId?: number;
+
+  orderName?: string;
+
     /** 物资ID */
     materialId?: number;
+
+  materialName?: string;
     /** 发货仓库ID */
     warehouseId?: number;
+
+
+  warehouseName?: string;
     /** 明细状态 */
     status?: number;
 }

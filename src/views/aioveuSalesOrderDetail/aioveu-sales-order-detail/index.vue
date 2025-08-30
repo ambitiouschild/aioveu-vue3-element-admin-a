@@ -10,38 +10,50 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="订单ID" prop="orderId">
+                <el-form-item label="订单" prop="orderName">
                       <el-input
-                          v-model="queryParams.orderId"
-                          placeholder="订单ID"
+                          v-model="queryParams.orderName"
+                          placeholder="订单"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="物资ID" prop="materialId">
+                <el-form-item label="物资" prop="materialName">
                       <el-input
-                          v-model="queryParams.materialId"
-                          placeholder="物资ID"
+                          v-model="queryParams.materialName"
+                          placeholder="物资"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="发货仓库ID" prop="warehouseId">
+                <el-form-item label="发货仓库" prop="warehouseName">
                       <el-input
-                          v-model="queryParams.warehouseId"
-                          placeholder="发货仓库ID"
+                          v-model="queryParams.warehouseName"
+                          placeholder="发货仓库"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+
+
                 <el-form-item label="明细状态" prop="status">
-                      <el-input
-                          v-model="queryParams.status"
-                          placeholder="明细状态"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.status"
+                    placeholder="明细状态"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in statusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
+
+
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
             <template #icon><Search /></template>
