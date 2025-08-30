@@ -74,8 +74,14 @@ export interface AioveuTransactionPageQuery extends PageQuery {
     transactionNo?: string;
     /** 客户ID */
     customerId?: number;
+
+  customerName?: string;
+
     /** 联系人ID */
     contactId?: number;
+
+
+  contactName?: string;
     /** 交易日期 */
     transactionDate?: [string, string];
     /** 支付方式 */

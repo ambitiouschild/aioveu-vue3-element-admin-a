@@ -18,64 +18,102 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="客户ID" prop="customerId">
+                <el-form-item label="客户" prop="customerName">
                       <el-input
-                          v-model="queryParams.customerId"
-                          placeholder="客户ID"
+                          v-model="queryParams.customerName"
+                          placeholder="客户"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="联系人ID" prop="contactId">
+                <el-form-item label="联系人" prop="contactName">
                       <el-input
-                          v-model="queryParams.contactId"
-                          placeholder="联系人ID"
+                          v-model="queryParams.contactName"
+                          placeholder="联系人"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="交易日期" prop="transactionDate">
-                      <el-date-picker
-                          v-model="queryParams.transactionDate"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD HH:mm:ss"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="交易日期" prop="transactionDate">-->
+<!--                      <el-date-picker-->
+<!--                          v-model="queryParams.transactionDate"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD HH:mm:ss"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="支付方式" prop="paymentMethod">
-                      <el-input
-                          v-model="queryParams.paymentMethod"
-                          placeholder="支付方式"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.paymentMethod"
+                    placeholder="支付方式"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in paymentMethodOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="支付状态" prop="paymentStatus">
-                      <el-input
-                          v-model="queryParams.paymentStatus"
-                          placeholder="支付状态"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.paymentStatus"
+                    placeholder="支付状态"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in paymentStatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="交易类型" prop="transactionType">
-                      <el-input
-                          v-model="queryParams.transactionType"
-                          placeholder="交易类型"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.transactionType"
+                    placeholder="交易类型"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in transactionTypeOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="交易状态" prop="transactionStatus">
-                      <el-input
-                          v-model="queryParams.transactionStatus"
-                          placeholder="交易状态"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.transactionStatus"
+                    placeholder="交易状态"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in transactionStatusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
+
+
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
             <template #icon><Search /></template>

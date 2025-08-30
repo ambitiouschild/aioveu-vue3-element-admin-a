@@ -2,18 +2,18 @@
   <div class="app-container">
     <div class="search-container">
       <el-form ref="queryFormRef" :model="queryParams" :inline="true">
-                <el-form-item label="联系人ID（主键）" prop="id">
+                <el-form-item label="联系人ID" prop="id">
                       <el-input
                           v-model="queryParams.id"
-                          placeholder="联系人ID（主键）"
+                          placeholder="联系人ID"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="客户ID" prop="customerId">
+                <el-form-item label="客户" prop="customerName">
                       <el-input
-                          v-model="queryParams.customerId"
-                          placeholder="客户ID"
+                          v-model="queryParams.customerName"
+                          placeholder="客户"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
