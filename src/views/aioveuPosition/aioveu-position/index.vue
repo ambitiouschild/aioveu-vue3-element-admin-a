@@ -219,11 +219,19 @@
                   />
                 </el-form-item>
 
-                <el-form-item label="职级(1-10)" prop="positionLevel">
-                      <el-input
-                          v-model="formData.positionLevel"
-                          placeholder="职级(1-10)"
-                      />
+                <el-form-item label="职级" prop="positionLevel">
+                  <el-select
+                    v-model="formData.positionLevel"
+                    placeholder="职级"
+                    clearable
+                  >
+                    <el-option
+                      v-for="item in positionLevelOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="岗位描述" prop="description">
@@ -253,7 +261,8 @@
   import AioveuPositionAPI, { AioveuPositionPageVO, AioveuPositionForm, AioveuPositionPageQuery } from "@/api/aioveuPosition/aioveu-position";
   // 新增：导入部门API
   import AioveuDepartmentAPI, { DeptOptionVO } from "@/api/aioveuDepartment/aioveu-department";
-
+  // 导入字典值
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -277,6 +286,10 @@
     title: "",
     visible: false,
   });
+
+  // 选项
+  const positionLevelOptions = ref<DictItemOption[]>([])
+
 
   // 公司岗位信息表单数据
   const formData = reactive<AioveuPositionForm>({
@@ -450,9 +463,18 @@
       });
   }
 
+  // 加载字典
+  function loadPositionLevelOptions() {
+    DictAPI.getDictItems('position_level').then(response => {
+      positionLevelOptions.value = response
+    })
+  }
+
+
   onMounted(() => {
     handleQuery();
     //在 onMounted钩子中调用了 loadDepartments()函数,确保函数被正确使用
     loadDepartments();
+    loadPositionLevelOptions()
   });
 </script>
