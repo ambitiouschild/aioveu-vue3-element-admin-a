@@ -74,12 +74,18 @@ export interface AioveuOutboundPageQuery extends PageQuery {
     outboundNo?: string;
     /** 物资ID */
     materialId?: number;
+
+  /** 物资 */
+  materialName?: string;
     /** 仓库ID */
     warehouseId?: number;
+  warehouseName?: string;
     /** 出库时间 */
     outTime?: [string, string];
     /** 领用人ID */
     recipientId?: number;
+
+  recipientName?: string;
     /** 状态 */
     status?: number;
 }

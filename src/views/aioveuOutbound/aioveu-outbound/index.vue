@@ -18,47 +18,56 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="物资ID" prop="materialId">
+                <el-form-item label="物资" prop="materialName">
                       <el-input
-                          v-model="queryParams.materialId"
-                          placeholder="物资ID"
+                          v-model="queryParams.materialName"
+                          placeholder="物资"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="仓库ID" prop="warehouseId">
+                <el-form-item label="仓库" prop="warehouseName">
                       <el-input
-                          v-model="queryParams.warehouseId"
-                          placeholder="仓库ID"
+                          v-model="queryParams.warehouseName"
+                          placeholder="仓库"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="出库时间" prop="outTime">
-                      <el-date-picker
-                          v-model="queryParams.outTime"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD HH:mm:ss"
-                      />
-                </el-form-item>
-                <el-form-item label="领用人ID" prop="recipientId">
+<!--                <el-form-item label="出库时间" prop="outTime">-->
+<!--                      <el-date-picker-->
+<!--                          v-model="queryParams.outTime"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD HH:mm:ss"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+                <el-form-item label="领用人" prop="recipientName">
                       <el-input
-                          v-model="queryParams.recipientId"
-                          placeholder="领用人ID"
+                          v-model="queryParams.recipientName"
+                          placeholder="领用人"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+
                 <el-form-item label="状态" prop="status">
-                      <el-input
-                          v-model="queryParams.status"
-                          placeholder="状态"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.status"
+                    placeholder="状态"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in statusOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
