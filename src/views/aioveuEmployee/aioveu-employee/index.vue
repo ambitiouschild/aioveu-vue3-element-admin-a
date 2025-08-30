@@ -29,17 +29,17 @@
                 <el-form-item label="性别" prop="gender">
                           <dict v-model="queryParams.gender" code="gender" />
                 </el-form-item>
-                <el-form-item label="出生日期" prop="birthDate">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.birthDate"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="出生日期" prop="birthDate">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.birthDate"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
                 <el-form-item label="身份证号" prop="idCard">
                       <el-input
                           v-model="queryParams.idCard"
@@ -71,6 +71,7 @@
                     placeholder="请选择部门"
                     clearable
                     filterable
+                    @keyup.enter="handleQuery()"
                   >
                     <!-- 遍历部门选项列表 -->
                     <!-- 使用部门ID作为唯一键，确保高效渲染 -->
@@ -95,6 +96,7 @@
                     placeholder="请选择岗位"
                     clearable
                     filterable
+                    @keyup.enter="handleQuery()"
                   >
                     <!-- 遍历岗位选项列表 -->
                     <!-- 使用岗位ID作为唯一键，确保高效渲染 -->
@@ -133,6 +135,7 @@
                     placeholder="状态"
                     clearable
                     filterable
+                    @keyup.enter="handleQuery()"
                   >
                     <el-option
                       v-for="item in pstatusOptions"
