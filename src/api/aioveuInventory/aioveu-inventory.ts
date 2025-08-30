@@ -72,8 +72,12 @@ export interface AioveuInventoryPageQuery extends PageQuery {
     id?: number;
     /** 仓库ID */
     warehouseId?: number;
+    /** 仓库 */
+    warehouseName?: string;
     /** 物资ID */
     materialId?: number;
+    /** 物资 */
+    materialName?: string;
     /** 生产日期 */
     productionDate?: [string, string];
     /** 有效期至 */

@@ -34,10 +34,10 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="负责人ID" prop="managerId">
+                <el-form-item label="负责人" prop="managerName">
                       <el-input
-                          v-model="queryParams.managerId"
-                          placeholder="负责人ID"
+                          v-model="queryParams.managerName"
+                          placeholder="负责人"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
@@ -51,13 +51,22 @@
                       />
                 </el-form-item>
                 <el-form-item label="启用状态" prop="isActive">
-                      <el-input
-                          v-model="queryParams.isActive"
-                          placeholder="启用状态"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.isActive"
+                    placeholder="启用状态"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="item in isActiveOptions"
+                      :key="Number(item.value)"
+                      :label="item.label"
+                      :value="Number(item.value)"
+                    />
+                  </el-select>
                 </el-form-item>
+
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
             <template #icon><Search /></template>

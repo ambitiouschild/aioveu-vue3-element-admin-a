@@ -10,66 +10,66 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="仓库ID" prop="warehouseId">
+                <el-form-item label="仓库" prop="warehouseName">
                       <el-input
-                          v-model="queryParams.warehouseId"
-                          placeholder="仓库ID"
+                          v-model="queryParams.warehouseName"
+                          placeholder="仓库"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="物资ID" prop="materialId">
+                <el-form-item label="物资" prop="materialName">
                       <el-input
-                          v-model="queryParams.materialId"
-                          placeholder="物资ID"
+                          v-model="queryParams.materialName"
+                          placeholder="物资"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="生产日期" prop="productionDate">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.productionDate"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
-                <el-form-item label="有效期至" prop="expiryDate">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.expiryDate"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
-                <el-form-item label="最后入库时间" prop="lastInbound">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.lastInbound"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
-                <el-form-item label="最后出库时间" prop="lastOutbound">
-                      <el-date-picker
-                          class="!w-[240px]"
-                          v-model="queryParams.lastOutbound"
-                          type="daterange"
-                          range-separator="~"
-                          start-placeholder="开始时间"
-                          end-placeholder="结束时间"
-                          value-format="YYYY-MM-DD"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="生产日期" prop="productionDate">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.productionDate"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="有效期至" prop="expiryDate">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.expiryDate"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="最后入库时间" prop="lastInbound">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.lastInbound"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="最后出库时间" prop="lastOutbound">-->
+<!--                      <el-date-picker-->
+<!--                          class="!w-[240px]"-->
+<!--                          v-model="queryParams.lastOutbound"-->
+<!--                          type="daterange"-->
+<!--                          range-separator="~"-->
+<!--                          start-placeholder="开始时间"-->
+<!--                          end-placeholder="结束时间"-->
+<!--                          value-format="YYYY-MM-DD"-->
+<!--                      />-->
+<!--                </el-form-item>-->
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
             <template #icon><Search /></template>

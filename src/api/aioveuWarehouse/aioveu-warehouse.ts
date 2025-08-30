@@ -90,6 +90,8 @@ export interface AioveuWarehousePageQuery extends PageQuery {
     location?: string;
     /** 负责人ID */
     managerId?: number;
+    /** 负责人 */
+    managerName?: string;
     /** 联系电话 */
     contactPhone?: string;
     /** 启用状态 */
