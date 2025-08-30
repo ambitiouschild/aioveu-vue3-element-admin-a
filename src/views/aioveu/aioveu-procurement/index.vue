@@ -198,13 +198,6 @@
                         align="center"
                     />
                     <el-table-column
-                        key="status"
-                        label="状态"
-                        prop="status"
-                        min-width="150"
-                        align="center"
-                    />
-                    <el-table-column
                       label="采购状态"
                       min-width="150"
                       align="center"
