@@ -147,18 +147,11 @@
                         align="center"
                     />
                     <el-table-column
-                        key="locationId"
-                        label="位置ID"
-                        prop="locationId"
-                        min-width="150"
-                        align="center"
-                    />
-                    <el-table-column
-                        key="departmentId"
-                        label="所属部门ID"
-                        prop="departmentId"
-                        min-width="150"
-                        align="center"
+                      key="departmentName"
+                      label="所属部门"
+                      prop="departmentName"
+                      min-width="150"
+                      align="center"
                     />
                     <el-table-column
                         key="responsiblePersonName"
