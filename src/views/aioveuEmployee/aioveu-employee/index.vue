@@ -305,7 +305,7 @@
                     <!--  DictLabel： likely是一个自定义组件，用于根据字典代码和值显示对应的标签文本 -->
                     <!-- v-model="scope.row.status"：双向绑定当前行数据中的status字段值（可能是数字或代码值）-->
                         <template #default="scope">
-                          <DictLabel v-model="scope.row.status" code="EmployeeStatus" />
+                          <DictLabel v-model="scope.row.status" code="employee_status" />
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -444,7 +444,7 @@
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
-                  <dict v-model="formData.status" code="EmployeeStatus" />
+                  <dict v-model="formData.status" code="employee_status" />
                 </el-form-item>
 
       </el-form>
@@ -739,7 +739,7 @@
 
   // 加载字典
   function loadStatusOptions() {
-    DictAPI.getDictItems('EmployeeStatus').then(response => {
+    DictAPI.getDictItems('employee_status').then(response => {
       pstatusOptions.value = response
     })
   }

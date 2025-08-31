@@ -3,10 +3,10 @@ import { defaultSettings } from "@/settings";
 // 导入 Element Plus 中英文语言包
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import en from "element-plus/es/locale/lang/en";
+import japanLocal from "element-plus/es/locale/lang/ja";
 import { store } from "@/store";
 import { DeviceEnum } from "@/enums/settings/device.enum";
 import { SidebarStatus } from "@/enums/settings/layout.enum";
-import japanLocal from "@/lang/package/japan";
 
 export const useAppStore = defineStore("app", () => {
   // 设备类型

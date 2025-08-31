@@ -1,4 +1,5 @@
 export default {
+
   // 菜单国际化
   route: {
     dashboard: "首页",

@@ -71,10 +71,10 @@
                       <!--  Element UI的选择框默认宽度会根据内容自动调整 -->
                       <!-- 当有filterable属性时，选择框会扩展以容纳输入框-->
                       <el-option
-                        v-for="attendanceStatus in attendanceStatusOptions"
-                        :key="attendanceStatus.value"
-                        :label="attendanceStatus.label"
-                        :value="attendanceStatus.value"
+                        v-for="attendance_status in attendance_statusOptions"
+                        :key="attendance_status.value"
+                        :label="attendance_status.label"
+                        :value="attendance_status.value"
                       />
                   </el-select>
                 </el-form-item>
@@ -198,7 +198,7 @@
                       <!--  DictLabel： likely是一个自定义组件，用于根据字典代码和值显示对应的标签文本 -->
                       <!-- v-model="scope.row.status"：双向绑定当前行数据中的status字段值（可能是数字或代码值）-->
                       <template #default="scope">
-                        <DictLabel v-model="scope.row.status" code="AttendanceStatus" />
+                        <DictLabel v-model="scope.row.status" code="attendance_status" />
                       </template>
                     </el-table-column>
                     <el-table-column
@@ -304,7 +304,7 @@
                 </el-form-item>
 
                 <el-form-item label="考勤状态" prop="status">
-                  <dict v-model="formData.status" code="AttendanceStatus" />
+                  <dict v-model="formData.status" code="attendance_status" />
                 </el-form-item>
 
       </el-form>
@@ -346,12 +346,12 @@
   });
 
   // 考勤状态选项
-  const attendanceStatusOptions = ref<DictItemOption[]>([])
+  const attendance_statusOptions = ref<DictItemOption[]>([])
 
   // 加载考勤状态字典
-  function loadAttendanceStatus() {
-    DictAPI.getDictItems('AttendanceStatus').then(response => {
-      attendanceStatusOptions.value = response
+  function loadattendance_status() {
+    DictAPI.getDictItems('attendance_status').then(response => {
+      attendance_statusOptions.value = response
     })
   }
 
@@ -527,6 +527,6 @@
     //在 onMounted钩子中调用了 loadEmployees()函数,确保函数被正确使用
     loadEmployees();
 
-    loadAttendanceStatus();
+    loadattendance_status();
   });
 </script>

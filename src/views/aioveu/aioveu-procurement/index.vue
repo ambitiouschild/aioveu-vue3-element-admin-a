@@ -399,13 +399,6 @@
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
-                      <el-input
-                          v-model="formData.status"
-                          placeholder="状态"
-                      />
-                </el-form-item>
-
-                <el-form-item label="状态" prop="status">
                   <el-select
                     v-model="formData.status"
                     placeholder="状态"

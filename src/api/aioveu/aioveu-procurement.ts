@@ -76,12 +76,14 @@ export interface AioveuProcurementPageQuery extends PageQuery {
     supplierId?: number;
     /** 物资ID */
     materialId?: number;
+  materialName?: string;
     /** 下单时间 */
     orderDate?: [string, string];
     /** 状态 */
     status?: number;
     /** 申请人ID */
     applicantId?: number;
+  applicantName?: string;
 }
 
 /** 采购流程表单对象 */

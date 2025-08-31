@@ -156,7 +156,7 @@
                 @click="handleDelete(scope.row.deptId)"
             >
               <template #icon><Delete /></template>
-              删除此行
+              删除
             </el-button>
           </template>
         </el-table-column>

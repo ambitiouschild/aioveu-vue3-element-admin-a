@@ -195,7 +195,7 @@ export default defineMock([
         {
           path: "/doc",
           component: "Layout",
-          redirect: "https://juejin.cn/post/7228990409909108793",
+          redirect: "https://aioveu.com",
           name: "/doc",
           meta: {
             title: "平台文档",
@@ -218,8 +218,8 @@ export default defineMock([
               },
             },
             {
-              path: "https://juejin.cn/post/7228990409909108793",
-              name: "Https://juejin.cn/post/7228990409909108793",
+              path: "https://aioveu.com",
+              name: "https://aioveu.com",
               meta: {
                 title: "平台文档(外链)",
                 icon: "link",
