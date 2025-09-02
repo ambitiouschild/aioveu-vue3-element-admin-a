@@ -194,7 +194,6 @@
                         prop="id"
                         min-width="150"
                         align="center"
-                        fixed="left"
                     />
                     <el-table-column
                         key="employeeName"
@@ -211,7 +210,6 @@
                         prop="salaryPeriod"
                         min-width="150"
                         align="center"
-                        fixed="left"
                     />
 
 

@@ -116,7 +116,6 @@
                         prop="id"
                         min-width="150"
                         align="center"
-                        fixed="left"
                     />
                     <el-table-column
                         key="assetNo"
@@ -124,7 +123,6 @@
                         prop="assetNo"
                         min-width="150"
                         align="center"
-                        fixed="left"
                     />
                     <el-table-column
                         key="name"

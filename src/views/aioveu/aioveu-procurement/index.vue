@@ -119,7 +119,6 @@
                         prop="id"
                         min-width="150"
                         align="center"
-                        fixed="left"
                     />
                     <el-table-column
                         key="procurementNo"
@@ -127,7 +126,6 @@
                         prop="procurementNo"
                         min-width="150"
                         align="center"
-                        fixed="left"
                     />
 <!--                    <el-table-column-->
 <!--                        key="supplierId"-->
@@ -143,6 +141,7 @@
                       prop="materialName"
                       min-width="150"
                       align="center"
+                      fixed="left"
                     />
                     <el-table-column
                         key="quantity"

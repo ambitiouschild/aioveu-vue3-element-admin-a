@@ -177,7 +177,6 @@
                         prop="id"
                         min-width="150"
                         align="center"
-                        fixed="left"
                     />
                     <el-table-column
                         key="customerNo"
@@ -185,7 +184,6 @@
                         prop="customerNo"
                         min-width="150"
                         align="center"
-                        fixed="left"
                     />
                     <el-table-column
                         key="name"
@@ -331,7 +329,7 @@
                     </el-table-column>
                     <el-table-column
                         key="salesRepName"
-                        label="销售负责人"
+                        label="负责人"
                         prop="salesRepName"
                         min-width="150"
                         align="center"
@@ -568,10 +566,10 @@
                   </el-select>
                 </el-form-item>
 
-                <el-form-item label="销售负责人" prop="salesRepName">
+                <el-form-item label="负责人" prop="salesRepName">
                   <el-input
                     v-model="formData.salesRepName"
-                    placeholder="销售负责人"
+                    placeholder="负责人"
                   />
                 </el-form-item>
 

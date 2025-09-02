@@ -87,11 +87,10 @@
         <el-table-column type="selection" width="55" align="center" />
                     <el-table-column
                         key="id"
-                        label="联系人ID（主键）"
+                        label="联系人ID"
                         prop="id"
                         min-width="150"
                         align="center"
-                        fixed="left"
                     />
                     <el-table-column
                       key="customerName"
@@ -99,7 +98,6 @@
                       prop="customerName"
                       min-width="150"
                       align="center"
-                      fixed="left"
                     />
                     <el-table-column
                         key="name"

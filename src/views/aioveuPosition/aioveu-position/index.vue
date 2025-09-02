@@ -222,10 +222,10 @@
                           placeholder="岗位名称"
                       />
                 </el-form-item>
-                <el-form-item label="岗位名称" prop="deptName">
+                <el-form-item label="所属部门" prop="deptName">
                   <el-input
                     v-model="formData.deptName"
-                    placeholder="岗位名称"
+                    placeholder="所属部门"
                   />
                 </el-form-item>
 
