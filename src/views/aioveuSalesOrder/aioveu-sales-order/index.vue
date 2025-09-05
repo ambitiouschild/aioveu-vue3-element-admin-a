@@ -717,8 +717,8 @@
                       paymentStatus: [{ required: true, message: "请输入支付状态", trigger: "blur" }],
                       orderStatus: [{ required: true, message: "请输入订单状态", trigger: "blur" }],
                       operatorName: [{ required: true, message: "请输入操作员", trigger: "blur" }],
-    salesRepName: [{ required: true, message: "请输入操作员", trigger: "blur" }],
-    contactName: [{ required: true, message: "请输入操作员", trigger: "blur" }],
+    salesRepName: [{ required: true, message: "请输入负责人", trigger: "blur" }],
+    contactName: [{ required: true, message: "请输入联系人", trigger: "blur" }],
   });
 
   /** 查询销售订单 */

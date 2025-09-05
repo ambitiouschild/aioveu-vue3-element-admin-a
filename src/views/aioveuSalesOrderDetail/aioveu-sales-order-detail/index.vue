@@ -10,22 +10,58 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="订单" prop="orderName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.orderName"-->
+<!--                          placeholder="订单"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
+
                 <el-form-item label="订单" prop="orderName">
-                      <el-input
-                          v-model="queryParams.orderName"
-                          placeholder="订单"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.orderName"
+                    placeholder="订单"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="salesOrder in salesOrderOptions"
+                      :key="salesOrder.salesOrderId"
+                      :label="salesOrder.salesOrderNo"
+                      :value="salesOrder.salesOrderNo"
+                    />
+                  </el-select>
                 </el-form-item>
+
+<!--                <el-form-item label="物资" prop="materialName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.materialName"-->
+<!--                          placeholder="物资"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="物资" prop="materialName">
-                      <el-input
-                          v-model="queryParams.materialName"
-                          placeholder="物资"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.materialName"
+                    placeholder="物资"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="material in materialOptions"
+                      :key="material.materialId"
+                      :label="material.materialName"
+                      :value="material.materialName"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="发货仓库" prop="warehouseName">
                       <el-input
                           v-model="queryParams.warehouseName"
@@ -33,6 +69,23 @@
                           clearable
                           @keyup.enter="handleQuery()"
                       />
+                </el-form-item>
+
+                <el-form-item label="仓库" prop="warehouseName">
+                  <el-select
+                    v-model="queryParams.warehouseName"
+                    placeholder="仓库"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="warehouse in warehouseOptions"
+                      :key="warehouse.warehouseId"
+                      :label="warehouse.warehouseName"
+                      :value="warehouse.warehouseName"
+                    />
+                  </el-select>
                 </el-form-item>
 
 
@@ -264,21 +317,53 @@
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
 
+<!--                <el-form-item label="订单" prop="orderName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.orderName"-->
+<!--                    placeholder="订单"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="订单" prop="orderName">
-                  <el-input
+                  <el-select
                     v-model="formData.orderName"
                     placeholder="订单"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="salesOrder in salesOrderOptions"
+                      :key="salesOrder.salesOrderId"
+                      :label="salesOrder.salesOrderNo"
+                      :value="salesOrder.salesOrderNo"
+                    />
+                  </el-select>
                 </el-form-item>
+
+<!--                <el-form-item label="物资" prop="materialName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.materialName"-->
+<!--                    placeholder="物资"-->
+<!--                  />-->
+<!--                </el-form-item>-->
 
                 <el-form-item label="物资" prop="materialName">
-                  <el-input
+                  <el-select
                     v-model="formData.materialName"
                     placeholder="物资"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="material in materialOptions"
+                      :key="material.materialId"
+                      :label="material.materialName"
+                      :value="material.materialName"
+                    />
+                  </el-select>
                 </el-form-item>
 
-                <el-form-item label="数量" prop="quantity">
+        <el-form-item label="数量" prop="quantity">
                       <el-input
                           v-model="formData.quantity"
                           placeholder="数量"
@@ -346,15 +431,15 @@
 
                 <el-form-item label="发货仓库" prop="warehouseName">
                   <el-select
-                    v-model="formData.warehouseId"
+                    v-model="formData.warehouseName"
                     placeholder="发货仓库"
                     clearable
                   >
                     <el-option
-                      v-for="item in WarehouseOptions"
-                      :key="Number(item.warehouseId)"
-                      :label="item.warehouseName"
-                      :value="Number(item.warehouseId)"
+                      v-for="warehouse in warehouseOptions"
+                      :key="warehouse.warehouseId"
+                      :label="warehouse.warehouseName"
+                      :value="warehouse.warehouseId"
                     />
                   </el-select>
                 </el-form-item>
@@ -376,6 +461,7 @@
 
                 <el-form-item label="备注" prop="notes">
                       <el-input
+                          type="textarea"
                           v-model="formData.notes"
                           placeholder="备注"
                       />
@@ -405,6 +491,8 @@
   // 新增：导入部门API
   import AioveuWarehouseAPI, {  WarehouseOptionVO } from "@/api/aioveuWarehouse/aioveu-warehouse";
 
+  import AioveuSalesOrderAPI, {SalesOrderOptionVO} from "@/api/aioveuSalesOrder/aioveu-sales-order";
+  import AioveuMaterialAPI, { MaterialOptionVO } from "@/api/aioveuMaterial/aioveu-material";
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -427,19 +515,25 @@
   });
 
   // 选项
-  const WarehouseOptions = ref<WarehouseOptionVO[]>([])
+  const warehouseOptions = ref<WarehouseOptionVO[]>([])
   // 选项
   const statusOptions = ref<DictItemOption[]>([])
+
+  const salesOrderOptions = ref<SalesOrderOptionVO[]>([]);
+
+  const materialOptions = ref<MaterialOptionVO[]>([]);
+
 
   // 订单明细表单数据
   const formData = reactive<AioveuSalesOrderDetailForm>({});
 
   // 订单明细表单校验规则
   const rules = reactive({
-                      orderId: [{ required: true, message: "请输入订单ID", trigger: "blur" }],
-                      materialId: [{ required: true, message: "请输入物资ID", trigger: "blur" }],
+    orderName: [{ required: true, message: "请输入订单", trigger: "blur" }],
+                      materialName: [{ required: true, message: "请输入物资", trigger: "blur" }],
                       quantity: [{ required: true, message: "请输入数量", trigger: "blur" }],
                       unitPrice: [{ required: true, message: "请输入单价", trigger: "blur" }],
+      warehouseName: [{ required: true, message: "请输入仓库", trigger: "blur" }],
   });
 
   /** 查询订单明细 */
@@ -568,7 +662,7 @@
         // 确保响应数据是数组类型
         if (Array.isArray(response)) {
           // 转换数据类型：确保deptId是数字
-          WarehouseOptions.value = response;
+          warehouseOptions.value = response;
         } else {
           // 处理非数组响应
           console.error("仓库列表响应格式错误:", response);
@@ -592,10 +686,26 @@
 
   }
 
+  // 加载选项
+  function loadSalesOrderOptions() {
+    AioveuSalesOrderAPI.getAllSalesOrderOptions().then(response => {
+      salesOrderOptions.value = response
+    })
+  }
+
+  // 加载选项
+  function loadMaterialOptions() {
+    AioveuMaterialAPI.getAllMaterialOptions().then(response => {
+      materialOptions.value = response
+    })
+  }
+
 
   onMounted(() => {
     handleQuery();
     loadWarehouses();
     loadOptions()
+    loadSalesOrderOptions();
+    loadMaterialOptions();
   });
 </script>

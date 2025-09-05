@@ -61,7 +61,15 @@ const AioveuSalesOrderAPI = {
             url: `${AIOVEUSALESORDER_BASE_URL}/${ids}`,
             method: "delete",
         });
-    }
+    },
+
+    getAllSalesOrderOptions() {
+      return request<any,SalesOrderOptionVO[]>({
+        url: `${AIOVEUSALESORDER_BASE_URL}/options`,
+        method: "get",
+      });
+    },
+
 }
 
 export default AioveuSalesOrderAPI;
@@ -196,4 +204,9 @@ export interface AioveuSalesOrderPageVO {
     createTime?: string;
     /** 更新时间 */
     updateTime?: string;
+}
+
+export interface SalesOrderOptionVO {
+  salesOrderId: number;
+  salesOrderNo: string;
 }
