@@ -10,14 +10,32 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="员工" prop="employeeName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.employeeName"-->
+<!--                          placeholder="员工"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="员工" prop="employeeName">
-                      <el-input
-                          v-model="queryParams.employeeName"
-                          placeholder="员工"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.employeeName"
+                    placeholder="员工"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="考核年份" prop="periodYear">
                       <el-input
                           v-model="queryParams.periodYear"
@@ -256,11 +274,27 @@
         @close="handleCloseDialog"
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
+<!--                <el-form-item label="员工" prop="employeeName">-->
+<!--                      <el-input-->
+<!--                          v-model="formData.employeeName"-->
+<!--                          placeholder="员工"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="员工" prop="employeeName">
-                      <el-input
-                          v-model="formData.employeeName"
-                          placeholder="员工"
-                      />
+                  <el-select
+                    v-model="formData.employeeName"
+                    placeholder="员工"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="考核年份" prop="periodYear">
@@ -301,6 +335,7 @@
 
                 <el-form-item label="主管评语" prop="review">
                       <el-input
+                          type="textarea"
                           v-model="formData.review"
                           placeholder="主管评语"
                       />
@@ -331,7 +366,7 @@
   });
 
   import AioveuPerformanceAPI, { AioveuPerformancePageVO, AioveuPerformanceForm, AioveuPerformancePageQuery } from "@/api/aioveuPerformance/aioveu-performance";
-
+  import AioveuEmployeeAPI, { EmployeeOptionVO } from "@/api/aioveuEmployee/aioveu-employee";
   // 导入字典值
   import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
 
@@ -353,6 +388,8 @@
   // 选项
   const performanceGradeOptions = ref<DictItemOption[]>([])
 
+  const employeeOptions = ref<EmployeeOptionVO[]>([]);
+
   // 员工绩效考评表格数据
   const pageData = ref<AioveuPerformancePageVO[]>([]);
 
@@ -367,7 +404,7 @@
 
   // 员工绩效考评表单校验规则
   const rules = reactive({
-                      employeeId: [{ required: true, message: "请输入员工ID", trigger: "blur" }],
+                      employeeName: [{ required: true, message: "请输入员工", trigger: "blur" }],
                       periodYear: [{ required: true, message: "请输入考核年份", trigger: "blur" }],
                       periodQuarter: [{ required: true, message: "请输入考核季度(1-4)", trigger: "blur" }],
                       kpiScore: [{ required: true, message: "请输入KPI评分(1-100分)", trigger: "blur" }],
@@ -507,11 +544,18 @@
     })
   }
 
+  function loadEmployeeOptions() {
+    AioveuEmployeeAPI.getAllEmployeeOptions().then(response => {
+      employeeOptions.value = response
+    })
+  }
+
 
 
   onMounted(() => {
     handleQuery();
     loadPeriodQuarterOptions();
     loadPerformanceGrade()
+    loadEmployeeOptions();
   });
 </script>

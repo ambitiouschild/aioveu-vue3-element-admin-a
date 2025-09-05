@@ -61,7 +61,22 @@ const AioveuCategoryAPI = {
             url: `${AIOVEUCATEGORY_BASE_URL}/${ids}`,
             method: "delete",
         });
+    },
+
+    /**
+     * 获取所有分类列表（用于下拉选择框）
+     * @returns 分类选项列表
+     * 因为request函数的类型定义允许第一个类型参数为any，从而绕过了类型检查
+     */
+    getAllCategoryOptions() {
+      return request<any,CategoryOptionVO[]>({
+        url: `${AIOVEUCATEGORY_BASE_URL}/options`,
+        method: "get",
+      });
     }
+
+
+
 }
 
 export default AioveuCategoryAPI;
@@ -107,4 +122,12 @@ export interface AioveuCategoryPageVO {
     createTime?: string;
     /** 更新时间 */
     updateTime?: string;
+}
+
+/** 分类选项VO（用于下拉选择框） */
+export interface CategoryOptionVO {
+  /** 分类ID */
+  categoryId: number;
+  /** 分类名称 */
+  categoryName: string;
 }

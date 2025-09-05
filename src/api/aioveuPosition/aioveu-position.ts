@@ -65,8 +65,8 @@ const AioveuPositionAPI = {
     },
 
     /**
-     * 获取所有部门列表（用于下拉选择框）
-     * @returns 部门选项列表
+     * 获取所有岗位列表（用于下拉选择框）
+     * @returns 岗位选项列表
      * 因为request函数的类型定义允许第一个类型参数为any，从而绕过了类型检查
      */
     getAllPositionOptions() {
@@ -131,8 +131,8 @@ export interface AioveuPositionPageVO {
 
 /** 岗位选项VO（用于下拉选择框） */
 export interface PositionOptionVO {
-  /** 部门ID */
+  /** 岗位ID */
   positionId: number;
-  /** 部门名称 */
+  /** 岗位名称 */
   positionName: string;
 }

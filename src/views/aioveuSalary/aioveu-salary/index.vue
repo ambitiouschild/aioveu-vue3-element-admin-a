@@ -10,14 +10,33 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="员工" prop="employeeName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.employeeName"-->
+<!--                          placeholder="员工"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="员工" prop="employeeName">
-                      <el-input
-                          v-model="queryParams.employeeName"
-                          placeholder="员工"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.employeeName"
+                    placeholder="员工"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
+
+
                 <el-form-item label="基本工资" prop="baseSalary">
                       <el-input
                           v-model="queryParams.baseSalary"
@@ -358,11 +377,27 @@
         @close="handleCloseDialog"
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
+<!--                <el-form-item label="员工" prop="employeeName">-->
+<!--                      <el-input-->
+<!--                          v-model="formData.employeeName"-->
+<!--                          placeholder="员工"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="员工" prop="employeeName">
-                      <el-input
-                          v-model="formData.employeeName"
-                          placeholder="员工"
-                      />
+                  <el-select
+                    v-model="formData.employeeName"
+                    placeholder="员工"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="工资周期" prop="salaryPeriod">
@@ -484,6 +519,8 @@
   // 导入字典值
   import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
 
+  import AioveuEmployeeAPI, { EmployeeOptionVO } from "@/api/aioveuEmployee/aioveu-employee";
+
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -502,6 +539,8 @@
   // 状态选项
   const paymentStatusOptions = ref<DictItemOption[]>([])
 
+  const employeeOptions = ref<EmployeeOptionVO[]>([]);
+
 
   // 弹窗
   const dialog = reactive({
@@ -514,10 +553,11 @@
 
   // 员工工资明细表单校验规则
   const rules = reactive({
-                      employeeId: [{ required: true, message: "请输入员工ID", trigger: "blur" }],
+                      employeeName: [{ required: true, message: "请输入员工", trigger: "blur" }],
                       salaryPeriod: [{ required: true, message: "请输入工资周期（月份）", trigger: "blur" }],
                       baseSalary: [{ required: true, message: "请输入基本工资", trigger: "blur" }],
                       netSalary: [{ required: true, message: "请输入实发工资", trigger: "blur" }],
+    paymentStatus: [{ required: true, message: "请选择发放状态", trigger: "blur" }]
   });
 
   /** 查询员工工资明细 */
@@ -645,8 +685,17 @@
     })
   }
 
+  // 加载选项
+  function loadEmployeeOptions() {
+    AioveuEmployeeAPI.getAllEmployeeOptions().then(response => {
+      employeeOptions.value = response
+    })
+  }
+
   onMounted(() => {
     handleQuery();
     loadPaymentStatusOptions();
+    loadEmployeeOptions();
+
   });
 </script>

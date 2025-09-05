@@ -18,22 +18,39 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <el-form-item label="供应商ID" prop="supplierId">
-                      <el-input
-                          v-model="queryParams.supplierId"
-                          placeholder="供应商ID"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="供应商ID" prop="supplierId">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.supplierId"-->
+<!--                          placeholder="供应商ID"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+<!--                <el-form-item label="物资" prop="materialName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.materialName"-->
+<!--                          placeholder="物资"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="物资" prop="materialName">
-                      <el-input
-                          v-model="queryParams.materialName"
-                          placeholder="物资"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.materialName"
+                    placeholder="物资"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="material in materialOptions"
+                      :key="material.materialId"
+                      :label="material.materialName"
+                      :value="material.materialName"
+                    />
+                  </el-select>
                 </el-form-item>
+
 <!--                <el-form-item label="下单时间" prop="orderDate">-->
 <!--                      <el-date-picker-->
 <!--                          v-model="queryParams.orderDate"-->
@@ -62,14 +79,32 @@
                   </el-select>
                 </el-form-item>
 
+<!--                <el-form-item label="申请人" prop="applicantName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.applicantName"-->
+<!--                          placeholder="申请人"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="申请人" prop="applicantName">
-                      <el-input
-                          v-model="queryParams.applicantName"
-                          placeholder="申请人"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.applicantName"
+                    placeholder="申请人"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
+
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
             <template #icon><Search /></template>
@@ -308,21 +343,37 @@
                       />
                 </el-form-item>
 
-<!--                <el-form-item label="供应商ID" prop="supplierId">-->
-<!--                      <el-input-->
-<!--                          v-model="formData.supplierId"-->
-<!--                          placeholder="供应商ID"-->
-<!--                      />-->
+                <el-form-item label="供应商ID" prop="supplierId">
+                      <el-input
+                          v-model="formData.supplierId"
+                          placeholder="供应商ID"
+                      />
+                </el-form-item>
+
+<!--                <el-form-item label="物资" prop="materialName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.materialName"-->
+<!--                    placeholder="物资"-->
+<!--                  />-->
 <!--                </el-form-item>-->
 
                 <el-form-item label="物资" prop="materialName">
-                  <el-input
+                  <el-select
                     v-model="formData.materialName"
                     placeholder="物资"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="material in materialOptions"
+                      :key="material.materialId"
+                      :label="material.materialName"
+                      :value="material.materialName"
+                    />
+                  </el-select>
                 </el-form-item>
 
-                <el-form-item label="采购数量" prop="quantity">
+        <el-form-item label="采购数量" prop="quantity">
                       <el-input
                           v-model="formData.quantity"
                           placeholder="采购数量"
@@ -381,12 +432,28 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="入库仓库" prop="warehouseName">
-                  <el-input
-                    v-model="formData.warehouseName"
-                    placeholder="入库仓库"
+<!--                <el-form-item label="入库仓库" prop="warehouseName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.warehouseName"-->
+<!--                    placeholder="入库仓库"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
+              <el-form-item label="入库仓库" prop="warehouseName">
+                <el-select
+                  v-model="formData.warehouseName"
+                  placeholder="入库仓库"
+                  clearable
+                  filterable
+                >
+                  <el-option
+                    v-for="warehouse in warehouseOptions"
+                    :key="warehouse.warehouseId"
+                    :label="warehouse.warehouseName"
+                    :value="warehouse.warehouseName"
                   />
-                </el-form-item>
+                </el-select>
+              </el-form-item>
 
                 <el-form-item label="入库时间" prop="inboundDate">
                       <el-date-picker
@@ -412,18 +479,51 @@
                   </el-select>
                 </el-form-item>
 
+<!--                <el-form-item label="申请人" prop="applicantName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.applicantName"-->
+<!--                    placeholder="申请人"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="申请人" prop="applicantName">
-                  <el-input
+                  <el-select
                     v-model="formData.applicantName"
                     placeholder="申请人"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
 
+
+<!--                <el-form-item label="审核人" prop="reviewerName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.reviewerName"-->
+<!--                    placeholder="审核人"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="审核人" prop="reviewerName">
-                  <el-input
+                  <el-select
                     v-model="formData.reviewerName"
                     placeholder="审核人"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="审核时间" prop="reviewTime">
@@ -437,6 +537,7 @@
 
                 <el-form-item label="备注" prop="remark">
                       <el-input
+                          type="textarea"
                           v-model="formData.remark"
                           placeholder="备注"
                       />
@@ -462,6 +563,9 @@
   import AioveuProcurementAPI, { AioveuProcurementPageVO, AioveuProcurementForm, AioveuProcurementPageQuery } from "@/api/aioveu/aioveu-procurement";
   // 导入字典值
   import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
+  import AioveuMaterialAPI, { MaterialOptionVO } from "@/api/aioveuMaterial/aioveu-material";
+  import AioveuWarehouseAPI, { WarehouseOptionVO } from "@/api/aioveuWarehouse/aioveu-warehouse";
+  import AioveuEmployeeAPI, { EmployeeOptionVO } from "@/api/aioveuEmployee/aioveu-employee";
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -479,6 +583,10 @@
   // 采购流程表格数据
   const pageData = ref<AioveuProcurementPageVO[]>([]);
 
+  const materialOptions = ref<MaterialOptionVO[]>([]);
+  const warehouseOptions = ref<WarehouseOptionVO[]>([]);
+  const employeeOptions = ref<EmployeeOptionVO[]>([]);
+
   // 弹窗
   const dialog = reactive({
     title: "",
@@ -492,14 +600,15 @@
   const rules = reactive({
                       procurementNo: [{ required: true, message: "请输入采购单号", trigger: "blur" }],
                       supplierId: [{ required: true, message: "请输入供应商ID", trigger: "blur" }],
-                      materialId: [{ required: true, message: "请输入物资ID", trigger: "blur" }],
+                      materialName: [{ required: true, message: "请输入物资", trigger: "blur" }],
                       quantity: [{ required: true, message: "请输入采购数量", trigger: "blur" }],
                       unitPrice: [{ required: true, message: "请输入采购单价", trigger: "blur" }],
                       totalAmount: [{ required: true, message: "请输入总金额", trigger: "blur" }],
                       orderDate: [{ required: true, message: "请输入下单时间", trigger: "blur" }],
                       status: [{ required: true, message: "请输入状态", trigger: "blur" }],
-                      applicantId: [{ required: true, message: "请输入申请人ID", trigger: "blur" }],
-                      reviewerId: [{ required: true, message: "请输入审核人ID", trigger: "blur" }],
+                      applicantName: [{ required: true, message: "请输入申请人", trigger: "blur" }],
+                      reviewerName: [{ required: true, message: "请输入审核人", trigger: "blur" }],
+    warehouseName: [{ required: true, message: "请输入仓库", trigger: "blur" }],
   });
 
   /** 查询采购流程 */
@@ -628,8 +737,33 @@
     })
   }
 
+  // 加载选项
+  function loadMaterialOptions() {
+    AioveuMaterialAPI.getAllMaterialOptions().then(response => {
+      materialOptions.value = response
+    })
+  }
+
+  // 加载选项
+  function loadWarehouseOptions() {
+    AioveuWarehouseAPI.getAllWarehouseOptions().then(response => {
+      warehouseOptions.value = response
+    })
+  }
+
+  // 加载选项
+  function loadEmployeeOptions() {
+    AioveuEmployeeAPI.getAllEmployeeOptions().then(response => {
+      employeeOptions.value = response
+    })
+  }
+
+
   onMounted(() => {
     handleQuery();
     loadStatusOptions()
+    loadMaterialOptions();
+    loadWarehouseOptions();
+    loadEmployeeOptions();
   });
 </script>

@@ -61,7 +61,15 @@ const AioveuContactAPI = {
             url: `${AIOVEUCONTACT_BASE_URL}/${ids}`,
             method: "delete",
         });
-    }
+    },
+
+    getAllContactOptions() {
+      return request<any,ContactOptionVO[]>({
+        url: `${AIOVEUCONTACT_BASE_URL}/options`,
+        method: "get",
+      });
+    },
+
 }
 
 export default AioveuContactAPI;
@@ -149,4 +157,8 @@ export interface AioveuContactPageVO {
     createTime?: string;
     /** 更新时间 */
     updateTime?: string;
+}
+export interface ContactOptionVO {
+  contactId: number;
+  contactName: string;
 }

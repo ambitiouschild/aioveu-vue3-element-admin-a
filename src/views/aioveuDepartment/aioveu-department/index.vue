@@ -10,21 +10,36 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="部门名称" prop="deptName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.deptName"-->
+<!--                          placeholder="部门名称"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
                 <el-form-item label="部门名称" prop="deptName">
-                      <el-input
-                          v-model="queryParams.deptName"
-                          placeholder="部门名称"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
-                </el-form-item>
-                <el-form-item label="上级部门" prop="parentDeptName">
-                      <el-input
-                          v-model="queryParams.parentDeptName"
-                          placeholder="上级部门"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+<!--                      <el-input-->
+<!--                          v-model="queryParams.parentDeptName"-->
+<!--                          placeholder="上级部门"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+                      <el-select
+                        v-model="queryParams.deptName"
+                        placeholder="部门名称"
+                        clearable
+                        filterable
+                        @keyup.enter="handleQuery()"
+                      >
+                        <el-option
+                          v-for="dept in deptOptions"
+                          :key="dept.deptId"
+                          :label="dept.deptName"
+                          :value="dept.deptName"
+                        />
+                      </el-select>
+
                 </el-form-item>
 <!--                <el-form-item label="部门经理" prop="managerId">-->
 <!--                      <el-input-->
@@ -185,11 +200,26 @@
                           placeholder="部门名称"
                       />
                 </el-form-item>
+<!--                <el-form-item label="部门名称" prop="parentDeptName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.parentDeptName"-->
+<!--                    placeholder="部门名称"-->
+<!--                  />-->
+<!--                </el-form-item>-->
                 <el-form-item label="上级部门" prop="parentDeptName">
-                  <el-input
+                  <el-select
                     v-model="formData.parentDeptName"
-                    placeholder="部门名称"
-                  />
+                    placeholder="请选择部门"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="dept in deptOptions"
+                      :key="dept.deptId"
+                      :label="dept.deptName"
+                      :value="dept.deptName"
+                    />
+                  </el-select>
                 </el-form-item>
 
 

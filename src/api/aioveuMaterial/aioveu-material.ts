@@ -61,7 +61,14 @@ const AioveuMaterialAPI = {
             url: `${AIOVEUMATERIAL_BASE_URL}/${ids}`,
             method: "delete",
         });
-    }
+    },
+
+    getAllMaterialOptions() {
+      return request<any,MaterialOptionVO[]>({
+        url: `${AIOVEUMATERIAL_BASE_URL}/options`,
+        method: "get",
+      });
+  }
 }
 
 export default AioveuMaterialAPI;
@@ -134,4 +141,9 @@ export interface AioveuMaterialPageVO {
     createTime?: string;
     /** 更新时间 */
     updateTime?: string;
+}
+
+export interface MaterialOptionVO {
+  materialId: number;
+  materialName: string;
 }

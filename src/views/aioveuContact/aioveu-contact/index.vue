@@ -10,22 +10,58 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="客户" prop="customerName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.customerName"-->
+<!--                          placeholder="客户"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="客户" prop="customerName">
-                      <el-input
-                          v-model="queryParams.customerName"
-                          placeholder="客户"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.customerName"
+                    placeholder="客户"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="customer in customerOptions"
+                      :key="customer.customerId"
+                      :label="customer.customerName"
+                      :value="customer.customerName"
+                    />
+                  </el-select>
                 </el-form-item>
+
+<!--                <el-form-item label="联系人姓名" prop="name">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.name"-->
+<!--                          placeholder="联系人姓名"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="联系人姓名" prop="name">
-                      <el-input
-                          v-model="queryParams.name"
-                          placeholder="联系人姓名"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.name"
+                    placeholder="联系人姓名"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="contact in contactOptions"
+                      :key="contact.contactId"
+                      :label="contact.contactName"
+                      :value="contact.contactName"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="手机号码" prop="mobile">
                       <el-input
                           v-model="queryParams.mobile"
@@ -246,11 +282,27 @@
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
 
+<!--                <el-form-item label="客户" prop="customerName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.customerName"-->
+<!--                    placeholder="客户"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="客户" prop="customerName">
-                  <el-input
+                  <el-select
                     v-model="formData.customerName"
                     placeholder="客户"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="customer in customerOptions"
+                      :key="customer.customerId"
+                      :label="customer.customerName"
+                      :value="customer.customerName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="联系人姓名" prop="name">
@@ -373,9 +425,10 @@
     inheritAttrs: false,
   });
 
-  import AioveuContactAPI, { AioveuContactPageVO, AioveuContactForm, AioveuContactPageQuery } from "@/api/aioveuContact/aioveu-contact";
+  import AioveuContactAPI, { AioveuContactPageVO, AioveuContactForm, AioveuContactPageQuery ,ContactOptionVO } from "@/api/aioveuContact/aioveu-contact";
   // 导入字典值
   import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
+  import AioveuCustomerAPI, {CustomerOptionVO} from "@/api/aioveuCustomer/aioveu-customer";
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -404,12 +457,17 @@
   // 选项
   const genderOptions = ref<DictItemOption[]>([])
 
+  const contactOptions = ref<ContactOptionVO[]>([]);
+
+  const customerOptions = ref<CustomerOptionVO[]>([]);
+
+
   // 客户联系人表单数据
   const formData = reactive<AioveuContactForm>({});
 
   // 客户联系人表单校验规则
   const rules = reactive({
-                      customerId: [{ required: true, message: "请输入客户ID", trigger: "blur" }],
+                      customerName: [{ required: true, message: "请输入客户", trigger: "blur" }],
                       name: [{ required: true, message: "请输入联系人姓名", trigger: "blur" }],
                       isPrimary: [{ required: true, message: "请输入是否是主要联系人：0-否，1-是", trigger: "blur" }],
   });
@@ -544,8 +602,24 @@
     })
   }
 
+  function loadContactOptions() {
+    AioveuContactAPI.getAllContactOptions().then(response => {
+      contactOptions.value = response
+    })
+  }
+
+  // 加载选项
+  function loadCustomerOptions() {
+    AioveuCustomerAPI.getAllCustomerOptions().then(response => {
+      customerOptions.value = response
+    })
+  }
+
+
   onMounted(() => {
     handleQuery();
     loadOptions()
+    loadContactOptions();
+    loadCustomerOptions();
   });
 </script>

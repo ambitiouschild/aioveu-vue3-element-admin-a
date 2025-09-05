@@ -18,14 +18,32 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="姓名" prop="name">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.name"-->
+<!--                          placeholder="姓名"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="姓名" prop="name">
-                      <el-input
-                          v-model="queryParams.name"
-                          placeholder="姓名"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.name"
+                    placeholder="姓名"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="性别" prop="gender">
                           <dict v-model="queryParams.gender" code="gender" />
                 </el-form-item>
@@ -413,17 +431,50 @@
                           placeholder="邮箱"
                       />
                 </el-form-item>
+<!--                <el-form-item label="所属部门" prop="deptName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.deptName"-->
+<!--                    placeholder="所属部门"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="所属部门" prop="deptName">
-                  <el-input
+                  <el-select
                     v-model="formData.deptName"
-                    placeholder="所属部门"
-                  />
+                    placeholder="请选择部门"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="dept in deptOptions"
+                      :key="dept.deptId"
+                      :label="dept.deptName"
+                      :value="dept.deptName"
+                    />
+                  </el-select>
                 </el-form-item>
-                <el-form-item label="岗位" prop="positionName">
-                  <el-input
+
+<!--                <el-form-item label="岗位" prop="positionName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.positionName"-->
+<!--                    placeholder="请选择岗位"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
+                <el-form-item label="所属岗位" prop="positionName">
+                  <el-select
                     v-model="formData.positionName"
                     placeholder="请选择岗位"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="position in positionOptions"
+                      :key="position.positionId"
+                      :label="position.positionName"
+                      :value="position.positionName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="入职日期" prop="hireDate">
@@ -465,7 +516,7 @@
     inheritAttrs: false,
   });
 
-  import AioveuEmployeeAPI, { AioveuEmployeePageVO, AioveuEmployeeForm, AioveuEmployeePageQuery } from "@/api/aioveuEmployee/aioveu-employee";
+  import AioveuEmployeeAPI, { AioveuEmployeePageVO, AioveuEmployeeForm, AioveuEmployeePageQuery,EmployeeOptionVO } from "@/api/aioveuEmployee/aioveu-employee";
 
   import AioveuDepartmentAPI , { DeptOptionVO } from "@/api/aioveuDepartment/aioveu-department";
 
@@ -486,6 +537,9 @@
 
   // 员工信息表格数据
   const pageData = ref<AioveuEmployeePageVO[]>([]);
+
+  const employeeOptions = ref<EmployeeOptionVO[]>([]);
+
 
   // 弹窗
   const dialog = reactive({
@@ -538,8 +592,8 @@
                       name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
                       gender: [{ required: true, message: "请输入性别", trigger: "blur" }],
                       phone: [{ required: true, message: "请输入手机号码", trigger: "blur" }],
-                      deptId: [{ required: true, message: "请输入所属部门", trigger: "blur" }],
-                      positionId: [{ required: true, message: "请输入岗位ID", trigger: "blur" }],
+                      deptName: [{ required: true, message: "请输入所属部门", trigger: "blur" }],
+                      positionName: [{ required: true, message: "请输入岗位", trigger: "blur" }],
                       hireDate: [{ required: true, message: "请输入入职日期", trigger: "blur" }],
                       salary: [{ required: true, message: "请输入基本薪资", trigger: "blur" }],
                       status: [{ required: true, message: "请输入状态：0-离职，1-在职,2-休假,3-实习", trigger: "blur" }],
@@ -744,6 +798,14 @@
     })
   }
 
+  // 加载选项
+  function loadEmployeeOptions() {
+    AioveuEmployeeAPI.getAllEmployeeOptions().then(response => {
+      employeeOptions.value = response
+    })
+  }
+
+
   onMounted(() => {
     handleQuery();
     //在 onMounted钩子中调用了 loadDepartments()函数,确保函数被正确使用
@@ -751,6 +813,7 @@
     //在 onMounted钩子中调用了 loadPositions()函数,确保函数被正确使用
     loadPositions();
     loadStatusOptions()
+    loadEmployeeOptions();
 
   });
 </script>

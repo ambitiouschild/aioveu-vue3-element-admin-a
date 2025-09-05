@@ -10,14 +10,32 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="仓库名称" prop="name">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.name"-->
+<!--                          placeholder="仓库名称"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="仓库名称" prop="name">
-                      <el-input
-                          v-model="queryParams.name"
-                          placeholder="仓库名称"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.name"
+                    placeholder="仓库名称"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="warehouse in warehouseOptions"
+                      :key="warehouse.warehouseId"
+                      :label="warehouse.warehouseName"
+                      :value="warehouse.warehouseName"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="仓库编码" prop="code">
                       <el-input
                           v-model="queryParams.code"
@@ -28,20 +46,40 @@
                 </el-form-item>
                 <el-form-item label="仓库位置" prop="location">
                       <el-input
+                        type="textarea"
                           v-model="queryParams.location"
                           placeholder="仓库位置"
                           clearable
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="负责人" prop="managerName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.managerName"-->
+<!--                          placeholder="负责人"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="负责人" prop="managerName">
-                      <el-input
-                          v-model="queryParams.managerName"
-                          placeholder="负责人"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.managerName"
+                    placeholder="负责人"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
+
+
                 <el-form-item label="联系电话" prop="contactPhone">
                       <el-input
                           v-model="queryParams.contactPhone"
@@ -255,6 +293,7 @@
 
                 <el-form-item label="仓库位置" prop="location">
                       <el-input
+                          type="textarea"
                           v-model="formData.location"
                           placeholder="仓库位置"
                       />
@@ -274,11 +313,27 @@
                   />
                 </el-form-item>
 
+<!--                <el-form-item label="负责人" prop="managerName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.managerName"-->
+<!--                    placeholder="负责人"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="负责人" prop="managerName">
-                  <el-input
+                  <el-select
                     v-model="formData.managerName"
                     placeholder="负责人"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="联系电话" prop="contactPhone">
@@ -290,6 +345,7 @@
 
                 <el-form-item label="仓库描述" prop="description">
                   <el-input
+                    type="textarea"
                     v-model="formData.description"
                     placeholder="仓库描述"
                   />
@@ -327,9 +383,10 @@
     inheritAttrs: false,
   });
 
-  import AioveuWarehouseAPI, { AioveuWarehousePageVO, AioveuWarehouseForm, AioveuWarehousePageQuery } from "@/api/aioveuWarehouse/aioveu-warehouse";
+  import AioveuWarehouseAPI, { AioveuWarehousePageVO, AioveuWarehouseForm, AioveuWarehousePageQuery ,WarehouseOptionVO } from "@/api/aioveuWarehouse/aioveu-warehouse";
   // 导入字典值
   import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
+  import AioveuEmployeeAPI, { EmployeeOptionVO } from "@/api/aioveuEmployee/aioveu-employee";
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -342,6 +399,9 @@
     pageSize: 10,
   });
 
+
+  const warehouseOptions = ref<WarehouseOptionVO[]>([]);
+  const employeeOptions = ref<EmployeeOptionVO[]>([]);
   // 仓库信息表格数据
   const pageData = ref<AioveuWarehousePageVO[]>([]);
 
@@ -362,6 +422,7 @@
                       name: [{ required: true, message: "请输入仓库名称", trigger: "blur" }],
                       code: [{ required: true, message: "请输入仓库编码", trigger: "blur" }],
                       location: [{ required: true, message: "请输入仓库位置", trigger: "blur" }],
+    managerName: [{ required: true, message: "请输入负责人", trigger: "blur" }],
   });
 
   /** 查询仓库信息 */
@@ -490,8 +551,22 @@
     })
   }
 
+  function loadWarehouseOptions() {
+    AioveuWarehouseAPI.getAllWarehouseOptions().then(response => {
+      warehouseOptions.value = response
+    })
+  }
+
+  function loadEmployeeOptions() {
+    AioveuEmployeeAPI.getAllEmployeeOptions().then(response => {
+      employeeOptions.value = response
+    })
+  }
+
   onMounted(() => {
     handleQuery();
     loadIsActiveOptions();
+    loadWarehouseOptions();
+    loadEmployeeOptions();
   });
 </script>

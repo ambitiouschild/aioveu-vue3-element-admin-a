@@ -10,22 +10,57 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="物资名称" prop="name">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.name"-->
+<!--                          placeholder="物资名称"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="物资名称" prop="name">
-                      <el-input
-                          v-model="queryParams.name"
-                          placeholder="物资名称"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.name"
+                    placeholder="物资名称"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="material in materialOptions"
+                      :key="material.materialId"
+                      :label="material.materialName"
+                      :value="material.materialName"
+                    />
+                  </el-select>
                 </el-form-item>
+
+<!--                <el-form-item label="物资分类" prop="categoryName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.categoryName"-->
+<!--                          placeholder="物资分类"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="物资分类" prop="categoryName">
-                      <el-input
-                          v-model="queryParams.categoryName"
-                          placeholder="物资分类"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.categoryName"
+                    placeholder="物资分类"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="dept in parentCategoryOptions"
+                      :key="dept.categoryId"
+                      :label="dept.categoryName"
+                      :value="dept.categoryName"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="启用状态" prop="isActive">
                   <el-select
                     v-model="queryParams.isActive"
@@ -231,11 +266,28 @@
                           placeholder="物资名称"
                       />
                 </el-form-item>
+<!--                <el-form-item label="物资分类" prop="categoryName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.categoryName"-->
+<!--                    placeholder="物资分类"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="物资分类" prop="categoryName">
-                  <el-input
+                  <el-select
                     v-model="formData.categoryName"
                     placeholder="物资分类"
-                  />
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="dept in parentCategoryOptions"
+                      :key="dept.categoryId"
+                      :label="dept.categoryName"
+                      :value="dept.categoryName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="采购单价" prop="purchasePrice">
@@ -305,9 +357,12 @@
     inheritAttrs: false,
   });
 
-  import AioveuMaterialAPI, { AioveuMaterialPageVO, AioveuMaterialForm, AioveuMaterialPageQuery } from "@/api/aioveuMaterial/aioveu-material";
+  import AioveuMaterialAPI, { AioveuMaterialPageVO, AioveuMaterialForm, AioveuMaterialPageQuery,MaterialOptionVO } from "@/api/aioveuMaterial/aioveu-material";
   // 导入字典值
   import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
+
+  import AioveuCategoryAPI, {CategoryOptionVO} from "@/api/aioveuCategory/aioveu-category";
+
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -329,8 +384,13 @@
     visible: false,
   });
 
+  // 新增：父分类选项
+  const parentCategoryOptions = ref<CategoryOptionVO[]>([]);
+
   // 选项
   const isActiveOptions = ref<DictItemOption[]>([])
+
+  const materialOptions = ref<MaterialOptionVO[]>([]);
 
   // 物资表单数据
   const formData = reactive<AioveuMaterialForm>({});
@@ -338,7 +398,7 @@
   // 物资表单校验规则
   const rules = reactive({
                       name: [{ required: true, message: "请输入物资名称", trigger: "blur" }],
-                      categoryId: [{ required: true, message: "请输入分类ID", trigger: "blur" }],
+                      categoryName: [{ required: true, message: "请输入分类", trigger: "blur" }],
                       purchasePrice: [{ required: true, message: "请输入采购单价", trigger: "blur" }],
                       isActive: [{ required: true, message: "请输入启用状态", trigger: "blur" }],
                       barcode: [{ required: true, message: "请输入商品条码", trigger: "blur" }],
@@ -468,8 +528,26 @@
       isActiveOptions.value = response
     })
   }
+
+  // 加载选项
+  function loadParentCategoryOptions() {
+    AioveuCategoryAPI.getAllCategoryOptions().then(response => {
+      parentCategoryOptions.value = response
+    })
+  }
+
+  function loadMaterialOptions() {
+    AioveuMaterialAPI.getAllMaterialOptions().then(response => {
+      materialOptions.value = response
+    })
+  }
+
+
+
   onMounted(() => {
     handleQuery();
-    loadIsActiveOptionsOptions()
+    loadIsActiveOptionsOptions();
+    loadParentCategoryOptions();
+    loadMaterialOptions();
   });
 </script>

@@ -10,13 +10,30 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="岗位名称" prop="positionName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.positionName"-->
+<!--                          placeholder="岗位名称"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="岗位名称" prop="positionName">
-                      <el-input
-                          v-model="queryParams.positionName"
-                          placeholder="岗位名称"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.positionName"
+                    placeholder="岗位名称"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="position in positionOptions"
+                      :key="position.positionId"
+                      :label="position.positionName"
+                      :value="position.positionName"
+                    />
+                  </el-select>
                 </el-form-item>
         <!-- 修改：将所属部门ID改为所属部门名称 -->
                 <el-form-item label="所属部门" prop="deptId">
@@ -222,12 +239,34 @@
                           placeholder="岗位名称"
                       />
                 </el-form-item>
+<!--                <el-form-item label="所属部门" prop="deptName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.deptName"-->
+<!--                    placeholder="所属部门"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="所属部门" prop="deptName">
-                  <el-input
+                  <el-select
                     v-model="formData.deptName"
-                    placeholder="所属部门"
-                  />
+                    placeholder="请选择部门"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <!-- 遍历部门选项列表 -->
+                    <!-- 使用部门ID作为唯一键，确保高效渲染 -->
+                    <!-- 显示部门名称作为选项标签 -->
+                    <!-- 使用部门ID作为选项值 -->
+                    <el-option
+                      v-for="dept in deptOptions"
+                      :key="dept.deptId"
+                      :label="dept.deptName"
+                      :value="dept.deptName"
+                    />
+                  </el-select>
                 </el-form-item>
+
 
                 <el-form-item label="职级" prop="positionLevel">
                   <el-select
@@ -268,7 +307,7 @@
     inheritAttrs: false,
   });
 
-  import AioveuPositionAPI, { AioveuPositionPageVO, AioveuPositionForm, AioveuPositionPageQuery } from "@/api/aioveuPosition/aioveu-position";
+  import AioveuPositionAPI, { AioveuPositionPageVO, AioveuPositionForm, AioveuPositionPageQuery ,PositionOptionVO} from "@/api/aioveuPosition/aioveu-position";
   // 新增：导入部门API
   import AioveuDepartmentAPI, { DeptOptionVO } from "@/api/aioveuDepartment/aioveu-department";
   // 导入字典值
@@ -282,6 +321,7 @@
 
   // 新增：部门选项
   const deptOptions = ref<DeptOptionVO[]>([]);
+  const positionOptions = ref<PositionOptionVO[]>([]);
 
   const queryParams = reactive<AioveuPositionPageQuery>({
     pageNum: 1,
@@ -318,6 +358,7 @@
   // 公司岗位信息表单校验规则
   const rules = reactive({
                       positionName: [{ required: true, message: "请输入岗位名称", trigger: "blur" }],
+    deptName: [{ required: true, message: "请输入部门名称", trigger: "blur" }],
   });
 
   /** 查询公司岗位信息 */
@@ -479,10 +520,17 @@
     })
   }
 
+  function loadPositionOptions() {
+    AioveuPositionAPI.getAllPositionOptions().then(response => {
+      positionOptions.value = response
+    })
+  }
+
   onMounted(() => {
     handleQuery();
     //在 onMounted钩子中调用了 loadDepartments()函数,确保函数被正确使用
     loadDepartments();
-    loadPositionLevelOptions()
+    loadPositionLevelOptions();
+    loadPositionOptions();
   });
 </script>

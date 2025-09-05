@@ -74,6 +74,7 @@ const AioveuWarehouseAPI = {
         method: "get",
       });
     }
+
 }
 
 export default AioveuWarehouseAPI;
@@ -153,7 +154,7 @@ export interface AioveuWarehousePageVO {
 /** 仓库信息分页对象 */
 export interface WarehouseOptionVO {
   /** 仓库ID */
-  warehouseId?: number;
+  warehouseId: number;
   /** 仓库名称 */
-  warehouseName?: string;
+  warehouseName: string;
 }

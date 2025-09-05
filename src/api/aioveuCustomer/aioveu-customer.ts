@@ -61,7 +61,15 @@ const AioveuCustomerAPI = {
             url: `${AIOVEUCUSTOMER_BASE_URL}/${ids}`,
             method: "delete",
         });
-    }
+    },
+
+    getAllCustomerOptions() {
+      return request<any,CustomerOptionVO[]>({
+        url: `${AIOVEUCUSTOMER_BASE_URL}/options`,
+        method: "get",
+      });
+    },
+
 }
 
 export default AioveuCustomerAPI;
@@ -196,4 +204,9 @@ export interface AioveuCustomerPageVO {
     createTime?: string;
     /** 更新时间 */
     updateTime?: string;
+}
+
+export interface CustomerOptionVO {
+  customerId: number;
+  customerName: string;
 }

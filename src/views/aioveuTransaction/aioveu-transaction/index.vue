@@ -18,22 +18,59 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+
+<!--                <el-form-item label="客户" prop="customerName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.customerName"-->
+<!--                          placeholder="客户"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="客户" prop="customerName">
-                      <el-input
-                          v-model="queryParams.customerName"
-                          placeholder="客户"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.customerName"
+                    placeholder="客户"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="customer in customerOptions"
+                      :key="customer.customerId"
+                      :label="customer.customerName"
+                      :value="customer.customerName"
+                    />
+                  </el-select>
                 </el-form-item>
+
+<!--                <el-form-item label="联系人" prop="contactName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.contactName"-->
+<!--                          placeholder="联系人"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="联系人" prop="contactName">
-                      <el-input
-                          v-model="queryParams.contactName"
-                          placeholder="联系人"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.contactName"
+                    placeholder="联系人"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="contact in contactOptions"
+                      :key="contact.contactId"
+                      :label="contact.contactName"
+                      :value="contact.contactName"
+                    />
+                  </el-select>
                 </el-form-item>
+
 <!--                <el-form-item label="交易日期" prop="transactionDate">-->
 <!--                      <el-date-picker-->
 <!--                          v-model="queryParams.transactionDate"-->
@@ -376,18 +413,50 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="客户" prop="customerName">
-                  <el-input
-                    v-model="formData.customerName"
-                    placeholder="客户"
+<!--                <el-form-item label="客户" prop="customerName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.customerName"-->
+<!--                    placeholder="客户"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
+              <el-form-item label="客户" prop="customerName">
+                <el-select
+                  v-model="formData.customerName"
+                  placeholder="客户"
+                  clearable
+                  filterable
+                >
+                  <el-option
+                    v-for="customer in customerOptions"
+                    :key="customer.customerId"
+                    :label="customer.customerName"
+                    :value="customer.customerName"
                   />
-                </el-form-item>
+                </el-select>
+              </el-form-item>
+
+<!--                <el-form-item label="联系人" prop="contactName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.contactName"-->
+<!--                    placeholder="联系人"-->
+<!--                  />-->
+<!--                </el-form-item>-->
 
                 <el-form-item label="联系人" prop="contactName">
-                  <el-input
+                  <el-select
                     v-model="formData.contactName"
                     placeholder="联系人"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="contact in contactOptions"
+                      :key="contact.contactId"
+                      :label="contact.contactName"
+                      :value="contact.contactName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="交易日期" prop="transactionDate">
@@ -514,11 +583,27 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="销售负责人" prop="salesRepName">
-                  <el-input
+<!--                <el-form-item label="负责人" prop="salesRepName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.salesRepName"-->
+<!--                    placeholder="负责人"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
+                <el-form-item label="负责人" prop="salesRepName">
+                  <el-select
                     v-model="formData.salesRepName"
-                    placeholder="销售负责人"
-                  />
+                    placeholder="负责人"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="交易状态" prop="transactionStatus">
@@ -563,6 +648,12 @@
   import AioveuTransactionAPI, { AioveuTransactionPageVO, AioveuTransactionForm, AioveuTransactionPageQuery } from "@/api/aioveuTransaction/aioveu-transaction";
   // 导入字典值
   import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
+  import AioveuCustomerAPI, {CustomerOptionVO} from "@/api/aioveuCustomer/aioveu-customer";
+  import AioveuContactAPI, {ContactOptionVO} from "@/api/aioveuContact/aioveu-contact";
+
+  import AioveuEmployeeAPI, { EmployeeOptionVO } from "@/api/aioveuEmployee/aioveu-employee";
+
+
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -593,19 +684,28 @@
   // 选项
   const transactionStatusOptions = ref<DictItemOption[]>([])
 
+  const customerOptions = ref<CustomerOptionVO[]>([]);
+
+  const contactOptions = ref<ContactOptionVO[]>([]);
+
+  const employeeOptions = ref<EmployeeOptionVO[]>([]);
+
+
   // 客户交易记录表单数据
   const formData = reactive<AioveuTransactionForm>({});
 
   // 客户交易记录表单校验规则
   const rules = reactive({
                       transactionNo: [{ required: true, message: "请输入交易编号", trigger: "blur" }],
-                      customerId: [{ required: true, message: "请输入客户ID", trigger: "blur" }],
+                      customerName: [{ required: true, message: "请输入客户ID", trigger: "blur" }],
+    contactName: [{ required: true, message: "请输入联系人", trigger: "blur" }],
                       transactionDate: [{ required: true, message: "请输入交易日期", trigger: "blur" }],
                       amount: [{ required: true, message: "请输入交易金额", trigger: "blur" }],
                       paymentMethod: [{ required: true, message: "请输入支付方式", trigger: "blur" }],
                       paymentStatus: [{ required: true, message: "请输入支付状态", trigger: "blur" }],
                       transactionType: [{ required: true, message: "请输入交易类型", trigger: "blur" }],
                       transactionStatus: [{ required: true, message: "请输入交易状态", trigger: "blur" }],
+    salesRepName: [{ required: true, message: "请输入交易状态", trigger: "blur" }]
   });
 
   /** 查询客户交易记录 */
@@ -746,8 +846,34 @@
     })
   }
 
+  function loadCustomerOptions() {
+    AioveuCustomerAPI.getAllCustomerOptions().then(response => {
+      customerOptions.value = response
+    })
+  }
+
+  // 加载选项
+  function loadContactOptions() {
+    AioveuContactAPI.getAllContactOptions().then(response => {
+      contactOptions.value = response
+    })
+  }
+
+  // 加载选项
+  function loadEmployeeOptions() {
+    AioveuEmployeeAPI.getAllEmployeeOptions().then(response => {
+      employeeOptions.value = response
+    })
+  }
+
+
+
   onMounted(() => {
     handleQuery();
     loadOptions()
+    loadCustomerOptions();
+    loadContactOptions();
+    loadEmployeeOptions();
+
   });
 </script>

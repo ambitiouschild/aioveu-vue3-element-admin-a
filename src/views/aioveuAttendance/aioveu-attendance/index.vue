@@ -10,14 +10,30 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
-                <!-- 修改：将所属部门ID改为所属部门名称 -->
+<!--                <el-form-item label="员工姓名" prop="employeeName">-->
+<!--                    <el-input-->
+<!--                      v-model="queryParams.employeeName"-->
+<!--                      placeholder="员工姓名"-->
+<!--                      clearable-->
+<!--                      @keyup.enter="handleQuery()"-->
+<!--                    />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="员工姓名" prop="employeeName">
-                    <el-input
-                      v-model="queryParams.employeeName"
-                      placeholder="员工姓名"
-                      clearable
-                      @keyup.enter="handleQuery()"
+                  <el-select
+                    v-model="queryParams.employeeName"
+                    placeholder="员工姓名"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
                     />
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="日期" prop="date">
                       <el-date-picker
@@ -259,11 +275,27 @@
     >
       <el-form ref="dataFormRef" :model="formData" :rules="rules" label-width="100px">
 
+<!--                <el-form-item label="员工姓名" prop="employeeName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.employeeName"-->
+<!--                    placeholder="员工姓名"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="员工姓名" prop="employeeName">
-                  <el-input
+                  <el-select
                     v-model="formData.employeeName"
                     placeholder="员工姓名"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="日期" prop="date">
@@ -296,7 +328,7 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="工作时长(小时)" prop="workHours">
+                <el-form-item label="工作时长" prop="workHours">
                       <el-input
                           v-model="formData.workHours"
                           placeholder="工作时长(小时)"
@@ -372,7 +404,7 @@
 
   // 考勤信息表单校验规则
   const rules = reactive({
-                      employeeId: [{ required: true, message: "请输入员工ID", trigger: "blur" }],
+                      employeeName: [{ required: true, message: "请输入员工", trigger: "blur" }],
                       date: [{ required: true, message: "请输入日期", trigger: "blur" }],
                       workHours: [{ required: true, message: "请输入工作时长(小时)", trigger: "blur" }],
                       status: [{ required: true, message: "请输入考勤状态", trigger: "blur" }],
@@ -495,7 +527,7 @@
     );
   }
 
-  // 主要修改点：部门列表加载方法
+  // 主要修改点：列表加载方法
   function loadEmployees() {
     loading.value = true;
     AioveuEmployeeAPI.getAllEmployeeOptions()

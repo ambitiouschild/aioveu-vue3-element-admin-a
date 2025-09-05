@@ -18,14 +18,32 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="客户名称" prop="name">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.name"-->
+<!--                          placeholder="客户名称"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="客户名称" prop="name">
-                      <el-input
-                          v-model="queryParams.name"
-                          placeholder="客户名称"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.name"
+                    placeholder="客户名称"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="customer in customerOptions"
+                      :key="customer.customerId"
+                      :label="customer.customerName"
+                      :value="customer.customerName"
+                    />
+                  </el-select>
                 </el-form-item>
+
 
                 <el-form-item label="客户类型" prop="type">
                   <el-select
@@ -120,14 +138,31 @@
                   </el-select>
                 </el-form-item>
 
-                <el-form-item label="销售负责人" prop="salesRepName">
-                      <el-input
-                          v-model="queryParams.salesRepName"
-                          placeholder="销售负责人"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
-                </el-form-item>
+<!--                <el-form-item label="销售负责人" prop="salesRepName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.salesRepName"-->
+<!--                          placeholder="销售负责人"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
+              <el-form-item label="负责人" prop="salesRepName">
+                <el-select
+                  v-model="queryParams.salesRepName"
+                  placeholder="负责人"
+                  clearable
+                  filterable
+                  @keyup.enter="handleQuery()"
+                >
+                  <el-option
+                    v-for="employee in employeeOptions"
+                    :key="employee.employeeId"
+                    :label="employee.employeeName"
+                    :value="employee.employeeName"
+                  />
+                </el-select>
+              </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleQuery">
             <template #icon><Search /></template>
@@ -566,11 +601,27 @@
                   </el-select>
                 </el-form-item>
 
+<!--                <el-form-item label="负责人" prop="salesRepName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.salesRepName"-->
+<!--                    placeholder="负责人"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="负责人" prop="salesRepName">
-                  <el-input
+                  <el-select
                     v-model="formData.salesRepName"
                     placeholder="负责人"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
 
       </el-form>
@@ -590,7 +641,8 @@
     inheritAttrs: false,
   });
 
-  import AioveuCustomerAPI, { AioveuCustomerPageVO, AioveuCustomerForm, AioveuCustomerPageQuery } from "@/api/aioveuCustomer/aioveu-customer";
+  import AioveuCustomerAPI, { AioveuCustomerPageVO, AioveuCustomerForm, AioveuCustomerPageQuery ,CustomerOptionVO } from "@/api/aioveuCustomer/aioveu-customer";
+  import AioveuEmployeeAPI, { EmployeeOptionVO } from "@/api/aioveuEmployee/aioveu-employee";
   // 导入字典值
   import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
   const queryFormRef = ref();
@@ -604,6 +656,9 @@
     pageNum: 1,
     pageSize: 10,
   });
+
+
+
 
   // 客户信息表格数据
   const pageData = ref<AioveuCustomerPageVO[]>([]);
@@ -623,8 +678,8 @@
   // 选项
   const sourceOptions = ref<DictItemOption[]>([])
 
-
-
+  const customerOptions = ref<CustomerOptionVO[]>([]);
+  const employeeOptions = ref<EmployeeOptionVO[]>([]);
 
 
   // 客户信息表单数据
@@ -775,8 +830,26 @@
       sourceOptions.value = response
     })
   }
+
+
+  // 加载选项
+  function loadCustomerOptions() {
+    AioveuCustomerAPI.getAllCustomerOptions().then(response => {
+      customerOptions.value = response
+    })
+  }
+
+  // 加载选项
+  function loadEmployeeOptions() {
+    AioveuEmployeeAPI.getAllEmployeeOptions().then(response => {
+      employeeOptions.value = response
+    })
+  }
+
   onMounted(() => {
     handleQuery();
     loadOptions()
+    loadCustomerOptions();
+    loadEmployeeOptions();
   });
 </script>

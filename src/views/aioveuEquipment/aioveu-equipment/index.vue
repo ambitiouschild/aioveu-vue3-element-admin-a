@@ -26,14 +26,31 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="设备分类" prop="categoryName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.categoryName"-->
+<!--                          placeholder="设备分类"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="设备分类" prop="categoryName">
-                      <el-input
-                          v-model="queryParams.categoryName"
-                          placeholder="设备分类"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.categoryName"
+                    placeholder="设备分类"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="category in categoryOptions"
+                      :key="category.categoryId"
+                      :label="category.categoryName"
+                      :value="category.categoryName"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="序列号" prop="serialNo">
                       <el-input
                           v-model="queryParams.serialNo"
@@ -42,13 +59,30 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="责任人" prop="responsiblePersonName">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.responsiblePersonName"-->
+<!--                          placeholder="责任人"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="责任人" prop="responsiblePersonName">
-                      <el-input
-                          v-model="queryParams.responsiblePersonName"
-                          placeholder="责任人"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.responsiblePersonName"
+                    placeholder="责任人"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="状态" prop="status">
@@ -297,12 +331,29 @@
                       />
                 </el-form-item>
 
+<!--                <el-form-item label="设备分类" prop="categoryName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.categoryName"-->
+<!--                    placeholder="设备分类"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="设备分类" prop="categoryName">
-                  <el-input
+                  <el-select
                     v-model="formData.categoryName"
                     placeholder="设备分类"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="category in categoryOptions"
+                      :key="category.categoryId"
+                      :label="category.categoryName"
+                      :value="category.categoryName"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="设备型号" prop="model">
                       <el-input
                           v-model="formData.model"
@@ -324,18 +375,51 @@
 <!--                      />-->
 <!--                </el-form-item>-->
 
+<!--                <el-form-item label="所属部门" prop="departmentName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.departmentName"-->
+<!--                    placeholder="所属部门"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="所属部门" prop="departmentName">
-                  <el-input
+                  <el-select
                     v-model="formData.departmentName"
-                    placeholder="所属部门"
-                  />
+                    placeholder="请选择部门"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="dept in deptOptions"
+                      :key="dept.deptId"
+                      :label="dept.deptName"
+                      :value="dept.deptName"
+                    />
+                  </el-select>
                 </el-form-item>
 
+
+<!--                <el-form-item label="责任人" prop="responsiblePersonName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.responsiblePersonName"-->
+<!--                    placeholder="责任人"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="责任人" prop="responsiblePersonName">
-                  <el-input
+                  <el-select
                     v-model="formData.responsiblePersonName"
                     placeholder="责任人"
-                  />
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="employee in employeeOptions"
+                      :key="employee.employeeId"
+                      :label="employee.employeeName"
+                      :value="employee.employeeName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="采购日期" prop="purchaseDate">
@@ -355,14 +439,14 @@
                       />
                 </el-form-item>
 
-                <el-form-item label="保修期（月）" prop="warrantyPeriod">
+                <el-form-item label="保修期" prop="warrantyPeriod">
                       <el-input
                           v-model="formData.warrantyPeriod"
                           placeholder="保修期（月）"
                       />
                 </el-form-item>
 
-                <el-form-item label="维保周期（月）" prop="maintenanceCycle">
+                <el-form-item label="维保周期" prop="maintenanceCycle">
                       <el-input
                           v-model="formData.maintenanceCycle"
                           placeholder="维保周期（月）"
@@ -406,6 +490,7 @@
 
                 <el-form-item label="备注" prop="remark">
                       <el-input
+                          type="textarea"
                           v-model="formData.remark"
                           placeholder="备注"
                       />
@@ -430,7 +515,11 @@
 
   import AioveuEquipmentAPI, { AioveuEquipmentPageVO, AioveuEquipmentForm, AioveuEquipmentPageQuery } from "@/api/aioveuEquipment/aioveu-equipment";
   // 导入字典值
-  import DictAPI,{ DictItemOption } from '@/api/system/dict.api'
+  import DictAPI,{ DictItemOption } from '@/api/system/dict.api';
+
+  import AioveuDepartmentAPI, { DeptOptionVO } from "@/api/aioveuDepartment/aioveu-department";
+  import AioveuCategoryAPI, {CategoryOptionVO} from "@/api/aioveuCategory/aioveu-category";
+  import AioveuEmployeeAPI, { EmployeeOptionVO } from "@/api/aioveuEmployee/aioveu-employee";
   const queryFormRef = ref();
   const dataFormRef = ref();
 
@@ -449,6 +538,14 @@
   // 选项
   const statusOptions = ref<DictItemOption[]>([])
 
+  // 新增：部门选项
+  const deptOptions = ref<DeptOptionVO[]>([]);
+
+  // 新增：父分类选项
+  const categoryOptions = ref<CategoryOptionVO[]>([]);
+
+  const employeeOptions = ref<EmployeeOptionVO[]>([]);
+
   // 弹窗
   const dialog = reactive({
     title: "",
@@ -462,8 +559,10 @@
   const rules = reactive({
                       assetNo: [{ required: true, message: "请输入资产编号", trigger: "blur" }],
                       name: [{ required: true, message: "请输入设备名称", trigger: "blur" }],
-                      categoryId: [{ required: true, message: "请输入设备分类ID", trigger: "blur" }],
+                      categoryName: [{ required: true, message: "请输入设备分类", trigger: "blur" }],
                       status: [{ required: true, message: "请输入状态", trigger: "blur" }],
+    departmentName: [{ required: true, message: "请输入部门", trigger: "blur" }],
+    responsiblePersonName: [{ required: true, message: "请输入责任人", trigger: "blur" }],
   });
 
   /** 查询设备管理 */
@@ -590,8 +689,35 @@
     })
   }
 
+  // 加载选项
+  function loadDeptOptions() {
+    AioveuDepartmentAPI.getAllDepartmentOptions().then(response => {
+      deptOptions.value = response
+    })
+  }
+
+
+  // 加载选项
+  function loadParentCategoryOptions() {
+    AioveuCategoryAPI.getAllCategoryOptions().then(response => {
+      categoryOptions.value = response
+    })
+  }
+
+  // 加载选项
+  function loadEmployeeOptions() {
+    AioveuEmployeeAPI.getAllEmployeeOptions().then(response => {
+      employeeOptions.value = response
+    })
+  }
+
+
+
   onMounted(() => {
     handleQuery();
     loadStatusOptions();
+    loadParentCategoryOptions();
+    loadDeptOptions();
+    loadEmployeeOptions();
   });
 </script>

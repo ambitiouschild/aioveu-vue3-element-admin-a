@@ -10,16 +10,35 @@
                           @keyup.enter="handleQuery()"
                       />
                 </el-form-item>
+<!--                <el-form-item label="分类名称" prop="name">-->
+<!--                      <el-input-->
+<!--                          v-model="queryParams.name"-->
+<!--                          placeholder="分类名称"-->
+<!--                          clearable-->
+<!--                          @keyup.enter="handleQuery()"-->
+<!--                      />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="分类名称" prop="name">
-                      <el-input
-                          v-model="queryParams.name"
-                          placeholder="分类名称"
-                          clearable
-                          @keyup.enter="handleQuery()"
-                      />
+                  <el-select
+                    v-model="queryParams.name"
+                    placeholder="分类名称"
+                    clearable
+                    filterable
+                    @keyup.enter="handleQuery()"
+                  >
+                    <el-option
+                      v-for="category in categoryOptions"
+                      :key="category.categoryId"
+                      :label="category.categoryName"
+                      :value="category.categoryName"
+                    />
+                  </el-select>
                 </el-form-item>
+
                 <el-form-item label="分类描述" prop="description">
                       <el-input
+                          type="textarea"
                           v-model="queryParams.description"
                           placeholder="分类描述"
                           clearable
@@ -169,11 +188,27 @@
                       />
                 </el-form-item>
 
+<!--                <el-form-item label="父分类" prop="parentCategoryName">-->
+<!--                  <el-input-->
+<!--                    v-model="formData.parentCategoryName"-->
+<!--                    placeholder="父分类"-->
+<!--                  />-->
+<!--                </el-form-item>-->
+
                 <el-form-item label="父分类" prop="parentCategoryName">
-                  <el-input
+                  <el-select
                     v-model="formData.parentCategoryName"
-                    placeholder="父分类"
-                  />
+                    placeholder="请选择父分类"
+                    clearable
+                    filterable
+                  >
+                    <el-option
+                      v-for="dept in parentCategoryOptions"
+                      :key="dept.categoryId"
+                      :label="dept.categoryName"
+                      :value="dept.categoryName"
+                    />
+                  </el-select>
                 </el-form-item>
 
                 <el-form-item label="分类层级" prop="level">
@@ -183,8 +218,11 @@
                       />
                 </el-form-item>
 
+
+
                 <el-form-item label="分类描述" prop="description">
                       <el-input
+                          type="textarea"
                           v-model="formData.description"
                           placeholder="分类描述"
                       />
@@ -207,7 +245,8 @@
     inheritAttrs: false,
   });
 
-  import AioveuCategoryAPI, { AioveuCategoryPageVO, AioveuCategoryForm, AioveuCategoryPageQuery } from "@/api/aioveuCategory/aioveu-category";
+  import AioveuCategoryAPI, { AioveuCategoryPageVO, AioveuCategoryForm, AioveuCategoryPageQuery ,CategoryOptionVO} from "@/api/aioveuCategory/aioveu-category";
+
 
   const queryFormRef = ref();
   const dataFormRef = ref();
@@ -223,6 +262,13 @@
 
   // 物资分类表格数据
   const pageData = ref<AioveuCategoryPageVO[]>([]);
+
+
+  // 新增：父分类选项
+  const parentCategoryOptions = ref<CategoryOptionVO[]>([]);
+
+  // 新增：父分类选项
+  const categoryOptions = ref<CategoryOptionVO[]>([]);
 
   // 弹窗
   const dialog = reactive({
@@ -357,7 +403,23 @@
     );
   }
 
+  // 加载选项
+  function loadParentCategoryOptions() {
+    AioveuCategoryAPI.getAllCategoryOptions().then(response => {
+      parentCategoryOptions.value = response
+    })
+  }
+
+  function loadCategoryOptions() {
+    AioveuCategoryAPI.getAllCategoryOptions().then(response => {
+      categoryOptions.value = response
+    })
+  }
+
+
   onMounted(() => {
     handleQuery();
+    loadParentCategoryOptions();
+    loadCategoryOptions();
   });
 </script>
