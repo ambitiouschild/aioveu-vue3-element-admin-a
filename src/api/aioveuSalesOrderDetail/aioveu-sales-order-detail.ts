@@ -73,7 +73,7 @@ export interface AioveuSalesOrderDetailPageQuery extends PageQuery {
     /** 订单ID */
     orderId?: number;
 
-  orderName?: string;
+  orderNo?: string;
 
     /** 物资ID */
     materialId?: number;
@@ -93,7 +93,7 @@ export interface AioveuSalesOrderDetailForm {
     /** 订单ID */
     orderId?:  number;
     /** 订单 */
-    orderName?:  string;
+    orderNo?:  string;
     /** 物资ID */
     materialId?:  number;
     /** 物资 */

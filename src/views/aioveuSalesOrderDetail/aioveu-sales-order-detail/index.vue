@@ -20,9 +20,9 @@
 <!--                </el-form-item>-->
 
 
-                <el-form-item label="订单" prop="orderName">
+                <el-form-item label="订单" prop="orderNo">
                   <el-select
-                    v-model="queryParams.orderName"
+                    v-model="queryParams.orderNo"
                     placeholder="订单"
                     clearable
                     filterable
@@ -324,9 +324,9 @@
 <!--                  />-->
 <!--                </el-form-item>-->
 
-                <el-form-item label="订单" prop="orderName">
+                <el-form-item label="订单" prop="orderNo">
                   <el-select
-                    v-model="formData.orderName"
+                    v-model="formData.orderNo"
                     placeholder="订单"
                     clearable
                     filterable
@@ -529,7 +529,7 @@
 
   // 订单明细表单校验规则
   const rules = reactive({
-    orderName: [{ required: true, message: "请输入订单", trigger: "blur" }],
+    orderNo: [{ required: true, message: "请输入订单", trigger: "blur" }],
                       materialName: [{ required: true, message: "请输入物资", trigger: "blur" }],
                       quantity: [{ required: true, message: "请输入数量", trigger: "blur" }],
                       unitPrice: [{ required: true, message: "请输入单价", trigger: "blur" }],
